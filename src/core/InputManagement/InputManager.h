@@ -1,0 +1,28 @@
+//
+// Created by Antonin Fruchet on 26/05/2026.
+//
+
+#ifndef COMPONENT_BASED_ARCH_INPUTMANAGER_H
+#define COMPONENT_BASED_ARCH_INPUTMANAGER_H
+#include <filesystem>
+#include <map>
+
+#include "InputAction.h"
+
+class InputManager {
+    inline static const std::filesystem::path input_config_file_path{"resources/config/input-config.xml"};
+
+    const std::unordered_map<std::string, sf::Keyboard::Key> stringToKey;
+
+    static std::unordered_map<std::string, std::unique_ptr<InputAction>> actions;
+
+    static void loadActions();
+public:
+    static void init();
+    static InputAction* findAction(const std::string& action_name);
+    static void processEvents(std::optional<sf::Event> event);
+};
+
+
+
+#endif //COMPONENT_BASED_ARCH_INPUTMANAGER_H

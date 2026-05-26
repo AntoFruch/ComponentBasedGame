@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<InputActions>
+    <!-- Déplacements -->
+    <Action label="Move" type="Vector2D">
+        <!-- ZQSD -->
+        <binding>
+            <up bind="Z"/>
+            <down bind="S"/>
+            <left bind="Q"/>
+            <right bind="D"/>
+        </binding>
+        <!-- fleches directionnelles -->
+        <binding>
+            <up bind="Up"/>
+            <down bind="Down"/>
+            <left bind="Left"/>
+            <right bind="Right"/>
+        </binding>
+        <!-- test -->
+        <binding>
+            <up bind="T"/>
+            <down bind="G"/>
+            <left bind="F"/>
+            <right bind="H"/>
+        </binding>
+    </Action>
+    <!-- Saut -->
+    <Action label="Jump" type="Button">
+        <binding bind="Space"/>
+    </Action>
+</InputActions>
