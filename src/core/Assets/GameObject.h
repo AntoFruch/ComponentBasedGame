@@ -17,7 +17,7 @@ class GameObject {
 
 public:
     Transform transform;
-    Renderer renderer;
+
     explicit GameObject(const sf::Vector2f& position, const sf::Angle& rotation, const sf::Vector2f& scale);
 
     void update(const sf::Time& elapsedTime);

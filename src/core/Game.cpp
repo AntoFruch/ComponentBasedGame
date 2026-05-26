@@ -20,7 +20,7 @@ Game::Game() {
 
   // TESTING
   InputManager::init();
-  SceneManager::loadScene("scene.xml", mTargets);
+  SceneManager::loadScene("scene.xml", mTargets, mRenderers);
 }
 
 void Game::run() {
@@ -59,10 +59,10 @@ void Game::update(const sf::Time elapsedTime) {
 }
 
 void Game::render() {
-  mWindow.clear();
-  for (auto& target : mTargets)
+  mWindow.clear(sf::Color::White);
+  for (auto& renderer : mRenderers)
   {
-    target->renderer.render(mWindow);
+    renderer->render(mWindow);
   }
   mWindow.draw(mStatisticsText);
   mWindow.display();

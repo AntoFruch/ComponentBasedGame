@@ -4,26 +4,45 @@
 
 #include "Renderer.h"
 
+#include <iostream>
+
 #include "Assets/GameObject.h"
 
-Renderer::Renderer()
+Renderer::Renderer(const std::string& texture_path, const sf::Vector2u& spriteSize)
 {
+    loadTexture(texture_path);
+    this->mShape.setSize(static_cast<sf::Vector2f>(spriteSize));
+    this->spriteSize = spriteSize;
     Renderer::Start();
 }
 void Renderer::Start()
 {
-    //TESTING
-    mShape = std::make_unique<sf::CircleShape>(30);
+    cutRect.size = static_cast<sf::Vector2i>(spriteSize);
+    setCutRectPos(0, 0);
+    mShape.setTextureRect(cutRect);
+}
+
+void Renderer::loadTexture(const std::string& path)
+{
+    if (!texture.loadFromFile(path)) {
+        std::cerr << "Texture at " << path << "not found" <<std::endl;
+    }
+    mShape.setTexture(&texture);
 }
 
 void Renderer::Update(const sf::Time& elapsedTime)
 {
-    mShape->setPosition(gameObject->transform.getPosition());
-    mShape->setRotation(gameObject->transform.getRotation());
-    mShape->setScale(gameObject->transform.getScale());
+    mShape.setPosition(gameObject->transform.getPosition());
+    mShape.setRotation(gameObject->transform.getRotation());
+    mShape.setScale(gameObject->transform.getScale());
 }
 
 void Renderer::render(sf::RenderWindow& window) const
 {
-    window.draw(*mShape);
+    window.draw(mShape);
+}
+
+void Renderer::setCutRectPos(unsigned int x, unsigned int y)
+{
+    cutRect.position = sf::Vector2i{static_cast<int>(x), static_cast<int>(y)};
 }

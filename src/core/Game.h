@@ -31,6 +31,7 @@ private:
     sf::RenderWindow mWindow{sf::VideoMode({W_WIDTH, W_HEIGHT}), "SFML Application"};
     sf::Texture mTexture;
     std::vector<std::unique_ptr<GameObject>> mTargets;
+    std::vector<Renderer*> mRenderers;
     sf::Font mFont;
     sf::Text mStatisticsText{mFont};
     sf::Time mStatisticsUpdateTime;

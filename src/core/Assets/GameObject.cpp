@@ -7,7 +7,7 @@
 GameObject::GameObject(const sf::Vector2f& position, const sf::Angle& rotation, const sf::Vector2f& scale)
     : transform(position, rotation, scale, nullptr)
 {
-    renderer.setParent(this);
+
 }
 
 void GameObject::update(const sf::Time& elapsedTime) {
@@ -15,7 +15,6 @@ void GameObject::update(const sf::Time& elapsedTime) {
     {
         c->Update(elapsedTime);
     }
-    renderer.Update(elapsedTime);
 }
 
 void GameObject::addComponent(std::unique_ptr<Component> c)

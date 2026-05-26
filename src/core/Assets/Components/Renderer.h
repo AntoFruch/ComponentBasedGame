@@ -11,14 +11,21 @@
 
 
 class Renderer : public Component {
-    std::unique_ptr<sf::Shape> mShape;
+    sf::RectangleShape mShape;
+    sf::Texture texture;
 
+    sf::Vector2u spriteSize;
+    sf::IntRect cutRect;
+
+    void loadTexture(const std::string& path);
 public:
-    Renderer();
+    Renderer(const std::string& texture_path, const sf::Vector2u& spriteSize);
 
     void Start() override;
     void Update(const sf::Time& elapsedTime) override;
     void render(sf::RenderWindow& window) const;
+
+    void setCutRectPos(unsigned int x, unsigned int y);
 };
 
 
