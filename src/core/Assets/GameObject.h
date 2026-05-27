@@ -5,6 +5,7 @@
 #ifndef COMPONENT_BASED_ARCH_GAMEOBJECT_H
 #define COMPONENT_BASED_ARCH_GAMEOBJECT_H
 #include <memory>
+#include <type_traits>
 #include <vector>
 
 #include "Components/Component.h"
@@ -20,9 +21,26 @@ public:
 
     explicit GameObject(const sf::Vector2f& position, const sf::Angle& rotation, const sf::Vector2f& scale);
 
+    void start();
     void update(const sf::Time& elapsedTime);
     void addComponent(std::unique_ptr<Component> c);
+    template<typename T>
+    T* getComponent();
 };
+
+template <typename T>
+T* GameObject::getComponent()
+{
+    static_assert(std::is_base_of<Component, T>::value, "T must derive from Component");
+
+    for (const auto& component : components) {
+        T* target = dynamic_cast<T*>(component.get());
+        if (target != nullptr) {
+            return target;
+        }
+    }
+    return nullptr;
+}
 
 
 

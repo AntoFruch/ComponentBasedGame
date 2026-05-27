@@ -6,10 +6,13 @@
 #define COMPONENT_BASED_ARCH_CONTROLLER_H
 
 #include "Component.h"
+#include "AnimationHandling/Animator.h"
 #include "InputManagement/InputAction.h"
 
 class Controller : public Component {
     InputAction* moveAction;
+    Animator* animator;
+
     const float speed{100.f} ;
 public:
     Controller();

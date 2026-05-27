@@ -19,6 +19,12 @@ add_library(lib_core
         InputManagement/InputAction.h
         Assets/Components/Controller.cpp
         Assets/Components/Controller.h
+        Assets/Components/AnimationHandling/Animator.cpp
+        Assets/Components/AnimationHandling/Animator.h
+        Assets/Components/AnimationHandling/AnimatorGraph.cpp
+        Assets/Components/AnimationHandling/AnimatorGraph.h
+        Assets/Components/AnimationHandling/AnimatorTreeLoader.cpp
+        Assets/Components/AnimationHandling/AnimatorTreeLoader.h
 )
 target_include_directories(lib_core PUBLIC ./)
 target_link_libraries(lib_core PUBLIC pugixml sfml-graphics)

@@ -6,6 +6,7 @@
 #include <iostream>
 #include "pugixml.hpp"
 #include "Assets/Components/Controller.h"
+#include "Assets/Components/AnimationHandling/Animator.h"
 
 std::unique_ptr<Component> build_component(const pugi::xml_node& c, std::vector<Renderer*>& renderers) // Plus de GameObject* ici
 {
@@ -24,6 +25,10 @@ std::unique_ptr<Component> build_component(const pugi::xml_node& c, std::vector<
     if (name == "Controller")
     {
         return std::make_unique<Controller>();
+    }
+    if (name == "Animator")
+    {
+        return std::make_unique<Animator>(c.attribute("src").as_string());
     }
     return nullptr;
 }
@@ -48,7 +53,7 @@ void SceneManager::loadScene(std::string_view scene, std::vector<std::unique_ptr
     std::filesystem::path path = scenes_dir / scene;
     pugi::xml_document doc;
     if (auto result = doc.load_file(path.c_str()); !result) {
-        std::cerr << "Could not open file visage.xml because " << result.description() << std::endl;
+        std::cerr << "Could not open file because " << result.description() << std::endl;
     }
 
     pugi::xml_node sceneObj = doc.child("Scene");

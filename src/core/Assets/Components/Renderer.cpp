@@ -13,7 +13,6 @@ Renderer::Renderer(const std::string& texture_path, const sf::Vector2u& spriteSi
     loadTexture(texture_path);
     this->mShape.setSize(static_cast<sf::Vector2f>(spriteSize));
     this->spriteSize = spriteSize;
-    Renderer::Start();
 }
 void Renderer::Start()
 {
@@ -44,5 +43,6 @@ void Renderer::render(sf::RenderWindow& window) const
 
 void Renderer::setCutRectPos(unsigned int x, unsigned int y)
 {
-    cutRect.position = sf::Vector2i{static_cast<int>(x), static_cast<int>(y)};
+    cutRect.position = sf::Vector2i{static_cast<int>(x*spriteSize.x), static_cast<int>(y*spriteSize.y)};
+    mShape.setTextureRect(cutRect);
 }

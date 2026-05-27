@@ -9,6 +9,13 @@ GameObject::GameObject(const sf::Vector2f& position, const sf::Angle& rotation, 
 {
 
 }
+void GameObject::start()
+{
+    for (const auto& c : components )
+    {
+        c->Start();
+    }
+}
 
 void GameObject::update(const sf::Time& elapsedTime) {
     for (auto& c : components)
@@ -22,5 +29,3 @@ void GameObject::addComponent(std::unique_ptr<Component> c)
     c->setParent(this);
     components.push_back(std::move(c));
 }
-
-

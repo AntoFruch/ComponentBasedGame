@@ -9,7 +9,6 @@
 
 Controller::Controller()
 {
-    Controller::Start();
 }
 
 Controller::~Controller()
@@ -20,6 +19,7 @@ void Controller::Start()
 {
     Component::Start();
     moveAction = InputManager::findAction("Move");
+    animator = gameObject->getComponent<Animator>();
 }
 
 void Controller::Update(const sf::Time& elapsedTime)
@@ -28,4 +28,12 @@ void Controller::Update(const sf::Time& elapsedTime)
     auto direction = moveAction->ReadValue<sf::Vector2f>() != sf::Vector2f{0,0} ?
     moveAction->ReadValue<sf::Vector2f>().normalized() : sf::Vector2f{0,0};
     gameObject->transform.move(direction*speed*elapsedTime.asSeconds());
+    if (direction == sf::Vector2f{0,0})
+    {
+        animator->setParam("moving", false);
+    } else
+    {
+        animator->setParam("moving", true);
+    }
+
 }

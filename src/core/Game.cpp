@@ -21,6 +21,10 @@ Game::Game() {
   // TESTING
   InputManager::init();
   SceneManager::loadScene("scene.xml", mTargets, mRenderers);
+  for (const auto& go : mTargets)
+  {
+    go->start();
+  }
 }
 
 void Game::run() {
