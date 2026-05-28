@@ -50,7 +50,6 @@ void Controller::slash(const sf::Time& elapsedTime)
 {
     if (slashAction->wasPerformedThisFrame())
     {
-        std::cout << "slash" << std::endl;
         animator->setParam("slash", true);
     }
 }
