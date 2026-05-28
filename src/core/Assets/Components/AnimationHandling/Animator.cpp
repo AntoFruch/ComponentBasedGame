@@ -15,6 +15,8 @@ Animator::Animator(const std::string& animationTree_path)
     m_currentState = &graph->states.at(graph->entry);
     m_parameters = graph->parameters;
     m_timeCounter = sf::Time::Zero;
+    currentFrame_x = m_currentState->startFramex;
+    currentFrame_y = m_currentState->startFramey;
 }
 Animator::~Animator()
 {
@@ -62,6 +64,7 @@ void Animator::makeTransition()
             m_currentState = &graph->states.at(transi.target);
             //on se place au debut de l'animation
             currentFrame_x = m_currentState->startFramex;
+            currentFrame_y = m_currentState->startFramey;
             m_timeCounter = sf::Time::Zero;
             break;
         }
