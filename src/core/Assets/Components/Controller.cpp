@@ -22,6 +22,8 @@ void Controller::Start()
     Component::Start();
     moveAction = InputManager::findAction("Move");
     slashAction = InputManager::findAction("Slash");
+    wandAction = InputManager::findAction("Wand");
+    bowAction = InputManager::findAction("Bow");
     animator = gameObject->getComponent<Animator>();
 }
 
@@ -30,6 +32,8 @@ void Controller::Update(const sf::Time& elapsedTime)
     Component::Update(elapsedTime);
     move(elapsedTime);
     slash(elapsedTime);
+    wand(elapsedTime);
+    bow(elapsedTime);
 }
 
 void Controller::move(const sf::Time& elapsedTime)
@@ -51,5 +55,21 @@ void Controller::slash(const sf::Time& elapsedTime)
     if (slashAction->wasPerformedThisFrame())
     {
         animator->setParam("slash", true);
+    }
+}
+
+void Controller::wand(const sf::Time& elapsedTime)
+{
+    if (wandAction->wasPerformedThisFrame())
+    {
+        animator->setParam("wand", true);
+    }
+}
+
+void Controller::bow(const sf::Time& elapsedTime)
+{
+    if (bowAction->wasPerformedThisFrame())
+    {
+        animator->setParam("bow", true);
     }
 }

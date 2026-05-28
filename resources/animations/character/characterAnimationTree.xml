@@ -3,6 +3,8 @@
     <Parameters>
         <Parameter label="moving" default="false" type="Bool"/>
         <Parameter label="slash" default="false" type="Trigger"/>
+        <Parameter label="wand" default="false" type="Trigger"/>
+        <Parameter label="bow" default="false" type="Trigger"/>
     </Parameters>
 
     <EntryState label="Idle"/>
@@ -14,6 +16,12 @@
             <Transition to="Slash">
                 <Condition parameter="slash" value="true"/>
             </Transition>
+            <Transition to="Wand">
+                <Condition parameter="wand" value="true"/>
+            </Transition>
+            <Transition to="Bow">
+                <Condition parameter="bow" value="true"/>
+            </Transition>
         </Animation>
 
         <Animation label="Move" startx="1" starty="0" length="4" frameDuration="100" loop="true" breakable="true">
@@ -23,9 +31,33 @@
             <Transition to="Slash">
                 <Condition parameter="slash" value="true"/>
             </Transition>
+            <Transition to="Wand">
+                <Condition parameter="wand" value="true"/>
+            </Transition>
+            <Transition to="Bow">
+                <Condition parameter="bow" value="true"/>
+            </Transition>
         </Animation>
 
         <Animation label="Slash" startx="5" starty="0" length="4" frameDuration="80" loop="false" breakable="false">
+            <Transition to="Idle">
+                <Condition parameter="moving" value="false"/>
+            </Transition>
+            <Transition to="Move">
+                <Condition parameter="moving" value="true"/>
+            </Transition>
+        </Animation>
+
+        <Animation label="Wand" startx="13" starty="0" length="3" frameDuration="80" loop="false" breakable="false">
+            <Transition to="Idle">
+                <Condition parameter="moving" value="false"/>
+            </Transition>
+            <Transition to="Move">
+                <Condition parameter="moving" value="true"/>
+            </Transition>
+        </Animation>
+
+        <Animation label="Bow" startx="9" starty="0" length="4" frameDuration="120" loop="false" breakable="false">
             <Transition to="Idle">
                 <Condition parameter="moving" value="false"/>
             </Transition>

@@ -19,6 +19,14 @@
     </Action>
     <!-- coup d'épée -->
     <Action label="Slash" type="Button">
-        <binding bind="Space"/>
+        <binding bind="O"/>
+    </Action>
+    <!-- coup de baguette -->
+    <Action label="Wand" type="Button">
+        <binding bind="P"/>
+    </Action>
+    <!-- Arc -->
+    <Action label="Bow" type="Button">
+        <binding bind="U"/>
     </Action>
 </InputActions>
