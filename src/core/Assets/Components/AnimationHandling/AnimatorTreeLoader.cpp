@@ -45,6 +45,7 @@ AnimationState createAnimationState(const pugi::xml_node& state)
         state.attribute("length").as_uint(),
         state.attribute("frameDuration").as_uint(),
         state.attribute("loop").as_bool(),
+        state.attribute("breakable").as_bool(),
         transitions
     };
 }
@@ -70,10 +71,21 @@ AnimatorGraph* AnimatorTreeLoader::loadAnimatorTree(const std::string& path)
     // Parameters
     auto parameters_node = root_node.child("Parameters");
 
-    std::unordered_map<std::string, bool> parameters;
+    std::unordered_map<std::string, Parameter> parameters;
     for (const auto& param : parameters_node.children())
     {
-        parameters[param.attribute("label").as_string()] = param.attribute("value").as_bool();
+        std::string type = param.attribute("type").as_string();
+        if (type=="Trigger")
+        {
+            parameters.try_emplace(param.attribute("label").as_string(), Parameter{Trigger,param.attribute("value").as_bool() }) ;
+        } else if (type=="Bool")
+        {
+            parameters.try_emplace(param.attribute("label").as_string(), Parameter{Bool,param.attribute("value").as_bool() }) ;
+        } else if (type == "Float")
+        {
+            parameters.try_emplace(param.attribute("label").as_string(), Parameter{Float,param.attribute("value").as_float() }) ;
+        }
+
     }
 
     // Entry

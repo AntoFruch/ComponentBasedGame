@@ -14,7 +14,7 @@ class Animator : public Component {
     const AnimatorGraph* graph;
 
     const AnimationState* m_currentState;
-    std::unordered_map<std::string, bool> m_parameters;
+    std::unordered_map<std::string, Parameter> m_parameters;
 
     unsigned int currentFrame_x;
     unsigned int currentFrame_y;
@@ -30,6 +30,8 @@ public:
 
 private:
     void applyToRenderer();
+    void makeTransition();
+    void switchFrame();
 };
 
 

@@ -180,3 +180,11 @@ void InputManager::processEvents(std::optional<sf::Event> event)
         action->processEvent(event);
     }
 }
+
+void InputManager::beginFrame()
+{
+    for (const auto& [name, action] : actions)
+    {
+        action->resetFrameState();
+    }
+}

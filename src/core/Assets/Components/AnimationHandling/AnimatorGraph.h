@@ -7,11 +7,23 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+
+enum ParamType { Bool, Trigger, Float };
+
+struct Parameter
+{
+    ParamType type;
+    std::variant<bool, float> value;
+    std::variant<bool, float> getValue();
+};
+
+enum Comparaison{Equals, Less, Greater};
 struct Condition
 {
     const std::string parameterName;
-    const bool expected_val;
-    [[nodiscard]] bool evaluate(const std::unordered_map<std::string, bool>& parameters) const;
+    const std::variant<bool, float> cmp_val;
+    const Comparaison cmp;
+    [[nodiscard]] bool evaluate(std::unordered_map<std::string, Parameter>& parameters) const;
 };
 
 struct Transition
@@ -19,7 +31,7 @@ struct Transition
     const std::string target;
 
     const std::vector<Condition> conditions;
-    [[nodiscard]] bool check(const std::unordered_map<std::string, bool>& parameters) const;
+    [[nodiscard]] bool check(std::unordered_map<std::string, Parameter>& parameters) const;
 
 
 };
@@ -32,6 +44,7 @@ struct AnimationState
     const unsigned int length;
     const unsigned int frameDuration; // ms
     const bool loop;
+    const bool breakable;
     const std::vector<Transition> transitions;
 };
 
@@ -39,7 +52,7 @@ struct AnimatorGraph {
     const std::string entry;
 
     const std::unordered_map<std::string, AnimationState> states;
-    const std::unordered_map<std::string, bool> parameters;
+    const std::unordered_map<std::string, Parameter> parameters;
 };
 
 

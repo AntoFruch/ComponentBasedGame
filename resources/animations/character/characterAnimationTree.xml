@@ -1,20 +1,38 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <AnimationTree label="CharacterAnimator">
     <Parameters>
-        <Parameter label="moving" default="false"/>
+        <Parameter label="moving" default="false" type="Bool"/>
+        <Parameter label="slash" default="false" type="Trigger"/>
     </Parameters>
 
     <EntryState label="Idle"/>
     <Tree>
-        <Animation label="Idle" startx="0" starty="0" length="2" frameDuration="300" loop="true">
+        <Animation label="Idle" startx="0" starty="0" length="2" frameDuration="300" loop="true" breakable="true">
+            <Transition to="Move">
+                <Condition parameter="moving" value="true"/>
+            </Transition>
+            <Transition to="Slash">
+                <Condition parameter="slash" value="true"/>
+            </Transition>
+        </Animation>
+
+        <Animation label="Move" startx="1" starty="0" length="4" frameDuration="100" loop="true" breakable="true">
+            <Transition to="Idle">
+                <Condition parameter="moving" value="false"/>
+            </Transition>
+            <Transition to="Slash">
+                <Condition parameter="slash" value="true"/>
+            </Transition>
+        </Animation>
+
+        <Animation label="Slash" startx="5" starty="0" length="4" frameDuration="80" loop="false" breakable="false">
+            <Transition to="Idle">
+                <Condition parameter="moving" value="false"/>
+            </Transition>
             <Transition to="Move">
                 <Condition parameter="moving" value="true"/>
             </Transition>
         </Animation>
-        <Animation label="Move" startx="1" starty="0" length="4" frameDuration="100" loop="true">
-            <Transition to="Idle">
-                <Condition parameter="moving" value="false"/>
-            </Transition>
-        </Animation>
+
     </Tree>
 </AnimationTree>

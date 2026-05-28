@@ -20,6 +20,8 @@ class InputManager {
 public:
     static void init();
     static InputAction* findAction(const std::string& action_name);
+
+    static void beginFrame();
     static void processEvents(std::optional<sf::Event> event);
 };
 

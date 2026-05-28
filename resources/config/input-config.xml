@@ -16,16 +16,9 @@
             <left bind="Left"/>
             <right bind="Right"/>
         </binding>
-        <!-- test -->
-        <binding>
-            <up bind="T"/>
-            <down bind="G"/>
-            <left bind="F"/>
-            <right bind="H"/>
-        </binding>
     </Action>
-    <!-- Saut -->
-    <Action label="Jump" type="Button">
+    <!-- coup d'épée -->
+    <Action label="Slash" type="Button">
         <binding bind="Space"/>
     </Action>
 </InputActions>

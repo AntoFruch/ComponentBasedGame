@@ -31,6 +31,7 @@ struct ButtonBinding
 class InputAction {
     const std::string_view label;
     std::variant<bool, sf::Vector2f> m_value;
+    bool pressedThisFrame{false};
 
     std::variant<std::vector<ButtonBinding>, std::vector<DirectionalBindings>> bindings;
     std::set<sf::Keyboard::Key> pressed_keys;
@@ -38,7 +39,10 @@ class InputAction {
 public:
     explicit InputAction(const std::string& label, const std::variant<std::vector<ButtonBinding>, std::vector<DirectionalBindings>>& bindings);
 
+    void resetFrameState();
     void processEvent(const std::optional<sf::Event>);
+
+    bool wasPerformedThisFrame();
 
     template<typename T>
     T ReadValue() const;

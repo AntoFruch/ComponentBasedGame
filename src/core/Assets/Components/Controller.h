@@ -11,6 +11,7 @@
 
 class Controller : public Component {
     InputAction* moveAction;
+    InputAction* slashAction;
     Animator* animator;
 
     const float speed{100.f} ;
@@ -19,6 +20,10 @@ public:
     ~Controller() override;
     void Start() override;
     void Update(const sf::Time& elapsedTime) override;
+
+private:
+    void move(const sf::Time& elapsedTime);
+    void slash(const sf::Time& elapsedTime);
 };
 
 

@@ -47,6 +47,8 @@ void Game::run() {
 }
 
 void Game::processEvents() {
+  InputManager::beginFrame();
+  
   while (const std::optional event = mWindow.pollEvent()) {
     if (event->is<sf::Event::Closed>()) {
       mWindow.close();

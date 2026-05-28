@@ -16,6 +16,11 @@ InputAction::InputAction(const std::string& label, const std::variant<std::vecto
     }
 }
 
+void InputAction::resetFrameState()
+{
+    pressedThisFrame = false;
+}
+
 void InputAction::processEvent(const std::optional<sf::Event> event) {
     if (!event.has_value()) {
         return;
@@ -40,6 +45,9 @@ void InputAction::processEvent(const std::optional<sf::Event> event) {
                 break;
             }
         }
+
+        bool wasPressedBefore = std::get<bool>(m_value);
+        pressedThisFrame = !wasPressedBefore && isPressed;
         m_value = isPressed;
         return;
     }
@@ -66,6 +74,11 @@ void InputAction::processEvent(const std::optional<sf::Event> event) {
     value.x = std::clamp(value.x, -1.f, 1.f);
     value.y = std::clamp(value.y, -1.f, 1.f);
     m_value = value;
+}
+
+bool InputAction::wasPerformedThisFrame()
+{
+    return pressedThisFrame;
 }
 
 template <typename T>
