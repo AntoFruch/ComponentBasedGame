@@ -9,10 +9,6 @@
 #include "Assets/GameObject.h"
 #include "InputManagement/InputManager.h"
 
-Controller::Controller()
-{
-}
-
 Controller::~Controller()
 {
 }

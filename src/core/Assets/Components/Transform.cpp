@@ -8,9 +8,20 @@ Transform::Transform(const sf::Vector2f& position, const sf::Angle& rotation, co
     : position(position), rotation(rotation), scale(scale), parent(parent)
 {}
 
-const std::vector<Transform>& Transform::getChildren() const
+const std::vector<Transform*>& Transform::getChildren() const
 {
     return children;
+}
+
+void Transform::addChild(Transform* child)
+{
+    child->setParent(this);
+    children.push_back(child);
+}
+
+void Transform::setParent(Transform* parent)
+{
+    this->parent = parent;
 }
 
 const sf::Vector2f& Transform::getPosition() const
@@ -26,6 +37,25 @@ const sf::Angle& Transform::getRotation() const
 const sf::Vector2f& Transform::getScale() const
 {
     return scale;
+}
+
+sf::Vector2f Transform::getWorldPosition() const
+{
+    if (!parent) return position;
+    return parent->getWorldPosition() + position;
+}
+
+sf::Angle Transform::getWorldRotation() const
+{
+    if (!parent) return rotation;
+    return parent->getWorldRotation() + rotation;
+}
+
+sf::Vector2f Transform::getWorldScale() const
+{
+    if (!parent) return scale;
+    const sf::Vector2f parentScale = parent->getWorldScale();
+    return {parentScale.x * scale.x, parentScale.y * scale.y};
 }
 
 void Transform::set_position(const sf::Vector2f& position)

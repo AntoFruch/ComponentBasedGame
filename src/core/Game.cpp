@@ -53,6 +53,18 @@ void Game::processEvents() {
     if (event->is<sf::Event::Closed>()) {
       mWindow.close();
     }
+    if (const auto& resized = event->getIf<sf::Event::Resized>()) {
+      const float windowRatio =
+        static_cast<float>(resized->size.x) / static_cast<float>(resized->size.y);
+
+      constexpr float worldHeight = 480.f;
+      const float worldWidth = worldHeight * windowRatio;
+
+      sf::View view = mWindow.getView();
+      view.setSize({worldWidth, worldHeight});
+      view.setCenter({worldWidth / 2.f, worldHeight / 2.f});
+      mWindow.setView(view);
+    }
     InputManager::processEvents(event);
   }
 }
@@ -65,7 +77,7 @@ void Game::update(const sf::Time elapsedTime) {
 }
 
 void Game::render() {
-  mWindow.clear(sf::Color::White);
+  mWindow.clear(sf::Color::Green);
   for (auto& renderer : mRenderers)
   {
     renderer->render(mWindow);

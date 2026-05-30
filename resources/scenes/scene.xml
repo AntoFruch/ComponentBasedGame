@@ -1,8 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Scene>
-    <GameObject label="Player" x="200" y="200" angle="30" sx="3" sy="3">
-        <Component name="Renderer" src="resources/textures/characters/RedSoldier.png" sprite_w="32" sprite_h="32"/>
-        <Component name="Controller"/>
-        <Component name="Animator" src="resources/animations/character/characterAnimationTree.xml"/>
-    </GameObject>
+    <Prefab src="resources/prefabs/player.xml" x="200" y="200" angle="0" sx="1" sy="1"/>
 </Scene>

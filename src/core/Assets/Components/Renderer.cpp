@@ -19,6 +19,7 @@ void Renderer::Start()
     cutRect.size = static_cast<sf::Vector2i>(spriteSize);
     setCutRectPos(0, 0);
     mShape.setTextureRect(cutRect);
+    //mShape.setOutlineThickness(1);
 }
 
 void Renderer::loadTexture(const std::string& path)
@@ -31,9 +32,9 @@ void Renderer::loadTexture(const std::string& path)
 
 void Renderer::Update(const sf::Time& elapsedTime)
 {
-    mShape.setPosition(gameObject->transform.getPosition());
-    mShape.setRotation(gameObject->transform.getRotation());
-    mShape.setScale(gameObject->transform.getScale());
+    mShape.setPosition(gameObject->transform.getWorldPosition());
+    mShape.setRotation(gameObject->transform.getWorldRotation());
+    mShape.setScale(gameObject->transform.getWorldScale());
 }
 
 void Renderer::render(sf::RenderWindow& window) const

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<GameObject label="Player" x="0" y="0" angle="0" sx="3" sy="3">
+    <Components>
+        <Component name="Renderer" src="resources/textures/characters/RedSoldier.png" sprite_w="32" sprite_h="32"/>
+        <Component name="Controller"/>
+        <Component name="Animator" src="resources/animations/character/characterAnimationTree.xml"/>
+    </Components>
+</GameObject>

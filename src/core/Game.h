@@ -16,6 +16,7 @@ public:
 
     static constexpr int W_WIDTH{640};
     static constexpr int W_HEIGHT{480};
+    static constexpr float RATIO{W_WIDTH/W_HEIGHT};
 
     static constexpr int NB_TARGETS_INITIAL{20};
 

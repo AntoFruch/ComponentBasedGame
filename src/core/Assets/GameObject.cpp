@@ -15,6 +15,10 @@ void GameObject::start()
     {
         c->Start();
     }
+    for (const auto& child : children)
+    {
+        child->start();
+    }
 }
 
 void GameObject::update(const sf::Time& elapsedTime) {
@@ -22,10 +26,20 @@ void GameObject::update(const sf::Time& elapsedTime) {
     {
         c->Update(elapsedTime);
     }
+    for (auto& child : children)
+    {
+        child->update(elapsedTime);
+    }
 }
 
 void GameObject::addComponent(std::unique_ptr<Component> c)
 {
     c->setParent(this);
     components.push_back(std::move(c));
+}
+
+void GameObject::addChild(std::unique_ptr<GameObject> child)
+{
+    transform.addChild(&child->transform);
+    children.push_back(std::move(child));
 }

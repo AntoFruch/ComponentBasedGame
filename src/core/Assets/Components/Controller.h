@@ -19,7 +19,7 @@ class Controller : public Component {
 
     const float speed{100.f} ;
 public:
-    Controller();
+    Controller()=default;
     ~Controller() override;
     void Start() override;
     void Update(const sf::Time& elapsedTime) override;

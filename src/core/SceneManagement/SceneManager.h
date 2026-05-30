@@ -6,12 +6,16 @@
 #define COMPONENT_BASED_ARCH_SCENEMANAGER_H
 #include <vector>
 
+#include "pugixml.hpp"
 #include "Assets/GameObject.h"
 
 
 class SceneManager {
     inline static const std::filesystem::path scenes_dir{"resources/scenes/"};
 
+    static std::unique_ptr<Component> build_component(const pugi::xml_node& c, std::vector<Renderer*>& renderers);
+    static std::unique_ptr<GameObject> build_go(const pugi::xml_node& go, Transform* parent, std::vector<Renderer*>& renderers);
+    static std::unique_ptr<GameObject> build_prefab(const pugi::xml_node& obj, Transform* parent, std::vector<Renderer*>& renderers);
 public :
     static void loadScene(std::string_view scene, std::vector<std::unique_ptr<GameObject>>& targets, std::vector<Renderer*>& renderers);
     static void unloadScene(std::vector<std::unique_ptr<GameObject>>& targets);

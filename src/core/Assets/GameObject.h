@@ -15,6 +15,7 @@
 
 class GameObject {
     std::vector<std::unique_ptr<Component>> components;
+    std::vector<std::unique_ptr<GameObject>> children;
 
 public:
     Transform transform;
@@ -24,6 +25,7 @@ public:
     void start();
     void update(const sf::Time& elapsedTime);
     void addComponent(std::unique_ptr<Component> c);
+    void addChild(std::unique_ptr<GameObject> child);
     template<typename T>
     T* getComponent();
 };

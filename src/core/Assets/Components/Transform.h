@@ -14,18 +14,23 @@ class Transform {
     sf::Angle rotation; // deg
     sf::Vector2f scale;
 
-    Transform* parent;
-    std::vector<Transform> children;
+    Transform* parent{nullptr};
+    std::vector<Transform*> children;
 
 public:
     explicit Transform() = default;
     explicit Transform(const sf::Vector2f& position, const sf::Angle& rotation, const sf::Vector2f& scale, Transform* parent);
 
-    const std::vector<Transform>& getChildren() const;
+    const std::vector<Transform*>& getChildren() const;
+    void addChild(Transform* child);
+    void setParent(Transform* parent);
 
     const sf::Vector2f& getPosition() const;
     const sf::Angle& getRotation() const;
     const sf::Vector2f& getScale() const;
+    sf::Vector2f getWorldPosition() const;
+    sf::Angle getWorldRotation() const;
+    sf::Vector2f getWorldScale() const;
 
     void set_position(const sf::Vector2f& position);
     void set_rotation(const sf::Angle& rotation);
