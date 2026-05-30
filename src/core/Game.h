@@ -9,9 +9,10 @@
 
 class Game {
 public:
-    Game();
     Game(const Game &) = delete;
     Game &operator=(const Game &) = delete;
+    static Game& getInstance();
+
     void run();
 
     static constexpr int W_WIDTH{640};
@@ -21,11 +22,15 @@ public:
     static constexpr int NB_TARGETS_INITIAL{20};
 
 private:
+    Game();
+
     void processEvents();
     void update(sf::Time elapsedTime);
     void render();
 
     void updateStatistics(sf::Time elapsedTime);
+
+    bool mRunning;
 
     static const sf::Time TimePerFrame;
 

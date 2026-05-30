@@ -11,6 +11,12 @@
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
+Game& Game::getInstance()
+{
+  static Game instance;
+  return instance;
+}
+
 Game::Game() {
   assert(mFont.openFromFile("resources/fonts/Sansation.ttf"));
   // We do not need to do mStatisticsText.setFont(mFont); as mStatisticsText is
@@ -28,6 +34,8 @@ Game::Game() {
 }
 
 void Game::run() {
+  if (mRunning) return;
+  mRunning = true;
   sf::Clock clock;
   sf::Time timeSinceLastUpdate = sf::Time::Zero;
   mWindow.setVerticalSyncEnabled(true);
@@ -44,6 +52,7 @@ void Game::run() {
     updateStatistics(elapsedTime);
     render();
   }
+  mRunning=false;
 }
 
 void Game::processEvents() {
