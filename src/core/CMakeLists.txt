@@ -25,6 +25,8 @@ add_library(lib_core
         Assets/Components/AnimationHandling/AnimatorGraph.h
         Assets/Components/AnimationHandling/AnimatorTreeLoader.cpp
         Assets/Components/AnimationHandling/AnimatorTreeLoader.h
+        exceptions/IllegalOperationException.cpp
+        exceptions/IllegalOperationException.h
 )
 target_include_directories(lib_core PUBLIC ./)
 target_link_libraries(lib_core PUBLIC pugixml sfml-graphics)

@@ -26,11 +26,12 @@ public:
     ~Animator() override;
     void Start() override;
     void Update(const sf::Time& elapsedTime) override;
-    void setParam(const std::string label, bool value);
+    void setParam(const std::string& label, const std::variant<bool, float>& value);
 
 private:
     void applyToRenderer();
     void makeTransition();
+    const AnimationState* resolveState(const std::string& target);
     void switchFrame();
 };
 

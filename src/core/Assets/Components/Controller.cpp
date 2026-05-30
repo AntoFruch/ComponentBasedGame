@@ -24,6 +24,7 @@ void Controller::Start()
     slashAction = InputManager::findAction("Slash");
     wandAction = InputManager::findAction("Wand");
     bowAction = InputManager::findAction("Bow");
+    hitAction = InputManager::findAction("Hit");
     animator = gameObject->getComponent<Animator>();
 }
 
@@ -34,12 +35,14 @@ void Controller::Update(const sf::Time& elapsedTime)
     slash(elapsedTime);
     wand(elapsedTime);
     bow(elapsedTime);
+    hit(elapsedTime);
 }
 
 void Controller::move(const sf::Time& elapsedTime)
 {
-    auto direction = moveAction->ReadValue<sf::Vector2f>() != sf::Vector2f{0,0} ?
-    moveAction->ReadValue<sf::Vector2f>().normalized() : sf::Vector2f{0,0};
+    const sf::Vector2f rawDirection = moveAction->ReadValue<sf::Vector2f>();
+    auto direction = rawDirection != sf::Vector2f{0,0} ?
+    rawDirection.normalized() : sf::Vector2f{0,0};
     gameObject->transform.move(direction*speed*elapsedTime.asSeconds());
     if (direction == sf::Vector2f{0,0})
     {
@@ -47,6 +50,8 @@ void Controller::move(const sf::Time& elapsedTime)
     } else
     {
         animator->setParam("moving", true);
+        animator->setParam("forwardWalk", rawDirection.y);
+        animator->setParam("sideWalk", rawDirection.x);
     }
 }
 
@@ -71,5 +76,13 @@ void Controller::bow(const sf::Time& elapsedTime)
     if (bowAction->wasPerformedThisFrame())
     {
         animator->setParam("bow", true);
+    }
+}
+
+void Controller::hit(const sf::Time& elapsedTime)
+{
+    if (hitAction->wasPerformedThisFrame())
+    {
+        animator->setParam("hit", true);
     }
 }

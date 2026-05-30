@@ -14,6 +14,7 @@ class Controller : public Component {
     InputAction* slashAction;
     InputAction* wandAction;
     InputAction* bowAction;
+    InputAction* hitAction;
     Animator* animator;
 
     const float speed{100.f} ;
@@ -25,9 +26,11 @@ public:
 
 private:
     void move(const sf::Time& elapsedTime);
+
     void slash(const sf::Time& elapsedTime);
     void wand(const sf::Time& elapsedTime);
     void bow(const sf::Time& elapsedTime);
+    void hit(const sf::Time& elapsedTime);
 };
 
 

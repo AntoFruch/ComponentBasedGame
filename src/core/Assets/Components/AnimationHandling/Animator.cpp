@@ -12,11 +12,11 @@
 Animator::Animator(const std::string& animationTree_path)
 {
     graph = AnimatorTreeLoader::loadAnimatorTree(animationTree_path);
-    m_currentState = &graph->states.at(graph->entry);
     m_parameters = graph->parameters;
+    m_currentState = resolveState(graph->entry);
     m_timeCounter = sf::Time::Zero;
     currentFrame_x = m_currentState->startFramex;
-    currentFrame_y = m_currentState->startFramey;
+    currentFrame_y = m_currentState->startFramey >= 0 ? m_currentState->startFramey : 0;
 }
 Animator::~Animator()
 {
@@ -45,7 +45,8 @@ void Animator::applyToRenderer()
     renderer->setCutRectPos(currentFrame_x,currentFrame_y);
 }
 
-void Animator::setParam(const std::string label, bool value)
+
+void Animator::setParam(const std::string& label, const std::variant<bool, float>& value)
 {
     if (m_parameters.contains(label))
     {
@@ -55,20 +56,39 @@ void Animator::setParam(const std::string label, bool value)
 
 void Animator::makeTransition()
 {
-    if (!m_currentState->breakable){}
+    if (!m_currentState->breakable && currentFrame_x-m_currentState->startFramex != m_currentState->length-1) return;
     for (const auto& transi : m_currentState->transitions)
     {
 
         if (transi.check(m_parameters))
         {
-            m_currentState = &graph->states.at(transi.target);
+            m_currentState = resolveState(transi.target);
             //on se place au debut de l'animation
             currentFrame_x = m_currentState->startFramex;
-            currentFrame_y = m_currentState->startFramey;
+            currentFrame_y = m_currentState->startFramey >= 0 ? m_currentState->startFramey : currentFrame_y;
             m_timeCounter = sf::Time::Zero;
             break;
         }
     }
+}
+
+const AnimationState* Animator::resolveState(const std::string& target)
+{
+    if (auto state = graph->states.find(target); state != graph->states.end())
+    {
+        return &state->second;
+    }
+
+    const BlendTree& blendTree = graph->blendTrees.at(target);
+    for (const Transition& transition : blendTree.transitions)
+    {
+        if (transition.check(m_parameters))
+        {
+            return &graph->states.at(transition.target);
+        }
+    }
+
+    return &graph->states.at(blendTree.children.front());
 }
 
 void Animator::switchFrame()

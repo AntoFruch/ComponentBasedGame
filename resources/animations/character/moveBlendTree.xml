@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<BlendTree>
+    <Animation label="MoveY+" startx="1" starty="0" length="4" frameDuration="100" loop="true" breakable="true">
+        <Condition parameter="forwardWalk" value="1"/>
+        <Condition parameter="sideWalk" value="0"/>
+    </Animation>
+    <Animation label="MoveX+Y+" startx="1" starty="1" length="4" frameDuration="100" loop="true" breakable="true">
+        <Condition parameter="forwardWalk" value="1"/>
+        <Condition parameter="sideWalk" value="1"/>
+    </Animation>
+    <Animation label="MoveX+" startx="1" starty="2" length="4" frameDuration="100" loop="true" breakable="true">
+        <Condition parameter="forwardWalk" value="0"/>
+        <Condition parameter="sideWalk" value="1"/>
+    </Animation>
+    <Animation label="MoveX+Y-" startx="1" starty="3" length="4" frameDuration="100" loop="true" breakable="true">
+        <Condition parameter="forwardWalk" value="-1"/>
+        <Condition parameter="sideWalk" value="1"/>
+    </Animation>
+    <Animation label="MoveY-" startx="1" starty="4" length="4" frameDuration="100" loop="true" breakable="true">
+        <Condition parameter="forwardWalk" value="-1"/>
+        <Condition parameter="sideWalk" value="0"/>
+    </Animation>
+    <Animation label="MoveX-Y-" startx="1" starty="5" length="4" frameDuration="100" loop="true" breakable="true">
+        <Condition parameter="forwardWalk" value="-1"/>
+        <Condition parameter="sideWalk" value="-1"/>
+    </Animation>
+    <Animation label="MoveX-" startx="1" starty="6" length="4" frameDuration="100" loop="true" breakable="true">
+        <Condition parameter="forwardWalk" value="0"/>
+        <Condition parameter="sideWalk" value="-1"/>
+    </Animation>
+    <Animation label="MoveX-Y+" startx="1" starty="7" length="4" frameDuration="100" loop="true" breakable="true">
+        <Condition parameter="forwardWalk" value="1"/>
+        <Condition parameter="sideWalk" value="-1"/>
+    </Animation>
+</BlendTree>

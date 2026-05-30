@@ -29,4 +29,8 @@
     <Action label="Bow" type="Button">
         <binding bind="U"/>
     </Action>
+    <!-- Hit -->
+    <Action label="Hit" type="Button">
+        <binding bind="I"/>
+    </Action>
 </InputActions>

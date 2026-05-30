@@ -2,14 +2,17 @@
 <AnimationTree label="CharacterAnimator">
     <Parameters>
         <Parameter label="moving" default="false" type="Bool"/>
+        <Parameter label="forwardWalk" default="0" type="Float"/>
+        <Parameter label="sideWalk" default="0" type="Float"/>
         <Parameter label="slash" default="false" type="Trigger"/>
-        <Parameter label="wand" default="false" type="Trigger"/>
         <Parameter label="bow" default="false" type="Trigger"/>
+        <Parameter label="wand" default="false" type="Trigger"/>
+        <Parameter label="hit" default="false" type="Trigger"/>
     </Parameters>
 
     <EntryState label="Idle"/>
     <Tree>
-        <Animation label="Idle" startx="0" starty="0" length="2" frameDuration="300" loop="true" breakable="true">
+        <Animation label="Idle" startx="0" starty="-1" length="2" frameDuration="300" loop="true" breakable="true">
             <Transition to="Move">
                 <Condition parameter="moving" value="true"/>
             </Transition>
@@ -22,9 +25,12 @@
             <Transition to="Bow">
                 <Condition parameter="bow" value="true"/>
             </Transition>
+            <Transition to="Hit">
+                <Condition parameter="hit" value="true"/>
+            </Transition>
         </Animation>
 
-        <Animation label="Move" startx="1" starty="0" length="4" frameDuration="100" loop="true" breakable="true">
+        <BlendTree label="Move" src="resources/animations/character/moveBlendTree.xml">
             <Transition to="Idle">
                 <Condition parameter="moving" value="false"/>
             </Transition>
@@ -37,9 +43,12 @@
             <Transition to="Bow">
                 <Condition parameter="bow" value="true"/>
             </Transition>
-        </Animation>
+            <Transition to="Hit">
+                <Condition parameter="hit" value="true"/>
+            </Transition>
+        </BlendTree>
 
-        <Animation label="Slash" startx="5" starty="0" length="4" frameDuration="80" loop="false" breakable="false">
+        <Animation label="Slash" startx="5" starty="-1" length="4" frameDuration="80" loop="false" breakable="false">
             <Transition to="Idle">
                 <Condition parameter="moving" value="false"/>
             </Transition>
@@ -48,7 +57,7 @@
             </Transition>
         </Animation>
 
-        <Animation label="Wand" startx="13" starty="0" length="3" frameDuration="80" loop="false" breakable="false">
+        <Animation label="Bow" startx="9" starty="-1" length="4" frameDuration="120" loop="false" breakable="false">
             <Transition to="Idle">
                 <Condition parameter="moving" value="false"/>
             </Transition>
@@ -57,7 +66,16 @@
             </Transition>
         </Animation>
 
-        <Animation label="Bow" startx="9" starty="0" length="4" frameDuration="120" loop="false" breakable="false">
+        <Animation label="Wand" startx="13" starty="-1" length="3" frameDuration="80" loop="false" breakable="false">
+            <Transition to="Idle">
+                <Condition parameter="moving" value="false"/>
+            </Transition>
+            <Transition to="Move">
+                <Condition parameter="moving" value="true"/>
+            </Transition>
+        </Animation>
+
+        <Animation label="Hit" startx="16" starty="-1" length="4" frameDuration="120" loop="false" breakable="false">
             <Transition to="Idle">
                 <Condition parameter="moving" value="false"/>
             </Transition>

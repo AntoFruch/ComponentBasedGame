@@ -5,6 +5,7 @@
 #ifndef COMPONENT_BASED_ARCH_ANIMATORGRAPH_H
 #define COMPONENT_BASED_ARCH_ANIMATORGRAPH_H
 #include <string>
+#include <variant>
 #include <vector>
 #include <unordered_map>
 
@@ -32,15 +33,13 @@ struct Transition
 
     const std::vector<Condition> conditions;
     [[nodiscard]] bool check(std::unordered_map<std::string, Parameter>& parameters) const;
-
-
 };
 
 struct AnimationState
 {
     const std::string name;
     const unsigned int startFramex;
-    const unsigned int startFramey;
+    const int startFramey; // -1 leaves the y from the previous animation
     const unsigned int length;
     const unsigned int frameDuration; // ms
     const bool loop;
@@ -48,10 +47,18 @@ struct AnimationState
     const std::vector<Transition> transitions;
 };
 
+struct BlendTree
+{
+    const std::string name;
+    const std::vector<std::string> children;
+    const std::vector<Transition> transitions;
+};
+
 struct AnimatorGraph {
     const std::string entry;
 
     const std::unordered_map<std::string, AnimationState> states;
+    const std::unordered_map<std::string, BlendTree> blendTrees;
     const std::unordered_map<std::string, Parameter> parameters;
 };
 

@@ -22,14 +22,12 @@ bool Condition::evaluate(std::unordered_map<std::string, Parameter>& parameters)
         switch (cmp)
         {
         case Equals : return std::get<float>(param.getValue()) == std::get<float>(cmp_val);
-        case Less : return std::get<bool>(param.getValue()) < std::get<bool>(cmp_val);
-        case Greater : return std::get<bool>(param.getValue()) > std::get<bool>(cmp_val);
+        case Less : return std::get<float>(param.getValue()) <= std::get<float>(cmp_val);
+        case Greater : return std::get<float>(param.getValue()) >= std::get<float>(cmp_val);
         default: return false;
         }
-    } else
-    {
-        return std::get<bool>(param.getValue()) == std::get<bool>(cmp_val);
     }
+    return std::get<bool>(param.getValue()) == std::get<bool>(cmp_val);
 }
 
 bool Transition::check(std::unordered_map<std::string, Parameter>& parameters) const
