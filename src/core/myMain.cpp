@@ -5,6 +5,7 @@
 #include "Game.h"
 int myMain()
 {
-    Game::getInstance().run();
+    Game game;
+    game.run();
     return 0;
 }

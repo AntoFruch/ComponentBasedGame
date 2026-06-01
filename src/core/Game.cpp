@@ -11,13 +11,8 @@
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
-Game& Game::getInstance()
-{
-  static Game instance;
-  return instance;
-}
-
 Game::Game() {
+  mRunning=false;
   assert(mFont.openFromFile("resources/fonts/Sansation.ttf"));
   // We do not need to do mStatisticsText.setFont(mFont); as mStatisticsText is
   // initialized with a reference to mFont
@@ -31,6 +26,15 @@ Game::Game() {
   {
     go->start();
   }
+}
+
+Game::~Game()
+{
+  mRenderers.clear();
+  if (mWindow.isOpen()) {
+    mWindow.close();
+  }
+  mTargets.clear();
 }
 
 void Game::run() {

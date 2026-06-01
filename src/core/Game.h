@@ -9,9 +9,10 @@
 
 class Game {
 public:
+    Game();
+    ~Game();
     Game(const Game &) = delete;
     Game &operator=(const Game &) = delete;
-    static Game& getInstance();
 
     void run();
 
@@ -22,7 +23,6 @@ public:
     static constexpr int NB_TARGETS_INITIAL{20};
 
 private:
-    Game();
 
     void processEvents();
     void update(sf::Time elapsedTime);
@@ -34,8 +34,6 @@ private:
 
     static const sf::Time TimePerFrame;
 
-    sf::RenderWindow mWindow{sf::VideoMode({W_WIDTH, W_HEIGHT}), "SFML Application"};
-    sf::Texture mTexture;
     std::vector<std::unique_ptr<GameObject>> mTargets;
     std::vector<Renderer*> mRenderers;
     sf::Font mFont;
@@ -43,6 +41,8 @@ private:
     sf::Time mStatisticsUpdateTime;
 
     std::size_t mStatisticsNumFrames{0};
+
+    sf::RenderWindow mWindow{sf::VideoMode({W_WIDTH, W_HEIGHT}), "SFML Application"};
 };
 
 
