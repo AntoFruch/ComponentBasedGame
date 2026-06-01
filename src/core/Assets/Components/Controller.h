@@ -7,6 +7,7 @@
 
 #include "Component.h"
 #include "AnimationHandling/Animator.h"
+#include "CollisionsHandling/Collider.h"
 #include "InputManagement/InputAction.h"
 
 class Controller : public Component {
@@ -16,6 +17,8 @@ class Controller : public Component {
     InputAction* bowAction;
     InputAction* hitAction;
     Animator* animator;
+
+    Collider* collider;
 
     const float speed{100.f} ;
 public:

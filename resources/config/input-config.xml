@@ -20,6 +20,7 @@
     <!-- coup d'épée -->
     <Action label="Slash" type="Button">
         <binding bind="O"/>
+        <binding bind="H"/>
     </Action>
     <!-- coup de baguette -->
     <Action label="Wand" type="Button">

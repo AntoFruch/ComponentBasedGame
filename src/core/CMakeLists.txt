@@ -27,6 +27,10 @@ add_library(lib_core
         Assets/Components/AnimationHandling/AnimatorTreeLoader.h
         exceptions/IllegalOperationException.cpp
         exceptions/IllegalOperationException.h
+        "Assets/Components/CollisionsHandling/Collider.cpp"
+        "Assets/Components/CollisionsHandling/Collider.h"
+        Assets/Components/CollisionsHandling/CollisionsManager.cpp
+        Assets/Components/CollisionsHandling/CollisionsManager.h
 )
 target_include_directories(lib_core PUBLIC ./)
 target_link_libraries(lib_core PUBLIC pugixml sfml-graphics)

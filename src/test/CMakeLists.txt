@@ -8,6 +8,7 @@ add_executable(unitTests
         unitTests.cpp
         sceneManagerTest.cpp
         inputManagerTest.cpp
+        collisionsManagerTest.cpp
 )
 target_link_libraries(unitTests PUBLIC GTest::gtest_main lib_core pugixml sfml-graphics)
 

@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Scene>
     <Prefab src="resources/prefabs/player.xml" x="200" y="200" angle="0" sx="1" sy="1"/>
+    <GameObject label="Block" x="100" y="100" angle="0" sx="3" sy="3">
+        <Components>
+            <Component name="Renderer" src="" sprite_w="32" sprite_h="32"/>
+            <Component name="Collider" width="32" height="32"/>
+        </Components>
+    </GameObject>
+    <GameObject label="Player" x="400" y="300" angle="0" sx="3" sy="3">
+        <Components>
+            <Component name="Collider" width="16" height="16" trigger="false"/>
+            <Component name="Renderer" src="resources/textures/characters/RedSoldier.png" sprite_w="32" sprite_h="32"/>
+            <Component name="Animator" src="resources/animations/character/characterAnimationTree.xml"/>
+        </Components>
+    </GameObject>
 </Scene>

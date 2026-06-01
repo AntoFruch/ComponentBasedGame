@@ -7,11 +7,14 @@
 #include <iostream>
 
 #include "Assets/GameObject.h"
+#include "CollisionsHandling/Collider.h"
 
 Renderer::Renderer(const std::string& texture_path, const sf::Vector2u& spriteSize)
 {
     loadTexture(texture_path);
-    this->mShape.setSize(static_cast<sf::Vector2f>(spriteSize));
+    const auto size = static_cast<sf::Vector2f>(spriteSize);
+    this->mShape.setSize(size);
+    this->mShape.setOrigin(size / 2.f);
     this->spriteSize = spriteSize;
 }
 void Renderer::Start()
@@ -19,7 +22,6 @@ void Renderer::Start()
     cutRect.size = static_cast<sf::Vector2i>(spriteSize);
     setCutRectPos(0, 0);
     mShape.setTextureRect(cutRect);
-    //mShape.setOutlineThickness(1);
 }
 
 void Renderer::loadTexture(const std::string& path)
@@ -39,6 +41,7 @@ void Renderer::Update(const sf::Time& elapsedTime)
 
 void Renderer::render(sf::RenderWindow& window) const
 {
+    if (auto hb = gameObject->getComponent<Collider>()) hb->debugDraw(window);
     window.draw(mShape);
 }
 

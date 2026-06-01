@@ -7,6 +7,7 @@
 #include <__ranges/rend.h>
 
 #include "pugixml.hpp"
+#include "../Assets/Components/CollisionsHandling/Collider.h"
 #include "Assets/Components/Controller.h"
 #include "Assets/Components/AnimationHandling/Animator.h"
 #include "exceptions/IllegalOperationException.h"
@@ -32,6 +33,13 @@ std::unique_ptr<Component> SceneManager::build_component(const pugi::xml_node& c
     if (name == "Animator")
     {
         return std::make_unique<Animator>(c.attribute("src").as_string());
+    }
+    if (name == "Collider")
+    {
+        return std::make_unique<Collider>(
+            sf::Vector2f{c.attribute("x").as_float(), c.attribute("y").as_float()},
+            sf::Vector2f{c.attribute("width").as_float(), c.attribute("height").as_float()},
+            c.attribute("trigger").as_bool());
     }
     return nullptr;
 }
