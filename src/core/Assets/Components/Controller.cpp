@@ -3,12 +3,13 @@
 //
 
 #include "Controller.h"
-
-#include <iostream>
-
 #include "Assets/GameObject.h"
 #include "CollisionsHandling/CollisionsManager.h"
 #include "InputManagement/InputManager.h"
+
+Controller::Controller(const sf::Vector2f& pos, const sf::Vector2f& dimensions)
+: CharacterController(pos, dimensions)
+{}
 
 Controller::~Controller()
 {
@@ -16,35 +17,33 @@ Controller::~Controller()
 
 void Controller::Start()
 {
-    Component::Start();
+    CharacterController::Start();
     moveAction = InputManager::findAction("Move");
     slashAction = InputManager::findAction("Slash");
     wandAction = InputManager::findAction("Wand");
     bowAction = InputManager::findAction("Bow");
     hitAction = InputManager::findAction("Hit");
     animator = gameObject->getComponent<Animator>();
-    collider = gameObject->getComponent<Collider>();
 }
 
 void Controller::Update(const sf::Time& elapsedTime)
 {
     Component::Update(elapsedTime);
-    move(elapsedTime);
+    handleMovement(elapsedTime);
     slash(elapsedTime);
     wand(elapsedTime);
     bow(elapsedTime);
     hit(elapsedTime);
-    //std::cout << gameObject->transform.getWorldPosition().x << " " << gameObject->transform.getWorldPosition().y << std::endl;
 }
 
-void Controller::move(const sf::Time& elapsedTime)
+void Controller::handleMovement(const sf::Time& elapsedTime)
 {
     const sf::Vector2f rawDirection = moveAction->ReadValue<sf::Vector2f>();
     auto direction = rawDirection != sf::Vector2f{0,0} ?
     rawDirection.normalized() : sf::Vector2f{0,0};
-    auto delta = CollisionsManager::move(*collider, direction*speed*elapsedTime.asSeconds());
-    gameObject->transform.move(delta);
-    collider->syncWithTransform();
+
+    move(direction*speed*elapsedTime.asSeconds()); // from character controller
+
     if (direction == sf::Vector2f{0,0})
     {
         animator->setParam("moving", false);

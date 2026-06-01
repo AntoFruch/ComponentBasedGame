@@ -18,6 +18,4 @@ public:
     static sf::Vector2f move(Collider& collider, const sf::Vector2f& delta);
 };
 
-
-
 #endif //COMPONENT_BASED_ARCH_COLLISIONSMANAGER_H

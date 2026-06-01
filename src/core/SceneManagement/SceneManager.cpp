@@ -28,7 +28,8 @@ std::unique_ptr<Component> SceneManager::build_component(const pugi::xml_node& c
     }
     if (name == "Controller")
     {
-        return std::make_unique<Controller>();
+        return std::make_unique<Controller>(sf::Vector2f{c.attribute("x").as_float(), c.attribute("y").as_float()},
+            sf::Vector2f{c.attribute("width").as_float(), c.attribute("height").as_float()});
     }
     if (name == "Animator")
     {
