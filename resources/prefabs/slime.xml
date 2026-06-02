@@ -3,5 +3,7 @@
     <Components>
         <Component name="Renderer" src="resources/textures/characters/Slime.png" sprite_w="32" sprite_h="32"/>
         <Component name="Animator" src="resources/animations/slimeAnimator.xml"/>
+        <Component name="Collider" width="10" height="10"/>
+        <Component name="SlimeController"/>
     </Components>
 </GameObject>

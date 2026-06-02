@@ -113,6 +113,7 @@ const std::unordered_map<std::string, sf::Keyboard::Key> stringToKey = {
     {"Pause", sf::Keyboard::Key::Pause},
 };
 std::unordered_map<std::string, std::unique_ptr<InputAction>> InputManager::actions{};
+std::set<sf::Keyboard::Key> InputManager::pressed_keys{};
 
 std::vector<DirectionalBindings> create_directional_bindings(pugi::xml_node node)
 {
@@ -176,8 +177,17 @@ InputAction* InputManager::findAction(const std::string& action_name)
 
 void InputManager::processEvents(std::optional<sf::Event> event)
 {
+    // On regarde les touches appuyées et on les met/enleve de pressed_key
+    if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
+        pressed_keys.insert(keyPressed->code);
+    } else if (const auto* keyReleased = event->getIf<sf::Event::KeyReleased>()) {
+        pressed_keys.erase(keyReleased->code);
+    } else {
+        return;
+    }
+
     for (const auto& [name, action] : actions) {
-        action->processEvent(event);
+        action->processEvent(event, pressed_keys);
     }
 }
 

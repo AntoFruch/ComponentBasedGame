@@ -28,15 +28,6 @@ Game::Game() {
   }
 }
 
-Game::~Game()
-{
-  mRenderers.clear();
-  if (mWindow.isOpen()) {
-    mWindow.close();
-  }
-  mTargets.clear();
-}
-
 void Game::run() {
   if (mRunning) return;
   mRunning = true;

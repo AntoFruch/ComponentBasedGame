@@ -5,4 +5,9 @@
         <Component name="Renderer" src="resources/textures/characters/RedSoldier.png" sprite_w="32" sprite_h="32"/>
         <Component name="Animator" src="resources/animations/character/characterAnimationTree.xml"/>
     </Components>
+    <GameObject label="SwordHitbox" x="30" y="9" angle="0" sx="1" sy="1" active="false">
+        <Components>
+            <Component name="Collider" width="6" height="8" x="0" y="0" trigger="true"/>
+        </Components>
+    </GameObject>
 </GameObject>

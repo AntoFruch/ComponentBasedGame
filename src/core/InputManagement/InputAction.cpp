@@ -5,6 +5,9 @@
 #include "InputAction.h"
 
 #include <algorithm>
+#include <any>
+
+#include "InputManager.h"
 
 InputAction::InputAction(const std::string& label, const std::variant<std::vector<ButtonBinding>, std::vector<DirectionalBindings>>& bindings)
 : label(label), bindings(bindings)
@@ -21,17 +24,8 @@ void InputAction::resetFrameState()
     pressedThisFrame = false;
 }
 
-void InputAction::processEvent(const std::optional<sf::Event> event) {
+void InputAction::processEvent(const std::optional<sf::Event> event, const std::set<sf::Keyboard::Key>& pressed_keys ) {
     if (!event.has_value()) {
-        return;
-    }
-
-    // On regarde les touches appuyées et on les met/enleve de pressed_key
-    if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
-        pressed_keys.insert(keyPressed->code);
-    } else if (const auto* keyReleased = event->getIf<sf::Event::KeyReleased>()) {
-        pressed_keys.erase(keyReleased->code);
-    } else {
         return;
     }
 

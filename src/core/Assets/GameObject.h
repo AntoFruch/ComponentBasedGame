@@ -5,29 +5,35 @@
 #ifndef COMPONENT_BASED_ARCH_GAMEOBJECT_H
 #define COMPONENT_BASED_ARCH_GAMEOBJECT_H
 #include <memory>
-#include <type_traits>
 #include <vector>
 
 #include "Components/Component.h"
-#include "Components/Renderer.h"
 #include "Components/Transform.h"
 
 
 class GameObject {
+    std::string label;
     std::vector<std::unique_ptr<Component>> components;
     std::vector<std::unique_ptr<GameObject>> children;
 
+    bool active;
 public:
     Transform transform;
 
-    explicit GameObject(const sf::Vector2f& position, const sf::Angle& rotation, const sf::Vector2f& scale);
+    explicit GameObject(std::string_view label, const sf::Vector2f& position, const sf::Angle& rotation, const sf::Vector2f& scale, bool active);
 
     void start();
     void update(const sf::Time& elapsedTime);
     void addComponent(std::unique_ptr<Component> c);
-    void addChild(std::unique_ptr<GameObject> child);
     template<typename T>
     T* getComponent();
+
+    void addChild(std::unique_ptr<GameObject> child);
+    std::vector<GameObject*> getChildren() const;
+    GameObject* getChild(std::string_view label) const;
+
+    std::string_view getLabel() const;
+    void setActive(bool);
 };
 
 template <typename T>

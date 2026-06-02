@@ -10,11 +10,18 @@
 #include "InputAction.h"
 
 class InputManager {
+
+
     inline static const std::filesystem::path input_config_file_path{"resources/config/input-config.xml"};
 
     const std::unordered_map<std::string, sf::Keyboard::Key> stringToKey;
 
     static std::unordered_map<std::string, std::unique_ptr<InputAction>> actions;
+
+    /**
+     * Currently pressed keys
+     */
+    static std::set<sf::Keyboard::Key> pressed_keys;
 
     static void loadActions();
 public:

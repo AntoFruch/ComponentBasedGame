@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Scene>
-    <GameObject label="Block" x="100" y="100" angle="0" sx="3" sy="3">
-        <Components>
-            <Component name="Renderer" src="resources/textures/Slime.png" sprite_w="32" sprite_h="32"/>
-            <Component name="Collider" width="10" height="10"/>
-            <Component name="Animator" src="resources/animations/slimeAnimator.xml"/>
-        </Components>
-    </GameObject>
-    <Prefab src="resources/prefabs/player.xml" x="200" y="200" angle="0" sx="1" sy="1"/>
+    <Prefab src="resources/prefabs/slime.xml" x="300" y="200" angle="0" sx="1" sy="1" active="true"/>
+    <Prefab src="resources/prefabs/player.xml" x="200" y="200" angle="0" sx="1" sy="1" active="true"/>
 </Scene>

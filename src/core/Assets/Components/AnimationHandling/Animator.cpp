@@ -18,9 +18,6 @@ Animator::Animator(const std::string& animationTree_path)
     currentFrame_x = m_currentState->startFramex;
     currentFrame_y = m_currentState->startFramey >= 0 ? m_currentState->startFramey : 0;
 }
-Animator::~Animator()
-{
-}
 
 void Animator::Start()
 {

@@ -9,8 +9,6 @@ Component::Component()
 
 }
 
-Component::~Component() = default;
-
 void Component::Start()
 {
     /* if something has to be done here */
@@ -25,3 +23,4 @@ void Component::setParent(GameObject* go)
 {
     gameObject=go;
 }
+

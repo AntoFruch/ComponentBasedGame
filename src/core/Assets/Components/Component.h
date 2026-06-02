@@ -12,14 +12,15 @@ class GameObject;
 class Component {
 public:
     explicit Component();
-    virtual ~Component()=0;
+    virtual ~Component()=default;
 
+    GameObject* gameObject;
+    
     virtual void Start();
     virtual void Update(const sf::Time& elapsedTime);
     void setParent(GameObject* go);
 
 protected:
-    GameObject* gameObject;
 };
 
 

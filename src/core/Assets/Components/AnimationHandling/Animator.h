@@ -23,7 +23,6 @@ class Animator : public Component {
 
 public:
     Animator(const std::string& animationTree_path);
-    ~Animator() override;
     void Start() override;
     void Update(const sf::Time& elapsedTime) override;
     void setParam(const std::string& label, const std::variant<bool, float>& value);

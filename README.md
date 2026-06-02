@@ -2,7 +2,6 @@
 Attemps to create a simple game engine with an Object/Component architecture 
 
 ## Next things to implement
-* Character Controller does not work well so far
 * Need more on colliders, so far we can only detect collisions and prevent 2 solid colliders intersected one another
 * Some refractoring in the project, maybe build the engine as a separate library than custom components and everything
 * More testing

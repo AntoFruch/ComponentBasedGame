@@ -5,12 +5,12 @@
 #ifndef COMPONENT_BASED_ARCH_GAME_H
 #define COMPONENT_BASED_ARCH_GAME_H
 #include "Assets/GameObject.h"
+#include "Assets/Components/Renderer.h"
 
 
 class Game {
 public:
     Game();
-    ~Game();
     Game(const Game &) = delete;
     Game &operator=(const Game &) = delete;
 

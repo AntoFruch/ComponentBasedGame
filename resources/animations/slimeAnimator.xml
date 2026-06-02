@@ -32,7 +32,7 @@
             </Transition>
         </Animation>
 
-        <Animation label="TakeDamage" startx="6" starty="-1" length="3" frameDuration="300" loop="true" breakable="true">
+        <Animation label="TakeDamage" startx="6" starty="-1" length="3" frameDuration="300" loop="false" breakable="false">
             <Transition to="Idle">
                 <Condition parameter="moving" value="false"/>
             </Transition>

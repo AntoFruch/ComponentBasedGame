@@ -13,12 +13,10 @@
 class Controller : public CharacterController {
     InputAction* moveAction;
     InputAction* slashAction;
-    InputAction* wandAction;
-    InputAction* bowAction;
-    InputAction* hitAction;
     Animator* animator;
 
     const float speed{100.f} ;
+    sf::Vector2f facing{0.f, -1.f};
 public:
     Controller(const sf::Vector2f& pos, const sf::Vector2f& dimensions);
     ~Controller() override;
@@ -29,9 +27,6 @@ private:
     void handleMovement(const sf::Time& elapsedTime);
 
     void slash(const sf::Time& elapsedTime);
-    void wand(const sf::Time& elapsedTime);
-    void bow(const sf::Time& elapsedTime);
-    void hit(const sf::Time& elapsedTime);
 };
 
 

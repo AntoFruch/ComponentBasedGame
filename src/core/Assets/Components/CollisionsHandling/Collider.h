@@ -14,6 +14,7 @@ Collider : public Component {
     sf::Vector2f localPos;
 
     bool trigger;
+    void (*callback)(const std::vector<Collider*>&);
 
 public:
     Collider(const sf::Vector2f& pos, const sf::Vector2f& dimensions, bool trigger);
@@ -27,9 +28,12 @@ public:
     void setPosition(sf::Vector2f);
     sf::FloatRect getBounds() const;
 
-    void debugDraw(sf::RenderWindow& window);
+    void setTriggerCallback(void (*callback)(const std::vector<Collider*>&));
 
     [[nodiscard]] bool isTrigger() const;
+
+
+    void debugDraw(sf::RenderWindow& window);
 };
 
 

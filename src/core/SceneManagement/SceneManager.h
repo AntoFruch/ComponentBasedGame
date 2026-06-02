@@ -8,6 +8,7 @@
 
 #include "pugixml.hpp"
 #include "Assets/GameObject.h"
+#include "Assets/Components/Renderer.h"
 
 
 class SceneManager {

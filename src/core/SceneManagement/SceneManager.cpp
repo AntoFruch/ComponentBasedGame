@@ -9,6 +9,7 @@
 #include "pugixml.hpp"
 #include "../Assets/Components/CollisionsHandling/Collider.h"
 #include "Assets/Components/Controller.h"
+#include "Assets/Components/SlimeController.h"
 #include "Assets/Components/AnimationHandling/Animator.h"
 #include "exceptions/IllegalOperationException.h"
 
@@ -31,6 +32,10 @@ std::unique_ptr<Component> SceneManager::build_component(const pugi::xml_node& c
         return std::make_unique<Controller>(sf::Vector2f{c.attribute("x").as_float(), c.attribute("y").as_float()},
             sf::Vector2f{c.attribute("width").as_float(), c.attribute("height").as_float()});
     }
+    if (name == "SlimeController")
+    {
+        return std::make_unique<SlimeController>();
+    }
     if (name == "Animator")
     {
         return std::make_unique<Animator>(c.attribute("src").as_string());
@@ -49,9 +54,11 @@ std::unique_ptr<GameObject> SceneManager::build_go(const pugi::xml_node& go, Tra
 {
     auto ptr = std::make_unique<GameObject>(
         // ajouter label si besoin, mais pas obligé je pense
+                go.attribute("label").as_string(),
                 sf::Vector2f{go.attribute("x").as_float(),go.attribute("y").as_float()},
                 sf::degrees(go.attribute("angle").as_float()),
-                sf::Vector2f{go.attribute("sx").as_float(),go.attribute("sy").as_float()}
+                sf::Vector2f{go.attribute("sx").as_float(),go.attribute("sy").as_float()},
+                go.attribute("active").as_bool()
                 );
     ptr->transform.setParent(parent);
 
@@ -100,6 +107,10 @@ std::unique_ptr<GameObject> SceneManager::build_prefab(const pugi::xml_node& obj
     if (obj.attribute("sx") || obj.attribute("sy"))
     {
         prefab->transform.rescale({obj.attribute("sx").as_float(1.f), obj.attribute("sy").as_float(1.f)});
+    }
+    if (obj.attribute("active"))
+    {
+        prefab->setActive(obj.attribute("active").as_bool());
     }
     return prefab;
 }

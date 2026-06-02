@@ -16,9 +16,11 @@ Collider::Collider(const sf::Vector2f& pos, const sf::Vector2f& dimensions, bool
     hitbox.setOrigin(dimensions / 2.f);
 
     // DEBUGGING
+    /*
     hitbox.setFillColor(sf::Color::Transparent);
     hitbox.setOutlineColor(sf::Color::Red);
     hitbox.setOutlineThickness(0.5);
+    */
 }
 
 Collider::~Collider()
@@ -36,6 +38,14 @@ void Collider::Update(const sf::Time& elapsedTime)
 {
     Component::Update(elapsedTime);
     syncWithTransform();
+
+    if (!isTrigger()) return;
+
+    if (const auto& hitColliders = CollisionsManager::checkTrigger(*this); !hitColliders.empty())
+    {
+        callback(hitColliders);
+    }
+    gameObject->setActive(false);
 }
 
 bool Collider::isTrigger() const
@@ -68,7 +78,13 @@ sf::FloatRect Collider::getBounds() const
     return hitbox.getTransform().transformRect(sf::FloatRect({0.f, 0.f}, dimensions));
 }
 
+void Collider::setTriggerCallback(void(* callback)(const std::vector<Collider*>&))
+{
+    this->callback = callback;
+}
+
 void Collider::debugDraw(sf::RenderWindow& window)
 {
     window.draw(hitbox);
 }
+
