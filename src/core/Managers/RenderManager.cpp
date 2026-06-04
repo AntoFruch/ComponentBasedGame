@@ -4,10 +4,11 @@
 
 #include "RenderManager.h"
 
-#include <set>
+#include <iostream>
 
 std::vector<Renderer*> RenderManager::mRenderers{};
 Camera* RenderManager::mainCamera{nullptr};
+
 const float RenderManager::referenceHeight = 480;
 
 void RenderManager::registerRenderer(Renderer* renderer)
@@ -22,14 +23,14 @@ void RenderManager::unregisterRenderer(const Renderer* renderer)
 
 void RenderManager::renderAll(sf::RenderWindow& window)
 {
-    window.clear(sf::Color::White);
+    window.clear();
 
     if (mainCamera){
         mainCamera->applyView(window);
-        for (auto& renderer : mRenderers)
-        {
-            renderer->render(window);
-        }
+    }
+    for (auto& renderer : mRenderers)
+    {
+        renderer->render(window);
     }
 }
 

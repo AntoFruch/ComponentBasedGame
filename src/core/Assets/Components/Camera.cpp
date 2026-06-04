@@ -17,7 +17,6 @@ void Camera::Update(const sf::Time& elapsedTime)
 {
     Component::Update(elapsedTime);
     m_view.setCenter(gameObject->transform.getWorldPosition());
-    std::cout<< "cam set at : " << gameObject->transform.getWorldPosition().x << " " << gameObject->transform.getWorldPosition().y << std::endl;
 }
 
 void Camera::updateSize(sf::Vector2u size)

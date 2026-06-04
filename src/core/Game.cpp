@@ -77,7 +77,7 @@ void Game::update(const sf::Time elapsedTime) {
 void Game::render() {
   RenderManager::renderAll(mWindow);
 
-  mWindow.draw(mStatisticsText);
+  //mWindow.draw(mStatisticsText);
   mWindow.display();
 }
 

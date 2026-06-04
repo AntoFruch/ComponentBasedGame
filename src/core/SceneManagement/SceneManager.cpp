@@ -143,7 +143,7 @@ void SceneManager::loadScene(std::string_view scene, std::vector<std::unique_ptr
             targets.push_back(build_prefab(obj, nullptr));
             continue;
         }
-        throw IllegalOperationException("Scene node children must be GameObject or Prefab");
+        throw IllegalOperationException("Node Scene children must be GameObject or Prefab");
     }
 }
 
