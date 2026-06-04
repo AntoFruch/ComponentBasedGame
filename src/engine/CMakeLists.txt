@@ -1,0 +1,45 @@
+add_library(lib_core
+        myMain.cpp
+        myMain.h
+        GameObject.cpp
+        GameObject.h
+        Components/Component.cpp
+        Components/Component.h
+        Transform.cpp
+        Transform.h
+        Game.cpp
+        Game.h
+        Components/Renderer.cpp
+        Components/Renderer.h
+        Managers/Scene/SceneManager.cpp
+        Managers/Scene/SceneManager.h
+        Managers/Input/InputManager.cpp
+        Managers/Input/InputManager.h
+        Managers/Input/InputAction.cpp
+        Managers/Input/InputAction.h
+        Components/Controller.cpp
+        Components/Controller.h
+        Components/Animator.cpp
+        Components/Animator.h
+        Managers/Animation/AnimatorGraph.cpp
+        Managers/Animation/AnimatorGraph.h
+        Managers/Animation/AnimatorTreeLoader.cpp
+        Managers/Animation/AnimatorTreeLoader.h
+        exceptions/IllegalOperationException.cpp
+        exceptions/IllegalOperationException.h
+        Components/Collider.cpp
+        Components/Collider.h
+        Managers/Collisions/CollisionsManager.cpp
+        Managers/Collisions/CollisionsManager.h
+        Components/CharacterController.cpp
+        Components/CharacterController.h
+        Components/SlimeController.cpp
+        Components/SlimeController.h
+        Components/Camera.cpp
+        Components/Camera.h
+        Managers/Render/RenderManager.cpp
+        Managers/Render/RenderManager.h
+)
+target_include_directories(lib_core PUBLIC ./)
+target_link_libraries(lib_core PUBLIC pugixml sfml-graphics)
+

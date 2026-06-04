@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<GameObject label="Slime" x="0" y="0" angle="0" sx="3" sy="3">
-    <Components>
-        <Component name="Renderer" src="resources/textures/characters/Slime.png" sprite_w="32" sprite_h="32"/>
-        <Component name="Animator" src="resources/animations/slimeAnimator.xml"/>
-        <Component name="Collider" width="10" height="10"/>
-        <Component name="SlimeController"/>
-    </Components>
-</GameObject>
