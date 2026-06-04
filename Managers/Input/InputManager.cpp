@@ -148,7 +148,7 @@ void InputManager::loadActions()
     pugi::xml_document doc;
     if (auto result = doc.load_file(input_config_file_path.c_str()); !result)
     {
-        std::cerr << "could not open file " << input_config_file_path.c_str() << " because : " << result.description() << std::endl;
+        std::cerr << "could not open file " << input_config_file_path.string() << " because : " << result.description() << std::endl;
     }
     for (const auto& node : doc.child("InputActions").children())
     {

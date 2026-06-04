@@ -3,6 +3,8 @@
 //
 #include "Managers/Animation/AnimatorGraph.h"
 
+#include <algorithm>
+
 std::variant<bool, float> Parameter::getValue()
 {
     auto ret_value = value;

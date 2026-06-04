@@ -4,6 +4,7 @@
 
 #ifndef COMPONENT_BASED_ARCH_ANIMATORTREELOADER_H
 #define COMPONENT_BASED_ARCH_ANIMATORTREELOADER_H
+#include <memory>
 #include <string>
 
 #include "AnimatorGraph.h"

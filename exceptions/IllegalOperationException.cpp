@@ -4,6 +4,7 @@
 
 #include "IllegalOperationException.h"
 
+
 IllegalOperationException::IllegalOperationException(const std::string& message) : std::runtime_error(message)
 {
 }

@@ -4,7 +4,8 @@
 
 #ifndef COMPONENT_BASED_ARCH_ILLEGALOPERATIONEXCEPTION_H
 #define COMPONENT_BASED_ARCH_ILLEGALOPERATIONEXCEPTION_H
-#include <exception>
+
+#include <stdexcept>
 #include <string>
 
 
