@@ -35,7 +35,6 @@ private:
     static const sf::Time TimePerFrame;
 
     std::vector<std::unique_ptr<GameObject>> mTargets;
-    std::vector<Renderer*> mRenderers;
     sf::Font mFont;
     sf::Text mStatisticsText{mFont};
     sf::Time mStatisticsUpdateTime;

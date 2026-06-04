@@ -12,8 +12,9 @@
 #include "Assets/Components/SlimeController.h"
 #include "Assets/Components/AnimationHandling/Animator.h"
 #include "exceptions/IllegalOperationException.h"
+#include "Managers/RenderManager.h"
 
-std::unique_ptr<Component> SceneManager::build_component(const pugi::xml_node& c, std::vector<Renderer*>& renderers) // Plus de GameObject* ici
+std::unique_ptr<Component> SceneManager::build_component(const pugi::xml_node& c) // Plus de GameObject* ici
 {
     std::string name = c.attribute("name").as_string();
     if (name == "Renderer")
@@ -24,8 +25,14 @@ std::unique_ptr<Component> SceneManager::build_component(const pugi::xml_node& c
                             c.attribute("sprite_w").as_uint(),
                             c.attribute("sprite_h").as_uint()
                         });
-        renderers.push_back(ptr.get());
+        RenderManager::registerRenderer(ptr.get());
         return std::move(ptr); // Constructeur par défaut ou sans le GO
+    }
+    if (name=="Camera")
+    {
+        auto ptr = std::make_unique<Camera>(); // /!\ complèter avec arguments
+        RenderManager::setMainCamera(ptr.get());
+        return std::move(ptr);
     }
     if (name == "Controller")
     {
@@ -50,15 +57,14 @@ std::unique_ptr<Component> SceneManager::build_component(const pugi::xml_node& c
     return nullptr;
 }
 
-std::unique_ptr<GameObject> SceneManager::build_go(const pugi::xml_node& go, Transform* parent,  std::vector<Renderer*>& renderers)
+std::unique_ptr<GameObject> SceneManager::build_go(const pugi::xml_node& go, Transform* parent)
 {
     auto ptr = std::make_unique<GameObject>(
-        // ajouter label si besoin, mais pas obligé je pense
                 go.attribute("label").as_string(),
                 sf::Vector2f{go.attribute("x").as_float(),go.attribute("y").as_float()},
                 sf::degrees(go.attribute("angle").as_float()),
                 sf::Vector2f{go.attribute("sx").as_float(),go.attribute("sy").as_float()},
-                go.attribute("active").as_bool()
+                go.attribute("active") ? go.attribute("active").as_bool() : true
                 );
     ptr->transform.setParent(parent);
 
@@ -69,21 +75,21 @@ std::unique_ptr<GameObject> SceneManager::build_go(const pugi::xml_node& go, Tra
         {
             for (const auto& component : c.children("Component"))
             {
-                ptr->addComponent(build_component(component, renderers));
+                ptr->addComponent(build_component(component));
             }
         }
         if (name == "GameObject")
         {
-            ptr->addChild(build_go(c, &ptr->transform, renderers));
+            ptr->addChild(build_go(c, &ptr->transform));
         }
         if (name == "Prefab")
         {
-            ptr->addChild(build_prefab(c, &ptr->transform, renderers));
+            ptr->addChild(build_prefab(c, &ptr->transform));
         }
     }
     return std::move(ptr);
 }
-std::unique_ptr<GameObject> SceneManager::build_prefab(const pugi::xml_node& obj, Transform* parent, std::vector<Renderer*>& renderers)
+std::unique_ptr<GameObject> SceneManager::build_prefab(const pugi::xml_node& obj, Transform* parent)
 {
     pugi::xml_document doc;
     if (auto result = doc.load_file(obj.attribute("src").as_string()); !result) {
@@ -95,7 +101,7 @@ std::unique_ptr<GameObject> SceneManager::build_prefab(const pugi::xml_node& obj
         throw IllegalOperationException("Prefab files must have a unique root node named \"GameObject\"");
     }
 
-    auto prefab = build_go(root_node, parent, renderers);
+    auto prefab = build_go(root_node, parent);
     if (obj.attribute("x") || obj.attribute("y"))
     {
         prefab->transform.move({obj.attribute("x").as_float(), obj.attribute("y").as_float()});
@@ -115,7 +121,7 @@ std::unique_ptr<GameObject> SceneManager::build_prefab(const pugi::xml_node& obj
     return prefab;
 }
 
-void SceneManager::loadScene(std::string_view scene, std::vector<std::unique_ptr<GameObject>>& targets, std::vector<Renderer*>& renderers)
+void SceneManager::loadScene(std::string_view scene, std::vector<std::unique_ptr<GameObject>>& targets)
 {
     std::filesystem::path path = scenes_dir / scene;
     pugi::xml_document doc;
@@ -129,12 +135,12 @@ void SceneManager::loadScene(std::string_view scene, std::vector<std::unique_ptr
         std::string name = obj.name();
         if ( name == "GameObject")
         {
-            targets.push_back(build_go(obj, nullptr, renderers));
+            targets.push_back(build_go(obj, nullptr));
             continue;
         }
         if ( name == "Prefab")
         {
-            targets.push_back(build_prefab(obj, nullptr, renderers));
+            targets.push_back(build_prefab(obj, nullptr));
             continue;
         }
         throw IllegalOperationException("Scene node children must be GameObject or Prefab");

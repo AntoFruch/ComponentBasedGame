@@ -7,6 +7,7 @@
 
 #include "Assets/Components/Renderer.h"
 #include "InputManagement/InputManager.h"
+#include "Managers/RenderManager.h"
 #include "SceneManagement/SceneManager.h"
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
@@ -21,11 +22,13 @@ Game::Game() {
 
   // TESTING
   InputManager::init();
-  SceneManager::loadScene("scene.xml", mTargets, mRenderers);
+  SceneManager::loadScene("scene.xml", mTargets);
   for (const auto& go : mTargets)
   {
     go->start();
   }
+
+  RenderManager::handleResize(mWindow.getSize());
 }
 
 void Game::run() {
@@ -58,16 +61,7 @@ void Game::processEvents() {
       mWindow.close();
     }
     if (const auto& resized = event->getIf<sf::Event::Resized>()) {
-      const float windowRatio =
-        static_cast<float>(resized->size.x) / static_cast<float>(resized->size.y);
-
-      constexpr float worldHeight = 480.f;
-      const float worldWidth = worldHeight * windowRatio;
-
-      sf::View view = mWindow.getView();
-      view.setSize({worldWidth, worldHeight});
-      view.setCenter({worldWidth / 2.f, worldHeight / 2.f});
-      mWindow.setView(view);
+      RenderManager::handleResize(resized->size);
     }
     InputManager::processEvents(event);
   }
@@ -81,11 +75,8 @@ void Game::update(const sf::Time elapsedTime) {
 }
 
 void Game::render() {
-  mWindow.clear(sf::Color::Green);
-  for (auto& renderer : mRenderers)
-  {
-    renderer->render(mWindow);
-  }
+  RenderManager::renderAll(mWindow);
+
   mWindow.draw(mStatisticsText);
   mWindow.display();
 }

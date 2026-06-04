@@ -47,6 +47,7 @@ void Controller::Update(const sf::Time& elapsedTime)
     Component::Update(elapsedTime);
     handleMovement(elapsedTime);
     slash(elapsedTime);
+    std::cout<< "player is at : " << gameObject->transform.getWorldPosition().x << " " << gameObject->transform.getWorldPosition().y << std::endl;
 }
 
 void Controller::handleMovement(const sf::Time& elapsedTime)
