@@ -1,4 +1,4 @@
-add_library(lib_core
+add_library(lib_engine
         myMain.cpp
         myMain.h
         GameObject.cpp
@@ -40,6 +40,6 @@ add_library(lib_core
         Managers/Render/RenderManager.cpp
         Managers/Render/RenderManager.h
 )
-target_include_directories(lib_core PUBLIC src/engine)
-target_link_libraries(lib_core PUBLIC pugixml sfml-graphics)
+target_include_directories(lib_engine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(lib_engine PUBLIC pugixml sfml-graphics)
 

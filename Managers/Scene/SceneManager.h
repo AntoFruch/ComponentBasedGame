@@ -4,12 +4,12 @@
 
 #ifndef COMPONENT_BASED_ARCH_SCENEMANAGER_H
 #define COMPONENT_BASED_ARCH_SCENEMANAGER_H
+#include <filesystem>
 #include <vector>
 
 #include "pugixml.hpp"
 #include "GameObject.h"
 #include "Components/Renderer.h"
-
 
 class SceneManager {
     inline static const std::filesystem::path scenes_dir{"resources/scenes/"};

@@ -1,4 +1,4 @@
-#include "src/engine/Game.h"
+#include "Game.h"
 
 #include <objc/objc.h>
 

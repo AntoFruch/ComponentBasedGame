@@ -2,7 +2,7 @@
 // Created by Antonin Fruchet on 25/05/2026.
 //
 
-#include "src/engine/GameObject.h"
+#include "GameObject.h"
 GameObject::GameObject(std::string_view label, const sf::Vector2f& position, const sf::Angle& rotation, const sf::Vector2f& scale, bool active)
     : label(label), transform(position, rotation, scale, nullptr), active(active)
 {
