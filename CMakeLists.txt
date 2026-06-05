@@ -39,6 +39,8 @@ add_library(lib_engine
         Components/Camera.h
         Managers/Render/RenderManager.cpp
         Managers/Render/RenderManager.h
+        Managers/Scene/ComponentFactory.cpp
+        Managers/Scene/ComponentFactory.h
 )
 target_include_directories(lib_engine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(lib_engine PUBLIC pugixml sfml-graphics)

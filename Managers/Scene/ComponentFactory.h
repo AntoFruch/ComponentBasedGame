@@ -1,0 +1,16 @@
+//
+// Created by Antonin Fruchet on 05/06/2026.
+//
+
+#ifndef COMPONENT_BASED_ARCH_COMPONENTFACTORY_H
+#define COMPONENT_BASED_ARCH_COMPONENTFACTORY_H
+
+
+
+class ComponentFactory {
+
+};
+
+
+
+#endif //COMPONENT_BASED_ARCH_COMPONENTFACTORY_H
