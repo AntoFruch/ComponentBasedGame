@@ -17,8 +17,6 @@ add_library(lib_engine
         Managers/Input/InputManager.h
         Managers/Input/InputAction.cpp
         Managers/Input/InputAction.h
-        Components/Controller.cpp
-        Components/Controller.h
         Components/Animator.cpp
         Components/Animator.h
         Managers/Animation/AnimatorGraph.cpp
@@ -33,14 +31,13 @@ add_library(lib_engine
         Managers/Collisions/CollisionsManager.h
         Components/CharacterController.cpp
         Components/CharacterController.h
-        Components/SlimeController.cpp
-        Components/SlimeController.h
         Components/Camera.cpp
         Components/Camera.h
         Managers/Render/RenderManager.cpp
         Managers/Render/RenderManager.h
         Managers/Scene/ComponentFactory.cpp
         Managers/Scene/ComponentFactory.h
+        Engine.h
 )
 target_include_directories(lib_engine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(lib_engine PUBLIC pugixml sfml-graphics)

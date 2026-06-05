@@ -5,49 +5,14 @@
 #include "SceneManager.h"
 #include <iostream>
 
-#include "Components/Collider.h"
-#include "Components/Controller.h"
-#include "Components/Animator.h"
+#include "ComponentFactory.h"
 #include "exceptions/IllegalOperationException.h"
-#include "Managers/Render/RenderManager.h"
 
 std::unique_ptr<Component> SceneManager::build_component(const pugi::xml_node& c) // Plus de GameObject* ici
 {
     std::string name = c.attribute("name").as_string();
-    if (name == "Renderer")
-    {
-        auto ptr = std::make_unique<Renderer>(
-             c.attribute("src").as_string(),
-                        sf::Vector2u{
-                            c.attribute("sprite_w").as_uint(),
-                            c.attribute("sprite_h").as_uint()
-                        });
-        RenderManager::registerRenderer(ptr.get());
-        return std::move(ptr); // Constructeur par défaut ou sans le GO
-    }
-    if (name=="Camera")
-    {
-        auto ptr = std::make_unique<Camera>(); // /!\ complèter avec arguments
-        RenderManager::setMainCamera(ptr.get());
-        return std::move(ptr);
-    }
-    if (name == "Controller")
-    {
-        return std::make_unique<Controller>(sf::Vector2f{c.attribute("x").as_float(), c.attribute("y").as_float()},
-            sf::Vector2f{c.attribute("width").as_float(), c.attribute("height").as_float()});
-    }
-    if (name == "Animator")
-    {
-        return std::make_unique<Animator>(c.attribute("src").as_string());
-    }
-    if (name == "Collider")
-    {
-        return std::make_unique<Collider>(
-            sf::Vector2f{c.attribute("x").as_float(), c.attribute("y").as_float()},
-            sf::Vector2f{c.attribute("width").as_float(), c.attribute("height").as_float()},
-            c.attribute("trigger").as_bool());
-    }
-    return nullptr;
+    return ComponentFactory::Create(name, c);
+
 }
 
 std::unique_ptr<GameObject> SceneManager::build_go(const pugi::xml_node& go, Transform* parent)

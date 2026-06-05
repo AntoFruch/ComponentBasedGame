@@ -8,6 +8,32 @@
 
 #include "Managers/Collisions/CollisionsManager.h"
 #include "GameObject.h"
+#include "Managers/Scene/ComponentFactory.h"
+
+// --- ENREGISTREMENT AUTOMATIQUE ---
+// On crée une variable globale/statique anonyme.
+// Son seul but est de s'exécuter AVANT le début du jeu pour enregistrer le composant.
+namespace {
+    const bool registered = []() {
+        ComponentFactory::Register("Collider", [](const pugi::xml_node& node) {
+            return std::make_unique<Collider>(
+                sf::Vector2f{
+                    node.attribute("x").as_float(),
+                    node.attribute("y").as_float(),
+                },
+                sf::Vector2f{
+                    node.attribute("x").as_float(),
+                    node.attribute("y").as_float(),
+                },
+                node.attribute("trigger").as_bool()
+                );
+        });
+        return true;
+    }();
+}
+// --------------------------
+
+
 
 Collider::Collider(const sf::Vector2f& pos, const sf::Vector2f& dimensions, bool trigger) : dimensions(dimensions), localPos(pos), trigger(trigger)
 {
