@@ -3,6 +3,7 @@
 #include <string>
 
 #include "Components/Renderer.h"
+#include "Managers/Collisions/CollisionsManager.h"
 #include "Managers/Input/InputManager.h"
 #include "Managers/Render/RenderManager.h"
 #include "Managers/Scene/SceneManager.h"
@@ -73,6 +74,7 @@ void Game::update(const sf::Time elapsedTime) {
 
 void Game::render() {
   RenderManager::renderAll(mWindow);
+  CollisionsManager::debugDraw(mWindow);
 
   //mWindow.draw(mStatisticsText);
   mWindow.display();

@@ -22,8 +22,8 @@ namespace {
                     node.attribute("y").as_float(),
                 },
                 sf::Vector2f{
-                    node.attribute("x").as_float(),
-                    node.attribute("y").as_float(),
+                    node.attribute("width").as_float(),
+                    node.attribute("height").as_float(),
                 },
                 node.attribute("trigger").as_bool()
                 );
@@ -42,11 +42,9 @@ Collider::Collider(const sf::Vector2f& pos, const sf::Vector2f& dimensions, bool
     hitbox.setOrigin(dimensions / 2.f);
 
     // DEBUGGING
-    /*
     hitbox.setFillColor(sf::Color::Transparent);
-    hitbox.setOutlineColor(sf::Color::Red);
+    hitbox.setOutlineColor(trigger ? sf::Color::Red : sf::Color::Green);
     hitbox.setOutlineThickness(0.5);
-    */
 }
 
 Collider::~Collider()

@@ -21,8 +21,6 @@ namespace {
 }
 // --------------------------
 
-
-
 void Camera::Start()
 {
     Component::Start();

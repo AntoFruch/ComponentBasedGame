@@ -6,6 +6,8 @@
 
 #include <iostream>
 
+#include "Managers/Collisions/CollisionsManager.h"
+
 std::vector<Renderer*> RenderManager::mRenderers{};
 Camera* RenderManager::mainCamera{nullptr};
 
