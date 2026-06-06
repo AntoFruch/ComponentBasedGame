@@ -76,3 +76,14 @@ void GameObject::setActive(bool active)
 {
     this->active = active;
 }
+
+bool GameObject::isWaitingDestruction() const
+{
+    return waitingDestruction;
+}
+
+void GameObject::destroySelf()
+{
+    waitingDestruction = true;
+}
+

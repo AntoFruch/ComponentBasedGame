@@ -3,6 +3,9 @@
 //
 
 #include "RenderManager.h"
+
+#include <set>
+
 #include "Managers/Collisions/CollisionsManager.h"
 
 std::vector<Renderer*> RenderManager::mRenderers{};

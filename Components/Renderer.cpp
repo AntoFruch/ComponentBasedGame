@@ -42,6 +42,11 @@ Renderer::Renderer(const std::string& texture_path, const sf::Vector2u& spriteSi
     this->mShape.setOrigin(size / 2.f);
     this->spriteSize = spriteSize;
 }
+
+Renderer::~Renderer()
+{
+    RenderManager::unregisterRenderer(this);
+}
 void Renderer::Start()
 {
     cutRect.size = static_cast<sf::Vector2i>(spriteSize);

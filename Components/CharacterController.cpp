@@ -53,5 +53,4 @@ void CharacterController::move(const sf::Vector2f& delta)
 {
     auto newDelta = CollisionsManager::move(*collider, delta);
     gameObject->transform.move(newDelta);
-    collider->syncWithTransform();
 }

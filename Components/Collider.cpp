@@ -35,7 +35,7 @@ namespace {
 
 
 
-Collider::Collider(const sf::Vector2f& pos, const sf::Vector2f& dimensions, bool trigger) : dimensions(dimensions), localPos(pos), trigger(trigger)
+Collider::Collider(const sf::Vector2f& pos, const sf::Vector2f& dimensions, bool trigger) : localPos(pos), trigger(trigger)
 {
     hitbox = sf::RectangleShape();
     hitbox.setSize(dimensions);
@@ -67,9 +67,8 @@ void Collider::Update(const sf::Time& elapsedTime)
 
     if (const auto& hitColliders = CollisionsManager::checkTrigger(*this); !hitColliders.empty())
     {
-        callback(hitColliders);
+        callback(hitColliders, this);
     }
-    gameObject->setActive(false);
 }
 
 bool Collider::isTrigger() const
@@ -92,6 +91,11 @@ void Collider::setPosition(sf::Vector2f pos)
     hitbox.setPosition(pos);
 }
 
+void Collider::setSize(sf::Vector2f size)
+{
+    hitbox.setSize(size);
+}
+
 void Collider::move(sf::Vector2f delta)
 {
     hitbox.move(delta);
@@ -99,10 +103,10 @@ void Collider::move(sf::Vector2f delta)
 
 sf::FloatRect Collider::getBounds() const
 {
-    return hitbox.getTransform().transformRect(sf::FloatRect({0.f, 0.f}, dimensions));
+    return hitbox.getTransform().transformRect(sf::FloatRect({0.f, 0.f}, hitbox.getSize()));
 }
 
-void Collider::setTriggerCallback(void(* callback)(const std::vector<Collider*>&))
+void Collider::setTriggerCallback(void(* callback)(const std::vector<Collider*>&, Collider*))
 {
     this->callback = callback;
 }

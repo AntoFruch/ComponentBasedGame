@@ -23,6 +23,10 @@ void Scene::Update(const sf::Time& elapsedTime)
     {
         go->update(elapsedTime);
     }
+    std::erase_if(mTargets, [](const std::unique_ptr<GameObject>& go)
+    {
+        return go->isWaitingDestruction();
+    });
     if (SceneManager::loadingReq) SceneManager::applyRequest();
     if (instantiateRequested) applyInstantiate();
 }
@@ -132,6 +136,7 @@ void Scene::unload()
 void Scene::applyInstantiate()
 {
     instantiateRequested = false;
+    requestGO->start();
     mTargets.push_back(std::move(requestGO));
 }
 
@@ -150,7 +155,6 @@ GameObject* Scene::requestInstantiate(std::string_view prefabPath)
 
     auto prefab = build_go(root_node, nullptr);
     auto ret_ptr = prefab.get();
-    ret_ptr->start();
     requestGO = std::move(prefab);
 
     instantiateRequested = true;

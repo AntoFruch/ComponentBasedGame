@@ -17,6 +17,7 @@ class GameObject {
     std::vector<std::unique_ptr<GameObject>> children;
 
     bool active;
+    bool waitingDestruction{false};
 public:
     Transform transform;
 
@@ -34,6 +35,9 @@ public:
 
     std::string_view getLabel() const;
     void setActive(bool);
+
+    bool isWaitingDestruction() const;
+    void destroySelf();
 };
 
 template <typename T>
@@ -49,7 +53,6 @@ T* GameObject::getComponent()
     }
     return nullptr;
 }
-
 
 
 #endif //COMPONENT_BASED_ARCH_GAMEOBJECT_H

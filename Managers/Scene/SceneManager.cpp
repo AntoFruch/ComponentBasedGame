@@ -41,5 +41,5 @@ void SceneManager::applyRequest()
 
 GameObject* SceneManager::instantiate(std::string_view prefab)
 {
-    scene->requestInstantiate(prefab);
+    return scene->requestInstantiate(prefab);
 }
