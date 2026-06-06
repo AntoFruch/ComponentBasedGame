@@ -4,22 +4,30 @@
 
 #ifndef COMPONENT_BASED_ARCH_SCENEMANAGER_H
 #define COMPONENT_BASED_ARCH_SCENEMANAGER_H
-#include <filesystem>
-#include <vector>
 
 #include "pugixml.hpp"
-#include "GameObject.h"
+#include "Scene.h"
 #include "Components/Renderer.h"
 
 class SceneManager {
-    inline static const std::filesystem::path scenes_dir{"resources/scenes/"};
+    static Scene* scene;
 
-    static std::unique_ptr<Component> build_component(const pugi::xml_node& c);
-    static std::unique_ptr<GameObject> build_go(const pugi::xml_node& go, Transform* parent);
-    static std::unique_ptr<GameObject> build_prefab(const pugi::xml_node& obj, Transform* parent);
-public :
-    static void loadScene(std::string_view scene, std::vector<std::unique_ptr<GameObject>>& targets);
-    static void unloadScene(std::vector<std::unique_ptr<GameObject>>& targets);
+    static bool loadingReq;
+    static std::string reqPath;
+public:
+    static void init(Scene* ptr);
+    static void Update(const sf::Time& elapsedTime);
+    /**
+     * @brief Enregistre une demande de changement de scène, le changement sera effectif à la fin de la boucle d'update
+     * @param path
+     */
+    static void requestLoading(std::string_view path);
+
+    static GameObject* instantiate(std::string_view prefab);
+
+private:
+    friend class Scene;
+    static void applyRequest();
 };
 
 

@@ -43,7 +43,6 @@ CharacterController::CharacterController(const sf::Vector2f& colliderPos, const 
 void CharacterController::Start()
 {
     Component::Start();
-    std::cout << "Starting CharacterController" << std::endl;
     auto ptr = std::make_unique<Collider>(colliderPos, colliderSize, false);
     collider = ptr.get();
     gameObject->addComponent(std::move(ptr));

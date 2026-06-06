@@ -11,27 +11,21 @@
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Game::Game() {
-  mRunning=false;
   assert(mFont.openFromFile("resources/fonts/Sansation.ttf"));
   // We do not need to do mStatisticsText.setFont(mFont); as mStatisticsText is
   // initialized with a reference to mFont
   mStatisticsText.setPosition({5.f, 5.f});
   mStatisticsText.setCharacterSize(10);
 
-  // TESTING
   InputManager::init();
-  SceneManager::loadScene("scene.xml", mTargets);
-  for (const auto& go : mTargets)
-  {
-    go->start();
-  }
 
-  RenderManager::handleResize(mWindow.getSize());
+  scene=std::make_unique<Scene>();
+  SceneManager::init(scene.get());
+  RenderManager::init(&mWindow);
+  SceneManager::requestLoading("resources/scenes/scene.xml");
 }
 
 void Game::run() {
-  if (mRunning) return;
-  mRunning = true;
   sf::Clock clock;
   sf::Time timeSinceLastUpdate = sf::Time::Zero;
   mWindow.setVerticalSyncEnabled(true);
@@ -48,7 +42,6 @@ void Game::run() {
     updateStatistics(elapsedTime);
     render();
   }
-  mRunning=false;
 }
 
 void Game::processEvents() {
@@ -66,10 +59,7 @@ void Game::processEvents() {
 }
 
 void Game::update(const sf::Time elapsedTime) {
-  for (auto& target : mTargets)
-  {
-    target->update(elapsedTime);
-  }
+  SceneManager::Update(elapsedTime);
 }
 
 void Game::render() {

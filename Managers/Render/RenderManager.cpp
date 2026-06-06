@@ -3,15 +3,18 @@
 //
 
 #include "RenderManager.h"
-
-#include <iostream>
-
 #include "Managers/Collisions/CollisionsManager.h"
 
 std::vector<Renderer*> RenderManager::mRenderers{};
 Camera* RenderManager::mainCamera{nullptr};
+sf::RenderWindow* RenderManager::window{nullptr};
 
 const float RenderManager::referenceHeight = 480;
+
+void RenderManager::init(sf::RenderWindow* win)
+{
+    window = win;
+}
 
 void RenderManager::registerRenderer(Renderer* renderer)
 {
@@ -39,6 +42,7 @@ void RenderManager::renderAll(sf::RenderWindow& window)
 void RenderManager::setMainCamera(Camera* cam)
 {
     mainCamera = cam;
+    handleResize(window->getSize());
 }
 
 void RenderManager::handleResize(const sf::Vector2u& size) {

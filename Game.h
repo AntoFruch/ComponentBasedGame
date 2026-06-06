@@ -6,6 +6,7 @@
 #define COMPONENT_BASED_ARCH_GAME_H
 #include "GameObject.h"
 #include "Components/Renderer.h"
+#include "Managers/Scene/Scene.h"
 
 
 class Game {
@@ -27,11 +28,9 @@ private:
 
     void updateStatistics(sf::Time elapsedTime);
 
-    bool mRunning;
-
     static const sf::Time TimePerFrame;
 
-    std::vector<std::unique_ptr<GameObject>> mTargets;
+    std::unique_ptr<Scene> scene;
     sf::Font mFont;
     sf::Text mStatisticsText{mFont};
     sf::Time mStatisticsUpdateTime;

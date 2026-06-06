@@ -38,6 +38,8 @@ add_library(lib_engine
         Managers/Scene/ComponentFactory.cpp
         Managers/Scene/ComponentFactory.h
         Engine.h
+        Managers/Scene/Scene.cpp
+        Managers/Scene/Scene.h
 )
 target_include_directories(lib_engine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(lib_engine PUBLIC pugixml sfml-graphics)

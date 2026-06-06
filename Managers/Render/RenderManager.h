@@ -11,9 +11,12 @@
 class RenderManager {
     static std::vector<Renderer*> mRenderers;
     static Camera* mainCamera;
+    static sf::RenderWindow* window;
 
 public:
     static const float referenceHeight;
+
+    static void init(sf::RenderWindow* win);
 
     static void registerRenderer(Renderer*);
     static void unregisterRenderer(const Renderer*);
