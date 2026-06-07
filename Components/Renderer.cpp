@@ -20,6 +20,10 @@ namespace {
         ComponentFactory::Register("Renderer", [](const pugi::xml_node& node) {
             auto ptr = std::make_unique<Renderer>(
                 node.attribute("src").as_string(),
+                sf::Vector2f{
+                    node.attribute("anchorX").as_float(),
+                    node.attribute("anchorY").as_float()
+                },
                 sf::Vector2u{
                     node.attribute("sprite_w").as_uint(),
                     node.attribute("sprite_h").as_uint()
@@ -34,12 +38,12 @@ namespace {
 
 
 
-Renderer::Renderer(const std::string& texture_path, const sf::Vector2u& spriteSize)
+Renderer::Renderer(const std::string& texture_path, const sf::Vector2f& anchor,  const sf::Vector2u& spriteSize)
 {
     loadTexture(texture_path);
     const auto size = static_cast<sf::Vector2f>(spriteSize);
     this->mShape.setSize(size);
-    this->mShape.setOrigin(size / 2.f);
+    this->mShape.setOrigin(anchor + size / 2.f);
     this->spriteSize = spriteSize;
 }
 

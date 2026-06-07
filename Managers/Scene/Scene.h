@@ -29,10 +29,12 @@ public:
     void applyInstantiate();
     GameObject* requestInstantiate(std::string_view prefabPath);
 
+    std::string dump() const;
+
 private:
     std::unique_ptr<Component> build_component(const pugi::xml_node& c);
-    std::unique_ptr<GameObject> build_go(const pugi::xml_node& go, Transform* parent);
-    std::unique_ptr<GameObject> build_prefab(const pugi::xml_node& obj, Transform* parent);
+    std::unique_ptr<GameObject> build_go(const pugi::xml_node& go, GameObject* parent);
+    std::unique_ptr<GameObject> build_prefab(const pugi::xml_node& obj, GameObject* parent);
 
 };
 

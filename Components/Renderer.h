@@ -19,7 +19,7 @@ class Renderer : public Component {
 
     void loadTexture(const std::string& path);
 public:
-    Renderer(const std::string& texture_path, const sf::Vector2u& spriteSize);
+    Renderer(const std::string& texture_path, const sf::Vector2f& anchor, const sf::Vector2u& spriteSize);
     ~Renderer();
 
     void Start() override;

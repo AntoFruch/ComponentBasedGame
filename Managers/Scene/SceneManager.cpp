@@ -4,6 +4,8 @@
 
 #include "SceneManager.h"
 
+#include <iostream>
+
 // --- DÉFINITION DES VARIABLES STATIQUES ---
 Scene* SceneManager::scene = nullptr;
 bool SceneManager::loadingReq = false;
@@ -34,6 +36,8 @@ void SceneManager::applyRequest()
 {
     scene->unload();
     scene->load(reqPath);
+    std::string dump{scene->dump()};
+    std::cout << dump << std::endl;
     scene->Start();
     loadingReq=false;
     reqPath = "";

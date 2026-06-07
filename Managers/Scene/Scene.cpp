@@ -38,7 +38,7 @@ std::unique_ptr<Component> Scene::build_component(const pugi::xml_node& c) // Pl
 
 }
 
-std::unique_ptr<GameObject> Scene::build_go(const pugi::xml_node& go, Transform* parent)
+std::unique_ptr<GameObject> Scene::build_go(const pugi::xml_node& go, GameObject* parent)
 {
     auto ptr = std::make_unique<GameObject>(
                 go.attribute("label").as_string(),
@@ -47,7 +47,6 @@ std::unique_ptr<GameObject> Scene::build_go(const pugi::xml_node& go, Transform*
                 sf::Vector2f{go.attribute("sx").as_float(),go.attribute("sy").as_float()},
                 go.attribute("active") ? go.attribute("active").as_bool() : true
                 );
-    ptr->transform.setParent(parent);
 
     for (const auto& c : go.children())
     {
@@ -61,16 +60,16 @@ std::unique_ptr<GameObject> Scene::build_go(const pugi::xml_node& go, Transform*
         }
         if (name == "GameObject")
         {
-            ptr->addChild(build_go(c, &ptr->transform));
+            ptr->addChild(build_go(c, ptr.get()));
         }
         if (name == "Prefab")
         {
-            ptr->addChild(build_prefab(c, &ptr->transform));
+            ptr->addChild(build_prefab(c, ptr.get()));
         }
     }
     return std::move(ptr);
 }
-std::unique_ptr<GameObject> Scene::build_prefab(const pugi::xml_node& obj, Transform* parent)
+std::unique_ptr<GameObject> Scene::build_prefab(const pugi::xml_node& obj, GameObject* parent)
 {
     pugi::xml_document doc;
     if (auto result = doc.load_file(obj.attribute("src").as_string()); !result) {
@@ -160,4 +159,33 @@ GameObject* Scene::requestInstantiate(std::string_view prefabPath)
     instantiateRequested = true;
 
     return ret_ptr;
+}
+
+std::string Scene::dump() const
+{
+    std::ostringstream oss;
+    oss << "Scene :\n";
+
+    // Lambda récursive pour parcourir la hiérarchie
+    // On passe l'indentation sous forme de chaîne de caractères (ex: "  ")
+    auto dumpGameObject = [&oss](const auto& self, const auto& go, const std::string& indent) -> void {
+        if (!go) return;
+
+        // 1. On affiche le nom du GameObject actuel avec son indentation
+        oss << indent << "- " << go->getLabel() << "\n";
+
+        // 2. On parcourt récursivement ses enfants en augmentant l'indentation
+        for (const auto& child : go->getChildren())
+        {
+            self(self, child, indent + "  "); // Ajoute 2 espaces par niveau
+        }
+    };
+
+    // Lancement du parcours pour chaque GameObject racine de la scène
+    for (const auto& go : mTargets)
+    {
+        dumpGameObject(dumpGameObject, go, "  ");
+    }
+
+    return oss.str();
 }

@@ -35,7 +35,7 @@ namespace {
 
 
 
-Collider::Collider(const sf::Vector2f& pos, const sf::Vector2f& dimensions, bool trigger) : localPos(pos), trigger(trigger)
+Collider::Collider(const sf::Vector2f& pos, const sf::Vector2f& dimensions, bool trigger) : localPos(pos), trigger(trigger), triggerActivated(false)
 {
     hitbox = sf::RectangleShape();
     hitbox.setSize(dimensions);
@@ -56,6 +56,7 @@ void Collider::Start()
 {
     Component::Start();
     CollisionsManager::registerCollider(this);
+    syncWithTransform();
 }
 
 void Collider::Update(const sf::Time& elapsedTime)
@@ -63,11 +64,14 @@ void Collider::Update(const sf::Time& elapsedTime)
     Component::Update(elapsedTime);
     syncWithTransform();
 
-    if (!isTrigger()) return;
+    if (!isTrigger() || !triggerActivated) return;
 
     if (const auto& hitColliders = CollisionsManager::checkTrigger(*this); !hitColliders.empty())
     {
-        callback(hitColliders, this);
+        if (callback)
+        {
+            callback(hitColliders, this);
+        }
     }
 }
 
@@ -79,9 +83,15 @@ bool Collider::isTrigger() const
 void Collider::syncWithTransform()
 {
     const sf::Vector2f scale = gameObject->transform.getWorldScale();
-    const sf::Vector2f scaledLocalPos{localPos.x * scale.x, localPos.y * scale.y};
+    if (gameObject->getLabel() == "X+")
+    {
+        //std::cout << scale.x << " " << scale.y << " " << localPos.x << " " << localPos.y << std::endl;
+    }
 
-    setPosition(gameObject->transform.getWorldPosition() + scaledLocalPos);
+    setPosition({
+        gameObject->transform.getWorldPosition().x + localPos.x*scale.x,
+        gameObject->transform.getWorldPosition().y + localPos.y*scale.y
+    });
     hitbox.setRotation(gameObject->transform.getWorldRotation());
     hitbox.setScale(scale);
 }
@@ -94,6 +104,8 @@ void Collider::setPosition(sf::Vector2f pos)
 void Collider::setSize(sf::Vector2f size)
 {
     hitbox.setSize(size);
+    // Keep origin centered when size changes so position stays aligned with GameObject
+    hitbox.setOrigin(size / 2.f);
 }
 
 void Collider::move(sf::Vector2f delta)
@@ -101,9 +113,24 @@ void Collider::move(sf::Vector2f delta)
     hitbox.move(delta);
 }
 
+sf::Vector2f Collider::getPosition()
+{
+    return hitbox.getPosition();
+}
+
+sf::Vector2f Collider::getSize()
+{
+    return hitbox.getSize();
+}
+
 sf::FloatRect Collider::getBounds() const
 {
     return hitbox.getTransform().transformRect(sf::FloatRect({0.f, 0.f}, hitbox.getSize()));
+}
+
+void Collider::setTriggerActivationState(bool state)
+{
+    triggerActivated = state;
 }
 
 void Collider::setTriggerCallback(void(* callback)(const std::vector<Collider*>&, Collider*))

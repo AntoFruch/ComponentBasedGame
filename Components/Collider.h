@@ -13,6 +13,7 @@ Collider : public Component {
     sf::Vector2f localPos;
 
     bool trigger;
+    bool triggerActivated;
     /**
      * @brief function ptr, the function is executed when a trigger collider triggers
      * must have arguments :
@@ -29,9 +30,13 @@ public:
 
     void setPosition(sf::Vector2f);
     void setSize(sf::Vector2f);
-    void setTriggerCallback(void (*callback)(const std::vector<Collider*>&, Collider*));
+    sf::Vector2f getPosition();
+    sf::Vector2f getSize();
 
     [[nodiscard]] bool isTrigger() const;
+
+    void setTriggerActivationState(bool state);
+    void setTriggerCallback(void (*callback)(const std::vector<Collider*>&, Collider*));
 
 private:
     friend class CollisionsManager;

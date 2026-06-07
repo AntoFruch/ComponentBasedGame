@@ -25,9 +25,9 @@ public:
     void addChild(Transform* child);
     void setParent(Transform* parent);
 
-    const sf::Vector2f& getPosition() const;
-    const sf::Angle& getRotation() const;
-    const sf::Vector2f& getScale() const;
+    const sf::Vector2f& getLocalPosition() const;
+    const sf::Angle& getLocalRotation() const;
+    const sf::Vector2f& getLocalScale() const;
     sf::Vector2f getWorldPosition() const;
     sf::Angle getWorldRotation() const;
     sf::Vector2f getWorldScale() const;

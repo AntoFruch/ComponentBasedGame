@@ -4,6 +4,8 @@
 
 #include "Transform.h"
 
+#include <iostream>
+
 Transform::Transform(const sf::Vector2f& position, const sf::Angle& rotation, const sf::Vector2f& scale, Transform* parent)
     : position(position), rotation(rotation), scale(scale), parent(parent)
 {}
@@ -24,17 +26,17 @@ void Transform::setParent(Transform* parent)
     this->parent = parent;
 }
 
-const sf::Vector2f& Transform::getPosition() const
+const sf::Vector2f& Transform::getLocalPosition() const
 {
     return position;
 }
 
-const sf::Angle& Transform::getRotation() const
+const sf::Angle& Transform::getLocalRotation() const
 {
     return rotation;
 }
 
-const sf::Vector2f& Transform::getScale() const
+const sf::Vector2f& Transform::getLocalScale() const
 {
     return scale;
 }
@@ -42,7 +44,9 @@ const sf::Vector2f& Transform::getScale() const
 sf::Vector2f Transform::getWorldPosition() const
 {
     if (!parent) return position;
-    return parent->getWorldPosition() + position;
+    const sf::Vector2f parentScale = parent->getWorldScale();
+    const sf::Vector2f scaledLocal = { position.x * parentScale.x, position.y * parentScale.y };
+    return parent->getWorldPosition() + scaledLocal;
 }
 
 sf::Angle Transform::getWorldRotation() const
