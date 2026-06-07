@@ -10,9 +10,11 @@
 #include "GameObject.h"
 
 class Scene {
-    std::vector<std::unique_ptr<GameObject>> mTargets;
+    std::vector<std::unique_ptr<GameObject>> mObjects;
+    
 
     bool instantiateRequested{false};
+
     /**
      * The new instantiated GameObject (requestIntantiate() method) that will be inserted in mTargets
      */
@@ -32,9 +34,8 @@ public:
     std::string dump() const;
 
 private:
-    std::unique_ptr<Component> build_component(const pugi::xml_node& c);
-    std::unique_ptr<GameObject> build_go(const pugi::xml_node& go, GameObject* parent);
-    std::unique_ptr<GameObject> build_prefab(const pugi::xml_node& obj, GameObject* parent);
+    std::unique_ptr<GameObject> build_go(const pugi::xml_node& go);
+    std::unique_ptr<GameObject> build_prefab(const pugi::xml_node& obj);
 
 };
 

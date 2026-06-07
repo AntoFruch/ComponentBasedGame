@@ -11,7 +11,7 @@
 
 void Scene::Start()
 {
-    for (auto& go : mTargets)
+    for (auto& go : mObjects)
     {
         go->start();
     }
@@ -19,11 +19,11 @@ void Scene::Start()
 
 void Scene::Update(const sf::Time& elapsedTime)
 {
-    for (auto& go : mTargets)
+    for (auto& go : mObjects)
     {
         go->update(elapsedTime);
     }
-    std::erase_if(mTargets, [](const std::unique_ptr<GameObject>& go)
+    std::erase_if(mObjects, [](const std::unique_ptr<GameObject>& go)
     {
         return go->isWaitingDestruction();
     });
@@ -31,14 +31,7 @@ void Scene::Update(const sf::Time& elapsedTime)
     if (instantiateRequested) applyInstantiate();
 }
 
-std::unique_ptr<Component> Scene::build_component(const pugi::xml_node& c) // Plus de GameObject* ici
-{
-    std::string name = c.attribute("name").as_string();
-    return ComponentFactory::Create(name, c);
-
-}
-
-std::unique_ptr<GameObject> Scene::build_go(const pugi::xml_node& go, GameObject* parent)
+std::unique_ptr<GameObject> Scene::build_go(const pugi::xml_node& go)
 {
     auto ptr = std::make_unique<GameObject>(
                 go.attribute("label").as_string(),
@@ -55,21 +48,21 @@ std::unique_ptr<GameObject> Scene::build_go(const pugi::xml_node& go, GameObject
         {
             for (const auto& component : c.children("Component"))
             {
-                ptr->addComponent(build_component(component));
+                ptr->addComponent(ComponentFactory::Create(component.attribute("name").as_string(), component));
             }
         }
         if (name == "GameObject")
         {
-            ptr->addChild(build_go(c, ptr.get()));
+            ptr->addChild(build_go(c));
         }
         if (name == "Prefab")
         {
-            ptr->addChild(build_prefab(c, ptr.get()));
+            ptr->addChild(build_prefab(c));
         }
     }
     return std::move(ptr);
 }
-std::unique_ptr<GameObject> Scene::build_prefab(const pugi::xml_node& obj, GameObject* parent)
+std::unique_ptr<GameObject> Scene::build_prefab(const pugi::xml_node& obj)
 {
     pugi::xml_document doc;
     if (auto result = doc.load_file(obj.attribute("src").as_string()); !result) {
@@ -81,7 +74,7 @@ std::unique_ptr<GameObject> Scene::build_prefab(const pugi::xml_node& obj, GameO
         throw IllegalOperationException("Prefab files must have a unique root node named \"GameObject\"");
     }
 
-    auto prefab = build_go(root_node, parent);
+    auto prefab = build_go(root_node);
     if (obj.attribute("x") || obj.attribute("y"))
     {
         prefab->transform.move({obj.attribute("x").as_float(), obj.attribute("y").as_float()});
@@ -115,12 +108,12 @@ void Scene::load(std::string_view scenePath)
         std::string name = obj.name();
         if ( name == "GameObject")
         {
-            mTargets.push_back(build_go(obj, nullptr));
+            mObjects.push_back(build_go(obj));
             continue;
         }
         if ( name == "Prefab")
         {
-            mTargets.push_back(build_prefab(obj, nullptr));
+            mObjects.push_back(build_prefab(obj));
             continue;
         }
         throw IllegalOperationException("Node Scene children must be GameObject or Prefab");
@@ -129,14 +122,14 @@ void Scene::load(std::string_view scenePath)
 
 void Scene::unload()
 {
-    mTargets.clear();
+    mObjects.clear();
 }
 
 void Scene::applyInstantiate()
 {
     instantiateRequested = false;
     requestGO->start();
-    mTargets.push_back(std::move(requestGO));
+    mObjects.push_back(std::move(requestGO));
 }
 
 GameObject* Scene::requestInstantiate(std::string_view prefabPath)
@@ -182,7 +175,7 @@ std::string Scene::dump() const
     };
 
     // Lancement du parcours pour chaque GameObject racine de la scène
-    for (const auto& go : mTargets)
+    for (const auto& go : mObjects)
     {
         dumpGameObject(dumpGameObject, go, "  ");
     }

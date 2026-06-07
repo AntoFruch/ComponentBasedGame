@@ -17,6 +17,7 @@ class SceneManager {
 public:
     static void init(Scene* ptr);
     static void Update(const sf::Time& elapsedTime);
+
     /**
      * @brief Enregistre une demande de changement de scène, le changement sera effectif à la fin de la boucle d'update
      * @param path

@@ -75,9 +75,6 @@ void Renderer::Update(const sf::Time& elapsedTime)
 
 void Renderer::render(sf::RenderWindow& window) const
 {
-    // DEBUG
-    //sdif (auto hb = gameObject->getComponent<Collider>()) hb->debugDraw(window);
-
     window.draw(mShape);
 }
 
