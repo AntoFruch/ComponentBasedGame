@@ -15,6 +15,7 @@ void Scene::Start()
     {
         go->start();
     }
+    mUI->start();
 }
 
 void Scene::Update(const sf::Time& elapsedTime)
@@ -27,6 +28,9 @@ void Scene::Update(const sf::Time& elapsedTime)
     {
         return go->isWaitingDestruction();
     });
+
+    if (mUI) mUI->update(elapsedTime);
+
     if (SceneManager::loadingReq) SceneManager::applyRequest();
     if (instantiateRequested) applyInstantiate();
 }
@@ -116,7 +120,15 @@ void Scene::load(std::string_view scenePath)
             mObjects.push_back(build_prefab(obj));
             continue;
         }
-        throw IllegalOperationException("Node Scene children must be GameObject or Prefab");
+        if ( name == "UI")
+        {
+            if (static bool UIdefined = false; !UIdefined) {
+                mUI = build_go(obj);
+                UIdefined=true;
+            }
+            continue;
+        }
+        throw IllegalOperationException("Node Scene children must be GameObject Prefab or UI");
     }
 }
 
@@ -145,7 +157,7 @@ GameObject* Scene::requestInstantiate(std::string_view prefabPath)
         throw IllegalOperationException("Prefab files must have a unique root node named \"GameObject\"");
     }
 
-    auto prefab = build_go(root_node, nullptr);
+    auto prefab = build_go(root_node);
     auto ret_ptr = prefab.get();
     requestGO = std::move(prefab);
 

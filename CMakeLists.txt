@@ -40,6 +40,10 @@ add_library(lib_engine
         Engine.h
         Managers/Scene/Scene.cpp
         Managers/Scene/Scene.h
+        Components/UIElement.cpp
+        Components/UIElement.h
+        Managers/UI/UIManager.cpp
+        Managers/UI/UIManager.h
 )
 target_include_directories(lib_engine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(lib_engine PUBLIC pugixml sfml-graphics)

@@ -11,7 +11,7 @@
 
 class Scene {
     std::vector<std::unique_ptr<GameObject>> mObjects;
-    
+    std::unique_ptr<GameObject> mUI;
 
     bool instantiateRequested{false};
 
