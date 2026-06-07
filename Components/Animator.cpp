@@ -8,6 +8,8 @@
 #include "GameObject.h"
 #include "Managers/Scene/ComponentFactory.h"
 
+#include <iostream>
+
 // --- ENREGISTREMENT AUTOMATIQUE ---
 // On crée une variable globale/statique anonyme.
 // Son seul but est de s'exécuter AVANT le début du jeu pour enregistrer le composant.
@@ -65,6 +67,26 @@ void Animator::setParam(const std::string& label, const std::variant<bool, float
     }
 }
 
+void Animator::registerAnimationEvent(const std::string &animationState,
+                                      unsigned int triggerFrame,
+                                      EventCallback cbFunc) {
+    m_animationEvents.try_emplace(animationState, animationState, triggerFrame, cbFunc);
+}
+void Animator::checkForAndApplyEvent() {
+    // std::cout << "[Animator] State: " << m_currentState->name << " | Frame: " << currentFrame_x << "\n";
+
+    if (m_animationEvents.contains(m_currentState->name)) {
+        auto& event = m_animationEvents.at(m_currentState->name);
+        if (event.triggerFrame == currentFrame_x - m_currentState->startFramex) {
+        //    std::cout << "[Animator][EVENT] Triggered on state '" << m_currentState->name << "'"
+        //              << " at frame " << currentFrame_x << "!\n";
+
+            // Exécution du callback
+            event.callback();
+        }
+    }
+}
+
 void Animator::makeTransition()
 {
     if (!m_currentState->breakable && currentFrame_x-m_currentState->startFramex != m_currentState->length-1) return;
@@ -118,5 +140,6 @@ void Animator::switchFrame()
         {
             makeTransition();
         }
+        checkForAndApplyEvent();
     }
 }

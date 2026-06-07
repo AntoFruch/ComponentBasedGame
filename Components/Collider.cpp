@@ -35,7 +35,7 @@ namespace {
 
 
 
-Collider::Collider(const sf::Vector2f& pos, const sf::Vector2f& dimensions, bool trigger) : localPos(pos), trigger(trigger), triggerActivated(false)
+Collider::Collider(const sf::Vector2f& pos, const sf::Vector2f& dimensions, bool trigger) : localPos(pos), trigger(trigger)
 {
     hitbox = sf::RectangleShape();
     hitbox.setSize(dimensions);
@@ -64,7 +64,7 @@ void Collider::Update(const sf::Time& elapsedTime)
     Component::Update(elapsedTime);
     syncWithTransform();
 
-    if (!isTrigger() || !triggerActivated) return;
+    if (!isTrigger()) return;
 
     if (const auto& hitColliders = CollisionsManager::checkTrigger(*this); !hitColliders.empty())
     {
@@ -126,11 +126,6 @@ sf::Vector2f Collider::getSize()
 sf::FloatRect Collider::getBounds() const
 {
     return hitbox.getTransform().transformRect(sf::FloatRect({0.f, 0.f}, hitbox.getSize()));
-}
-
-void Collider::setTriggerActivationState(bool state)
-{
-    triggerActivated = state;
 }
 
 void Collider::setTriggerCallback(void(* callback)(const std::vector<Collider*>&, Collider*))
