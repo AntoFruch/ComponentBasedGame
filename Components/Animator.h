@@ -7,6 +7,8 @@
 #include "Managers/Animation/AnimatorGraph.h"
 #include "Component.h"
 #include "Renderer.h"
+#include <functional>
+
 using EventCallback = std::function<void()>;
 
 struct AnimationEvent {
