@@ -32,9 +32,9 @@ public:
     sf::Angle getWorldRotation() const;
     sf::Vector2f getWorldScale() const;
 
-    void set_position(const sf::Vector2f& position);
-    void set_rotation(const sf::Angle& rotation);
-    void set_scale(const sf::Vector2f& scale);
+    void setLocalPosition(const sf::Vector2f& position);
+    void setLocalRotation(const sf::Angle& rotation);
+    void setLocalScale(const sf::Vector2f& scale);
     
     void move(sf::Vector2f amount);
     void rotate(sf::Angle amount);

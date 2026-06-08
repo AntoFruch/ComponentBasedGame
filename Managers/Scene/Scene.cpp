@@ -15,7 +15,6 @@ void Scene::Start()
     {
         go->start();
     }
-    mUI->start();
 }
 
 void Scene::Update(const sf::Time& elapsedTime)
@@ -29,8 +28,6 @@ void Scene::Update(const sf::Time& elapsedTime)
         return go->isWaitingDestruction();
     });
 
-    if (mUI) mUI->update(elapsedTime);
-
     if (SceneManager::loadingReq) SceneManager::applyRequest();
     if (instantiateRequested) applyInstantiate();
 }
@@ -39,9 +36,15 @@ std::unique_ptr<GameObject> Scene::build_go(const pugi::xml_node& go)
 {
     auto ptr = std::make_unique<GameObject>(
                 go.attribute("label").as_string(),
-                sf::Vector2f{go.attribute("x").as_float(),go.attribute("y").as_float()},
+                sf::Vector2f{
+                    go.attribute("x").as_float(),
+                    go.attribute("y").as_float()
+                },
                 sf::degrees(go.attribute("angle").as_float()),
-                sf::Vector2f{go.attribute("sx").as_float(),go.attribute("sy").as_float()},
+                sf::Vector2f{
+                    go.attribute("sx") ? go.attribute("sx").as_float() : 1,
+                    go.attribute("sy") ? go.attribute("sy").as_float() : 1,
+                },
                 go.attribute("active") ? go.attribute("active").as_bool() : true
                 );
 
@@ -120,15 +123,7 @@ void Scene::load(std::string_view scenePath)
             mObjects.push_back(build_prefab(obj));
             continue;
         }
-        if ( name == "UI")
-        {
-            if (static bool UIdefined = false; !UIdefined) {
-                mUI = build_go(obj);
-                UIdefined=true;
-            }
-            continue;
-        }
-        throw IllegalOperationException("Node Scene children must be GameObject Prefab or UI");
+        throw IllegalOperationException("Node Scene children must be GameObject or Prefab");
     }
 }
 
@@ -191,6 +186,5 @@ std::string Scene::dump() const
     {
         dumpGameObject(dumpGameObject, go, "  ");
     }
-
     return oss.str();
 }

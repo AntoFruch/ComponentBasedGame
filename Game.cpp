@@ -7,7 +7,6 @@
 #include "Managers/Input/InputManager.h"
 #include "Managers/Render/RenderManager.h"
 #include "Managers/Scene/SceneManager.h"
-#include "Managers/UI/UIManager.h"
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
@@ -66,7 +65,6 @@ void Game::update(const sf::Time elapsedTime) {
 void Game::render() {
   RenderManager::renderAll(mWindow);
   CollisionsManager::debugDraw(mWindow);
-  UIManager::renderAll(mWindow);
 
   //mWindow.draw(mStatisticsText);
   mWindow.display();

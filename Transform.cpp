@@ -62,17 +62,17 @@ sf::Vector2f Transform::getWorldScale() const
     return {parentScale.x * scale.x, parentScale.y * scale.y};
 }
 
-void Transform::set_position(const sf::Vector2f& position)
+void Transform::setLocalPosition(const sf::Vector2f& position)
 {
     this->position = position;
 }
 
-void Transform::set_rotation(const sf::Angle& rotation)
+void Transform::setLocalRotation(const sf::Angle& rotation)
 {
     this->rotation = rotation;
 }
 
-void Transform::set_scale(const sf::Vector2f& scale)
+void Transform::setLocalScale(const sf::Vector2f& scale)
 {
     this->scale = scale;
 }
