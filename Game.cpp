@@ -7,10 +7,11 @@
 #include "Managers/Input/InputManager.h"
 #include "Managers/Render/RenderManager.h"
 #include "Managers/Scene/SceneManager.h"
+#include "TGUI/AllWidgets.hpp"
 
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
-Game::Game() {
+Game::Game(const std::string& scenePath) {
   assert(mFont.openFromFile("resources/fonts/Sansation.ttf"));
   // We do not need to do mStatisticsText.setFont(mFont); as mStatisticsText is
   // initialized with a reference to mFont
@@ -19,10 +20,11 @@ Game::Game() {
 
   InputManager::init();
 
-  scene=std::make_unique<Scene>();
+  scene=std::make_unique<Scene>(mWindow);
   SceneManager::init(scene.get());
   RenderManager::init(&mWindow);
-  SceneManager::requestLoading("resources/scenes/scene.xml");
+
+  SceneManager::requestLoading(scenePath);
 }
 
 void Game::run() {

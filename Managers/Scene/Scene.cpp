@@ -9,6 +9,10 @@
 #include "ComponentFactory.h"
 #include "exceptions/IllegalOperationException.h"
 
+Scene::Scene(sf::RenderWindow& window) : mGui(window)
+{
+}
+
 void Scene::Start()
 {
     for (auto& go : mObjects)
@@ -123,7 +127,7 @@ void Scene::load(std::string_view scenePath)
             mObjects.push_back(build_prefab(obj));
             continue;
         }
-        throw IllegalOperationException("Node Scene children must be GameObject or Prefab");
+        throw IllegalOperationException("Node Scene children must be GameObject, Prefab or UI");
     }
 }
 
@@ -159,6 +163,11 @@ GameObject* Scene::requestInstantiate(std::string_view prefabPath)
     instantiateRequested = true;
 
     return ret_ptr;
+}
+
+tgui::Gui* Scene::getGui()
+{
+    return &mGui;
 }
 
 std::string Scene::dump() const

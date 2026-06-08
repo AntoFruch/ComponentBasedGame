@@ -6,11 +6,10 @@
 
 #include <iostream>
 
-// --- DÉFINITION DES VARIABLES STATIQUES ---
+
 Scene* SceneManager::scene = nullptr;
 bool SceneManager::loadingReq = false;
 std::string SceneManager::reqPath = "";
-// -----------------------------------------
 
 void SceneManager::init(Scene* ptr)
 {
@@ -46,4 +45,9 @@ void SceneManager::applyRequest()
 GameObject* SceneManager::instantiate(std::string_view prefab)
 {
     return scene->requestInstantiate(prefab);
+}
+
+tgui::Gui* SceneManager::getGui()
+{
+    return scene->getGui();
 }

@@ -8,9 +8,11 @@
 #include <pugixml.hpp>
 
 #include "GameObject.h"
+#include "TGUI/Backend/SFML-Graphics.hpp"
 
 class Scene {
     std::vector<std::unique_ptr<GameObject>> mObjects;
+    tgui::Gui mGui;
 
     bool instantiateRequested{false};
 
@@ -20,7 +22,7 @@ class Scene {
     std::unique_ptr<GameObject> requestGO;
 
 public:
-    Scene() = default;
+    Scene(sf::RenderWindow& window);
     void Start();
     void Update(const sf::Time& elapsedTime);
 
@@ -30,12 +32,13 @@ public:
     void applyInstantiate();
     GameObject* requestInstantiate(std::string_view prefabPath);
 
+    [[nodiscard]] tgui::Gui* getGui();
+
     std::string dump() const;
 
 private:
     std::unique_ptr<GameObject> build_go(const pugi::xml_node& go);
     std::unique_ptr<GameObject> build_prefab(const pugi::xml_node& obj);
-
 };
 
 

@@ -26,6 +26,8 @@ public:
 
     static GameObject* instantiate(std::string_view prefab);
 
+    static tgui::Gui* getGui();
+
 private:
     friend class Scene;
     static void applyRequest();

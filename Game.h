@@ -7,18 +7,19 @@
 #include "GameObject.h"
 #include "Components/Renderer.h"
 #include "Managers/Scene/Scene.h"
+#include "TGUI/Backend/SFML-Graphics.hpp"
 
 
 class Game {
 public:
-    Game();
+    Game(const std::string& scenePath);
     Game(const Game &) = delete;
     Game &operator=(const Game &) = delete;
 
     void run();
 
-    static constexpr int W_WIDTH{640};
-    static constexpr int W_HEIGHT{480};
+    static constexpr int W_WIDTH{1560};
+    static constexpr int W_HEIGHT{900};
 
 private:
 

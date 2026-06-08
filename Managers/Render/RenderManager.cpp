@@ -7,6 +7,7 @@
 #include <set>
 
 #include "Managers/Collisions/CollisionsManager.h"
+#include "Managers/Scene/SceneManager.h"
 
 std::vector<Renderer*> RenderManager::mRenderers{};
 Camera* RenderManager::mainCamera{nullptr};
@@ -40,6 +41,8 @@ void RenderManager::renderAll(sf::RenderWindow& window)
     {
         renderer->render(window);
     }
+
+    SceneManager::getGui()->draw();
 }
 
 void RenderManager::setMainCamera(Camera* cam)

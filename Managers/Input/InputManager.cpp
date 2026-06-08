@@ -7,6 +7,7 @@
 #include <iostream>
 
 #include "pugixml.hpp"
+#include "Managers/Scene/SceneManager.h"
 
 const std::unordered_map<std::string, sf::Keyboard::Key> stringToKey = {
     {"Unknown", sf::Keyboard::Key::Unknown},
@@ -177,6 +178,7 @@ InputAction* InputManager::findAction(const std::string& action_name)
 
 void InputManager::processEvents(std::optional<sf::Event> event)
 {
+    SceneManager::getGui()->handleEvent(*event);
     // On regarde les touches appuyées et on les met/enleve de pressed_key
     if (const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
         pressed_keys.insert(keyPressed->code);

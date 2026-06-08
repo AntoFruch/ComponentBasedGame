@@ -5,6 +5,7 @@
 #ifndef COMPONENT_BASED_ARCH_ENGINE_H
 #define COMPONENT_BASED_ARCH_ENGINE_H
 
+#include "Game.h"
 // Ce que les clients externes doivent utiliser
 #include "GameObject.h"
 #include "Transform.h"
