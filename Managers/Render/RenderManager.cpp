@@ -18,6 +18,7 @@ const float RenderManager::referenceHeight = 480;
 void RenderManager::init(sf::RenderWindow* win)
 {
     window = win;
+    tgui::Texture::setDefaultSmooth(false);
 }
 
 void RenderManager::registerRenderer(Renderer* renderer)
