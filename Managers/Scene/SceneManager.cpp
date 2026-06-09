@@ -47,6 +47,16 @@ GameObject* SceneManager::instantiate(std::string_view prefab)
     return scene->requestInstantiate(prefab);
 }
 
+void SceneManager::freeze()
+{
+    scene->freeze();
+}
+
+void SceneManager::unfreeze()
+{
+    scene->unfreeze();
+}
+
 tgui::Gui* SceneManager::getGui()
 {
     return scene->getGui();

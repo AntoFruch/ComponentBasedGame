@@ -14,6 +14,7 @@ class SceneManager {
 
     static bool loadingReq;
     static std::string reqPath;
+
 public:
     static void init(Scene* ptr);
     static void Update(const sf::Time& elapsedTime);
@@ -25,6 +26,9 @@ public:
     static void requestLoading(std::string_view path);
 
     static GameObject* instantiate(std::string_view prefab);
+
+    static void freeze();
+    static void unfreeze();
 
     static tgui::Gui* getGui();
 

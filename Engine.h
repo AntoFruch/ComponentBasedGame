@@ -15,9 +15,11 @@
 #include "Components/Animator.h"
 #include "Components/Collider.h"
 #include "Components/Camera.h"
+#include "Components/UIDocument.h"
 
 #include "Managers/Scene/SceneManager.h"
 #include "Managers/Scene/ComponentFactory.h"
 #include "Managers/Input/InputAction.h"
+
 
 #endif //COMPONENT_BASED_ARCH_ENGINE_H

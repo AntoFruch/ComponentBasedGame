@@ -21,6 +21,8 @@ class Scene {
      */
     std::unique_ptr<GameObject> requestGO;
 
+    bool frozen{false};
+
 public:
     Scene(sf::RenderWindow& window);
     void Start();
@@ -31,6 +33,9 @@ public:
 
     void applyInstantiate();
     GameObject* requestInstantiate(std::string_view prefabPath);
+
+    void freeze();
+    void unfreeze();
 
     [[nodiscard]] tgui::Gui* getGui();
 

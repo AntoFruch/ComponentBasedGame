@@ -23,14 +23,16 @@ void Scene::Start()
 
 void Scene::Update(const sf::Time& elapsedTime)
 {
-    for (auto& go : mObjects)
-    {
-        go->update(elapsedTime);
+    if (!frozen) {
+        for (auto& go : mObjects)
+        {
+            go->update(elapsedTime);
+        }
+        std::erase_if(mObjects, [](const std::unique_ptr<GameObject>& go)
+        {
+            return go->isWaitingDestruction();
+        });
     }
-    std::erase_if(mObjects, [](const std::unique_ptr<GameObject>& go)
-    {
-        return go->isWaitingDestruction();
-    });
 
     if (SceneManager::loadingReq) SceneManager::applyRequest();
     if (instantiateRequested) applyInstantiate();
@@ -163,6 +165,16 @@ GameObject* Scene::requestInstantiate(std::string_view prefabPath)
     instantiateRequested = true;
 
     return ret_ptr;
+}
+
+void Scene::freeze()
+{
+    frozen=true;
+}
+
+void Scene::unfreeze()
+{
+    frozen=false;
 }
 
 tgui::Gui* Scene::getGui()
