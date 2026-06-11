@@ -11,8 +11,8 @@
 #include "TGUI/Backend/SFML-Graphics.hpp"
 
 class Scene {
-    std::vector<std::unique_ptr<GameObject>> mObjects;
     tgui::Gui mGui;
+    std::vector<std::unique_ptr<GameObject>> mObjects;
 
     bool instantiateRequested{false};
 
