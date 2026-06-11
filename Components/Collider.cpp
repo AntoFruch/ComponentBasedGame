@@ -128,7 +128,7 @@ sf::FloatRect Collider::getBounds() const
     return hitbox.getTransform().transformRect(sf::FloatRect({0.f, 0.f}, hitbox.getSize()));
 }
 
-void Collider::setTriggerCallback(void(* callback)(const std::vector<Collider*>&, Collider*))
+void Collider::setTriggerCallback(std::function<void(const std::vector<Collider*>&, Collider*)> callback)
 {
     this->callback = callback;
 }

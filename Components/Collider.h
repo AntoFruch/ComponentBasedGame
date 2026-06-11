@@ -12,14 +12,19 @@ Collider : public Component {
     sf::RectangleShape hitbox;
     sf::Vector2f localPos;
 
+    /**
+     * true : type trigger ( no solid collisions)
+     * false: type solid ( solid collisions)
+     */
     bool trigger;
+
     /**
      * @brief function ptr, the function is executed when a trigger collider triggers
      * must have arguments :
      * @param hits vector of pointers of hit targets
      * @param self pointer to the trigger
      */
-    void (*callback)(const std::vector<Collider*>& hits, Collider* self);
+    std::function<void(const std::vector<Collider*>& hits, Collider* self)> callback;
 
 public:
     Collider(const sf::Vector2f& pos, const sf::Vector2f& dimensions, bool trigger);
@@ -34,7 +39,7 @@ public:
 
     [[nodiscard]] bool isTrigger() const;
 
-    void setTriggerCallback(void (*callback)(const std::vector<Collider*>&, Collider*));
+    void setTriggerCallback(std::function<void(const std::vector<Collider*>&, Collider*)> callback);
 
 private:
     friend class CollisionsManager;

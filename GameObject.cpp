@@ -71,6 +71,10 @@ std::string_view GameObject::getLabel() const
 {
     return label;
 }
+void GameObject::setLabel(const std::string& label)
+{
+    this->label= label;
+}
 
 void GameObject::setActive(bool active)
 {

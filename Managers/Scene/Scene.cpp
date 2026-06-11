@@ -88,6 +88,10 @@ std::unique_ptr<GameObject> Scene::build_prefab(const pugi::xml_node& obj)
     }
 
     auto prefab = build_go(root_node);
+    if (obj.attribute("label"))
+    {
+        prefab->setLabel(obj.attribute("label").as_string());
+    }
     if (obj.attribute("x") || obj.attribute("y"))
     {
         prefab->transform.move({obj.attribute("x").as_float(), obj.attribute("y").as_float()});
@@ -111,6 +115,7 @@ void Scene::load(std::string_view scenePath)
 {
     std::filesystem::path path = scenePath;
     pugi::xml_document doc;
+    std::cout << scenePath << std::endl;
     if (auto result = doc.load_file(path.c_str()); !result) {
         std::cerr << "Could not open scene because " << result.description() << std::endl;
     }

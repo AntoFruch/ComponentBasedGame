@@ -34,6 +34,7 @@ public:
     GameObject* getChild(std::string_view label) const;
 
     std::string_view getLabel() const;
+    void setLabel(const std::string&);
     void setActive(bool);
 
     bool isWaitingDestruction() const;
