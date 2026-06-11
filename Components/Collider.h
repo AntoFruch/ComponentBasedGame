@@ -6,6 +6,7 @@
 #define COMPONENT_BASED_ARCH_COLLIDER_H
 #include "Component.h"
 #include "SFML/Graphics.hpp"
+#include <functional>
 
 class
 Collider : public Component {

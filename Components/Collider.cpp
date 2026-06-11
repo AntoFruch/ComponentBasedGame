@@ -5,6 +5,7 @@
 #include "Collider.h"
 
 #include <iostream>
+#include <utility>
 
 #include "Managers/Collisions/CollisionsManager.h"
 #include "GameObject.h"
@@ -130,7 +131,7 @@ sf::FloatRect Collider::getBounds() const
 
 void Collider::setTriggerCallback(std::function<void(const std::vector<Collider*>&, Collider*)> callback)
 {
-    this->callback = callback;
+    this->callback = std::move(callback);
 }
 
 void Collider::debugDraw(sf::RenderWindow& window)
