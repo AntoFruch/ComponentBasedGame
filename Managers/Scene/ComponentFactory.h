@@ -22,6 +22,4 @@ private:
     static std::unordered_map<std::string, Creator>& GetRegistry();
 };
 
-
-
 #endif //COMPONENT_BASED_ARCH_COMPONENTFACTORY_H

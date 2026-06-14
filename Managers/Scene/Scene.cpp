@@ -4,10 +4,13 @@
 
 #include "Scene.h"
 #include "SceneManager.h"
+#include <format>
 #include <iostream>
 
 #include "ComponentFactory.h"
 #include "exceptions/IllegalOperationException.h"
+
+Scene::Scene() = default;
 
 Scene::Scene(sf::RenderWindow& window) : mGui(window)
 {
@@ -40,6 +43,11 @@ void Scene::Update(const sf::Time& elapsedTime)
 
 std::unique_ptr<GameObject> Scene::build_go(const pugi::xml_node& go)
 {
+    if (std::string nodeName = go.name(); nodeName != "GameObject")
+    {
+        throw IllegalOperationException("GameObject parser received a node that is not named \"GameObject\"");
+    }
+
     auto ptr = std::make_unique<GameObject>(
                 go.attribute("label").as_string(),
                 sf::Vector2f{
@@ -59,27 +67,46 @@ std::unique_ptr<GameObject> Scene::build_go(const pugi::xml_node& go)
         std::string name = c.name();
         if (name=="Components")
         {
-            for (const auto& component : c.children("Component"))
+            for (const auto& component : c.children())
             {
-                ptr->addComponent(ComponentFactory::Create(component.attribute("name").as_string(), component));
+                if (std::string componentNodeName = component.name(); componentNodeName != "Component")
+                {
+                    throw IllegalOperationException("Components node children must be named \"Component\"");
+                }
+                const std::string componentName = component.attribute("name").as_string();
+                if (componentName.empty())
+                {
+                    throw IllegalOperationException("Component node must have a non-empty \"name\" attribute");
+                }
+                ptr->addComponent(ComponentFactory::Create(componentName, component));
             }
+            continue;
         }
         if (name == "GameObject")
         {
             ptr->addChild(build_go(c));
+            continue;
         }
         if (name == "Prefab")
         {
             ptr->addChild(build_prefab(c));
+            continue;
         }
+        throw IllegalOperationException("GameObject children must be Components, GameObject or Prefab");
     }
     return std::move(ptr);
 }
 std::unique_ptr<GameObject> Scene::build_prefab(const pugi::xml_node& obj)
 {
+    const std::string prefabPath = obj.attribute("src").as_string();
+    if (prefabPath.empty())
+    {
+        throw IllegalOperationException("Prefab node must have a non-empty \"src\" attribute");
+    }
+
     pugi::xml_document doc;
-    if (auto result = doc.load_file(obj.attribute("src").as_string()); !result) {
-        std::cerr << "Could not open prefab because " << result.description() << std::endl;
+    if (auto result = doc.load_file(prefabPath.c_str()); !result) {
+        throw IllegalOperationException(std::format("Could not open prefab because {}", result.description()));
     }
     auto root_node = doc.child("GameObject");
     if (!root_node)
@@ -117,10 +144,14 @@ void Scene::load(std::string_view scenePath)
     pugi::xml_document doc;
     std::cout << scenePath << std::endl;
     if (auto result = doc.load_file(path.c_str()); !result) {
-        std::cerr << "Could not open scene because " << result.description() << std::endl;
+        throw IllegalOperationException(std::format("Could not open scene because {}", result.description()));
     }
 
     pugi::xml_node sceneObj = doc.child("Scene");
+    if (!sceneObj)
+    {
+        throw IllegalOperationException("Root node of scene must be named \"Scene\"");
+    }
     for (const auto& obj : sceneObj)
     {
         std::string name = obj.name();
@@ -153,9 +184,13 @@ void Scene::applyInstantiate()
 GameObject* Scene::requestInstantiate(std::string_view prefabPath)
 {
     std::filesystem::path path = prefabPath;
+    if (path.empty())
+    {
+        throw IllegalOperationException("Prefab path must be non-empty");
+    }
     pugi::xml_document doc;
     if (auto result = doc.load_file(path.c_str()); !result) {
-        std::cerr << "Could not open prefab because " << result.description() << std::endl;
+        throw IllegalOperationException(std::format("Could not open prefab because {}", result.description()));
     }
     auto root_node = doc.child("GameObject");
     if (!root_node)

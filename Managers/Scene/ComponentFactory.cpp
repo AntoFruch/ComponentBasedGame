@@ -3,7 +3,10 @@
 //
 
 #include "ComponentFactory.h"
+#include <format>
 #include <unordered_map>
+
+#include "exceptions/IllegalOperationException.h"
 
 std::unique_ptr<Component> ComponentFactory::Create(const std::string& name, const pugi::xml_node& node)
 {
@@ -11,7 +14,7 @@ std::unique_ptr<Component> ComponentFactory::Create(const std::string& name, con
     if (auto it = registry.find(name); it != registry.end()) {
         return it->second(node); // Appelle la procédure de création à partir du node xml
     }
-    return nullptr;
+    throw IllegalOperationException(std::format("Class {} does not exist.", name));
 }
 
 void ComponentFactory::Register(const std::string& name, Creator creator)

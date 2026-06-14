@@ -24,6 +24,7 @@ class Scene {
     bool frozen{false};
 
 public:
+    Scene();
     Scene(sf::RenderWindow& window);
     void Start();
     void Update(const sf::Time& elapsedTime);
