@@ -4,8 +4,12 @@
 
 #ifndef COMPONENT_BASED_ARCH_RENDERMANAGER_H
 #define COMPONENT_BASED_ARCH_RENDERMANAGER_H
-#include "Components/Camera.h"
-#include "Components/Renderer.h"
+#include <vector>
+
+#include "SFML/Graphics.hpp"
+
+class Camera;
+class Renderer;
 
 
 class RenderManager {

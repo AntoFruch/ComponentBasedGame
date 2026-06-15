@@ -7,6 +7,7 @@
 
 
 #include "Engine.h"
+#include "Managers/Scene/ComponentFactory.h"
 
 class UIDocument : public Component {
     tgui::Gui* gui;
@@ -20,6 +21,11 @@ public:
     void Start() override;
     void Update(const sf::Time& elapsedTime) override;
     void addElement(const tgui::Widget::Ptr& widget, const std::string& name);
+
+private:
+    static inline bool s_registered = ComponentFactory::Register("UIDocument", [](const pugi::xml_node& node) -> std::unique_ptr<Component> {
+        return std::make_unique<UIDocument>();
+    });
 };
 
 

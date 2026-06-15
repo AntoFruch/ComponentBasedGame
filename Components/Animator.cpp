@@ -6,24 +6,8 @@
 
 #include "Managers/Animation/AnimatorTreeLoader.h"
 #include "GameObject.h"
-#include "Managers/Scene/ComponentFactory.h"
 
 #include <iostream>
-
-// --- ENREGISTREMENT AUTOMATIQUE ---
-// On crée une variable globale/statique anonyme.
-// Son seul but est de s'exécuter AVANT le début du jeu pour enregistrer le composant.
-namespace {
-    const bool registered = []() {
-        ComponentFactory::Register("Animator", [](const pugi::xml_node& node) {
-            return std::make_unique<Animator>(node.attribute("src").as_string());
-        });
-        return true;
-    }();
-}
-// --------------------------
-
-
 
 Animator::Animator(const std::string& animationTree_path)
 {

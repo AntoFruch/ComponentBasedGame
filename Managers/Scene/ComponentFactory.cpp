@@ -17,9 +17,16 @@ std::unique_ptr<Component> ComponentFactory::Create(const std::string& name, con
     throw IllegalOperationException(std::format("Class {} does not exist.", name));
 }
 
-void ComponentFactory::Register(const std::string& name, Creator creator)
+bool ComponentFactory::Register(const std::string& name, Creator creator)
 {
-    GetRegistry()[name] = creator;
+    auto& registry = GetRegistry();
+
+    if (!registry.contains(name)) {
+        registry[name] = creator;
+        return true;
+    }
+
+    return false;
 }
 
 std::unordered_map<std::string, ComponentFactory::Creator>& ComponentFactory::GetRegistry()

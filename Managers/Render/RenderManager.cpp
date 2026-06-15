@@ -6,6 +6,8 @@
 
 #include <set>
 
+#include "Components/Camera.h"
+#include "Components/Renderer.h"
 #include "Managers/Collisions/CollisionsManager.h"
 #include "Managers/Scene/SceneManager.h"
 

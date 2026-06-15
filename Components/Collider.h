@@ -5,6 +5,7 @@
 #ifndef COMPONENT_BASED_ARCH_COLLIDER_H
 #define COMPONENT_BASED_ARCH_COLLIDER_H
 #include "Component.h"
+#include "Managers/Scene/ComponentFactory.h"
 #include "SFML/Graphics.hpp"
 #include <functional>
 
@@ -51,6 +52,20 @@ private:
     sf::FloatRect getBounds() const;
 
     void debugDraw(sf::RenderWindow& window);
+
+    static inline bool s_registered = ComponentFactory::Register("Collider", [](const pugi::xml_node& node) -> std::unique_ptr<Component> {
+        return std::make_unique<Collider>(
+            sf::Vector2f{
+                node.attribute("x").as_float(),
+                node.attribute("y").as_float(),
+            },
+            sf::Vector2f{
+                node.attribute("width").as_float(),
+                node.attribute("height").as_float(),
+            },
+            node.attribute("trigger").as_bool()
+        );
+    });
 };
 
 #endif //COMPONENT_BASED_ARCH_COLLIDER_H

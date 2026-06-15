@@ -6,6 +6,7 @@
 #define COMPONENT_BASED_ARCH_ANIMATOR_H
 #include "Managers/Animation/AnimatorGraph.h"
 #include "Component.h"
+#include "Managers/Scene/ComponentFactory.h"
 #include "Renderer.h"
 #include <functional>
 
@@ -44,6 +45,10 @@ private:
     void makeTransition();
     const AnimationState* resolveState(const std::string& target);
     void switchFrame();
+
+    static inline bool s_registered = ComponentFactory::Register("Animator", [](const pugi::xml_node& node) -> std::unique_ptr<Component> {
+        return std::make_unique<Animator>(node.attribute("src").as_string());
+    });
 };
 
 

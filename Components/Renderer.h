@@ -7,6 +7,8 @@
 #include <memory>
 
 #include "Component.h"
+#include "Managers/Render/RenderManager.h"
+#include "Managers/Scene/ComponentFactory.h"
 #include "SFML/Graphics.hpp"
 
 
@@ -27,6 +29,22 @@ public:
     void render(sf::RenderWindow& window) const;
 
     void setCutRectPos(unsigned int x, unsigned int y);
+
+private:
+    static inline bool s_registered = ComponentFactory::Register("Renderer", [](const pugi::xml_node& node) -> std::unique_ptr<Component> {
+        auto ptr = std::make_unique<Renderer>(
+            node.attribute("src").as_string(),
+            sf::Vector2f{
+                node.attribute("anchorX").as_float(),
+                node.attribute("anchorY").as_float()
+            },
+            sf::Vector2u{
+                node.attribute("sprite_w").as_uint(),
+                node.attribute("sprite_h").as_uint()
+            });
+        RenderManager::registerRenderer(ptr.get());
+        return ptr;
+    });
 };
 
 
