@@ -56,3 +56,8 @@ void Renderer::setCutRectPos(unsigned int x, unsigned int y)
     cutRect.position = sf::Vector2i{static_cast<int>(x*spriteSize.x), static_cast<int>(y*spriteSize.y)};
     mShape.setTextureRect(cutRect);
 }
+
+const sf::Vector2u Renderer::getSpriteSize() const
+{
+    return spriteSize;
+}

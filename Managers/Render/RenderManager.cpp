@@ -37,6 +37,11 @@ void RenderManager::renderAll(sf::RenderWindow& window)
 {
     window.clear();
 
+    // best sorting algo for almost sorted lists;
+    std::ranges::stable_sort(mRenderers, std::less{}, [](const Renderer* r) {
+        return r->gameObject->transform.getWorldPosition().y - r->getSpriteSize().x;
+    });
+
     if (mainCamera){
         mainCamera->applyView(window);
     }
