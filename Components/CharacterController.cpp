@@ -8,20 +8,18 @@
 
 #include "GameObject.h"
 #include "pugixml.hpp"
+#include "exceptions/IllegalOperationException.h"
 #include "Managers/Collisions/CollisionsManager.h"
-
-CharacterController::CharacterController(const sf::Vector2f& colliderPos, const sf::Vector2f& colliderSize)
-    : colliderPos(colliderPos), colliderSize(colliderSize)
-{
-}
 
 void CharacterController::Start()
 {
     Component::Start();
-    auto ptr = std::make_unique<Collider>(colliderPos, colliderSize, false);
-    collider = ptr.get();
-    gameObject->addComponent(std::move(ptr));
-    collider->Start();
+    collider = gameObject->getComponent<Collider>();
+
+    if (!collider)
+    {
+        throw IllegalOperationException("CharacterController requires a Collider on the same GameObject");
+    }
 }
 
 void CharacterController::move(const sf::Vector2f& delta)

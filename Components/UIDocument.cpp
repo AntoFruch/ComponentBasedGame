@@ -6,7 +6,10 @@
 
 UIDocument::~UIDocument()
 {
-    gui->removeAllWidgets();
+    for (const auto& el: elements)
+    {
+        gui->remove(el);
+    }
 }
 
 void UIDocument::Start()
