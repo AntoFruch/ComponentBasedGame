@@ -11,6 +11,7 @@
 #include "Managers/Scene/ComponentFactory.h"
 #include "SFML/Graphics.hpp"
 
+std::unique_ptr<Component> create_renderer(pugi::xml_node const& node);
 
 class Renderer : public Component {
     sf::RectangleShape mShape;
@@ -33,21 +34,24 @@ public:
     const sf::Vector2u getSpriteSize() const;
 
 private:
-    static inline bool s_registered = ComponentFactory::Register("Renderer", [](const pugi::xml_node& node) -> std::unique_ptr<Component> {
-        auto ptr = std::make_unique<Renderer>(
-            node.attribute("src").as_string(),
-            sf::Vector2f{
-                node.attribute("anchorX").as_float(),
-                node.attribute("anchorY").as_float()
-            },
-            sf::Vector2u{
-                node.attribute("sprite_w").as_uint(),
-                node.attribute("sprite_h").as_uint()
-            });
-        RenderManager::registerRenderer(ptr.get());
-        return ptr;
-    });
+    static inline bool s_registered = ComponentFactory::Register("Renderer", create_renderer);
 };
+
+inline std::unique_ptr<Component> create_renderer(pugi::xml_node const& node)
+{
+    auto ptr = std::make_unique<Renderer>(
+        node.attribute("src").as_string(),
+        sf::Vector2f{
+            node.attribute("anchorX").as_float(),
+            node.attribute("anchorY").as_float()
+        },
+        sf::Vector2u{
+            node.attribute("sprite_w").as_uint(),
+            node.attribute("sprite_h").as_uint()
+        });
+    RenderManager::registerRenderer(ptr.get());
+    return ptr;
+}
 
 
 

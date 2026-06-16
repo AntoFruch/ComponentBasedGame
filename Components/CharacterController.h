@@ -10,6 +10,7 @@
 
 #include "Collider.h"
 
+std::unique_ptr<Component> create_character_controller(pugi::xml_node const& node);
 
 class CharacterController : public Component{
     Collider* collider;
@@ -20,10 +21,13 @@ public:
     void move(const sf::Vector2f& delta);
 
 private:
-    static inline bool s_registered = ComponentFactory::Register("CharacterController", [](const pugi::xml_node& node) -> std::unique_ptr<Component> {
-        return std::make_unique<CharacterController>();
-    });
+    static inline bool s_registered = ComponentFactory::Register("CharacterController", create_character_controller);
 };
+
+inline std::unique_ptr<Component> create_character_controller(pugi::xml_node const& node)
+{
+    return std::make_unique<CharacterController>();
+}
 
 
 

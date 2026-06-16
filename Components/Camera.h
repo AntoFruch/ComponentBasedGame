@@ -8,6 +8,7 @@
 #include "Managers/Scene/ComponentFactory.h"
 #include "SFML/Graphics.hpp"
 
+std::unique_ptr<Component> create_camera(pugi::xml_node const& node);
 
 class Camera : public Component {
     sf::View m_view;
@@ -23,10 +24,13 @@ public:
     void updateSize(sf::Vector2u size);
 
 private:
-    static inline bool s_registered = ComponentFactory::Register("Camera", [](const pugi::xml_node& node) -> std::unique_ptr<Component> {
-        return std::make_unique<Camera>();
-    });
+    static inline bool s_registered = ComponentFactory::Register("Camera", create_camera);
 };
+
+inline std::unique_ptr<Component> create_camera(pugi::xml_node const& node)
+{
+    return std::make_unique<Camera>();
+}
 
 
 

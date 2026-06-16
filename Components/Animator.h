@@ -18,6 +18,8 @@ struct AnimationEvent {
     const EventCallback callback;
 };
 
+std::unique_ptr<Component> create_animator(pugi::xml_node const& node);
+
 class Animator : public Component {
     Renderer* renderer;
     const AnimatorGraph* graph;
@@ -46,10 +48,13 @@ private:
     const AnimationState* resolveState(const std::string& target);
     void switchFrame();
 
-    static inline bool s_registered = ComponentFactory::Register("Animator", [](const pugi::xml_node& node) -> std::unique_ptr<Component> {
-        return std::make_unique<Animator>(node.attribute("src").as_string());
-    });
+    static inline bool s_registered = ComponentFactory::Register("Animator", create_animator);
 };
+
+inline std::unique_ptr<Component> create_animator(pugi::xml_node const& node)
+{
+    return std::make_unique<Animator>(node.attribute("src").as_string());
+}
 
 
 

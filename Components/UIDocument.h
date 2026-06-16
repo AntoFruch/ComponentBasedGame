@@ -9,6 +9,8 @@
 #include "Engine.h"
 #include "Managers/Scene/ComponentFactory.h"
 
+std::unique_ptr<Component> create_ui_document(pugi::xml_node const& node);
+
 class UIDocument : public Component {
     tgui::Gui* gui;
 
@@ -23,10 +25,13 @@ public:
     void addElement(const tgui::Widget::Ptr& widget, const std::string& name);
 
 private:
-    static inline bool s_registered = ComponentFactory::Register("UIDocument", [](const pugi::xml_node& node) -> std::unique_ptr<Component> {
-        return std::make_unique<UIDocument>();
-    });
+    static inline bool s_registered = ComponentFactory::Register("UIDocument", create_ui_document);
 };
+
+inline std::unique_ptr<Component> create_ui_document(pugi::xml_node const& node)
+{
+    return std::make_unique<UIDocument>();
+}
 
 
 
