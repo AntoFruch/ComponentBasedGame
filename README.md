@@ -1,5 +1,27 @@
 # Component Based Game Engine
 
+Ce README a ete genere par Codex a partir des demandes suivantes:
+
+```text
+je veux faire un gros readme qui detaille l'entiereté du fonctionnement du moteur avec des exemples et tout.
+
+Fais un plan un peu détaillé de quoi parler je veux qu'a partir de cette doc on puisse creer quelque chose en se basant sur le moteur
+
+on généra le readme apres validation du plan
+```
+
+```text
+ok tout les points sont bien , enleve le 21 sur les tests, le 24 et 25 aussi.
+
+le readme est destiné au moteur, AUCUNE DOC POUR LE RESTE NE FOIT Y FIGURER. tu peux néanmoins t'appuyer sur du code existant dans le reste pour illustrer des fonctionnements.
+
+dans le point 20 sur le build, pense bien a parler des dependances et comment les mettre dans le CMakeList, exemple de comment organiser les CmakeList (comme c'est actuellement en fait)
+
+génère le ReadMe dans engine directement
+
+met un sommaire au debut
+```
+
 Ce dossier contient un moteur 2D oriente composants, pense pour construire un jeu a partir de scenes XML, de prefabs, de composants C++ auto-enregistres, d'un systeme d'input, de rendu, d'animation, de collisions et d'UI.
 
 La documentation ci-dessous decrit le fonctionnement du moteur. Les exemples utilisent parfois des noms de composants ou de fichiers proches d'un projet existant, mais ils servent uniquement a illustrer l'utilisation du moteur.
