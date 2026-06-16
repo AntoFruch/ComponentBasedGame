@@ -114,6 +114,8 @@ void Animator::switchFrame()
     {
         m_timeCounter -= sf::milliseconds(m_currentState->frameDuration); // reset en gardant le surplus pour rester en rythme a peu pres
 
+        checkForAndApplyEvent();
+
         if (currentFrame_x < m_currentState->startFramex + m_currentState->length - 1)
         {
             ++currentFrame_x;
@@ -124,6 +126,5 @@ void Animator::switchFrame()
         {
             makeTransition();
         }
-        checkForAndApplyEvent();
     }
 }
