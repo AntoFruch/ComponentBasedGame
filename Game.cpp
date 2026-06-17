@@ -12,12 +12,6 @@
 const sf::Time Game::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Game::Game(const std::string& scenePath) {
-  assert(mFont.openFromFile("resources/fonts/Sansation.ttf"));
-  // We do not need to do mStatisticsText.setFont(mFont); as mStatisticsText is
-  // initialized with a reference to mFont
-  mStatisticsText.setPosition({5.f, 5.f});
-  mStatisticsText.setCharacterSize(10);
-
   InputManager::init();
 
   scene=std::make_unique<Scene>(mWindow);
@@ -41,7 +35,6 @@ void Game::run() {
       update(TimePerFrame);
     }
 
-    updateStatistics(elapsedTime);
     render();
   }
 }
@@ -67,21 +60,5 @@ void Game::update(const sf::Time elapsedTime) {
 void Game::render() {
   RenderManager::renderAll(mWindow);
   CollisionsManager::debugDraw(mWindow);
-
-  //mWindow.draw(mStatisticsText);
   mWindow.display();
-}
-
-void Game::updateStatistics(const sf::Time elapsedTime) {
-  mStatisticsUpdateTime += elapsedTime;
-  mStatisticsNumFrames += 1;
-
-  if (mStatisticsUpdateTime >= sf::seconds(1.0f)) {
-    mStatisticsText.setString(std::format(
-        "Frames / Second = {}\nTime / Update = {} us", mStatisticsNumFrames,
-        mStatisticsUpdateTime.asMicroseconds() / mStatisticsNumFrames));
-
-    mStatisticsUpdateTime -= sf::seconds(1.0f);
-    mStatisticsNumFrames = 0;
-  }
 }

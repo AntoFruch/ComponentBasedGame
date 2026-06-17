@@ -27,16 +27,9 @@ private:
     void update(sf::Time elapsedTime);
     void render();
 
-    void updateStatistics(sf::Time elapsedTime);
-
     static const sf::Time TimePerFrame;
 
     std::unique_ptr<Scene> scene;
-    sf::Font mFont;
-    sf::Text mStatisticsText{mFont};
-    sf::Time mStatisticsUpdateTime;
-
-    std::size_t mStatisticsNumFrames{0};
 
     sf::RenderWindow mWindow{sf::VideoMode({W_WIDTH, W_HEIGHT}), "SFML Application"};
 };
