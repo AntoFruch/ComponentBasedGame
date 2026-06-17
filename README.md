@@ -356,18 +356,15 @@ std::function<std::unique_ptr<Component>(const pugi::xml_node& node)>
 Chaque composant s'enregistre lui-meme dans la factory avec une variable statique:
 
 ```cpp
-std::unique_ptr<Component> create_my_component(pugi::xml_node const& node);
-
 class MyComponent : public Component {
 private:
     static inline bool s_registered =
-        ComponentFactory::Register("MyComponent", create_my_component);
+        ComponentFactory::Register("MyComponent",
+            [](const pugi::xml_node& node) -> std::unique_ptr<Component>
+            {
+                return std::make_unique<MyComponent>();
+            });
 };
-
-inline std::unique_ptr<Component> create_my_component(pugi::xml_node const& node)
-{
-    return std::make_unique<MyComponent>();
-}
 ```
 
 Le registre de la factory est une variable statique locale:
@@ -413,8 +410,6 @@ Sans cet include, le composant peut compiler dans une librairie statique mais ne
 
 #include "Engine.h"
 
-std::unique_ptr<Component> create_damage_zone(pugi::xml_node const& node);
-
 class DamageZone : public Component {
     int damage;
     Collider* collider{nullptr};
@@ -427,15 +422,14 @@ public:
 
 private:
     static inline bool s_registered =
-        ComponentFactory::Register("DamageZone", create_damage_zone);
+        ComponentFactory::Register("DamageZone",
+            [](const pugi::xml_node& node) -> std::unique_ptr<Component>
+            {
+                return std::make_unique<DamageZone>(
+                    node.attribute("damage").as_int()
+                );
+            });
 };
-
-inline std::unique_ptr<Component> create_damage_zone(pugi::xml_node const& node)
-{
-    return std::make_unique<DamageZone>(
-        node.attribute("damage").as_int()
-    );
-}
 
 #endif
 ```
@@ -973,8 +967,6 @@ Etapes:
 Exemple:
 
 ```cpp
-std::unique_ptr<Component> create_dialogue_box(pugi::xml_node const& node);
-
 class DialogueBox : public UIDocument {
     tgui::Label::Ptr text;
 
@@ -989,13 +981,12 @@ public:
 
 private:
     static inline bool s_registered =
-        ComponentFactory::Register("DialogueBox", create_dialogue_box);
+        ComponentFactory::Register("DialogueBox",
+            [](const pugi::xml_node& node) -> std::unique_ptr<Component>
+            {
+                return std::make_unique<DialogueBox>();
+            });
 };
-
-inline std::unique_ptr<Component> create_dialogue_box(pugi::xml_node const& node)
-{
-    return std::make_unique<DialogueBox>();
-}
 ```
 
 XML:
@@ -1205,8 +1196,6 @@ Objectif: creer une scene minimale avec un objet visible, une collision et un sc
 
 #include "Engine.h"
 
-std::unique_ptr<Component> create_spinner(pugi::xml_node const& node);
-
 class Spinner : public Component {
     float speed;
 
@@ -1220,15 +1209,14 @@ public:
 
 private:
     static inline bool s_registered =
-        ComponentFactory::Register("Spinner", create_spinner);
+        ComponentFactory::Register("Spinner",
+            [](const pugi::xml_node& node) -> std::unique_ptr<Component>
+            {
+                return std::make_unique<Spinner>(
+                    node.attribute("speed").as_float()
+                );
+            });
 };
-
-inline std::unique_ptr<Component> create_spinner(pugi::xml_node const& node)
-{
-    return std::make_unique<Spinner>(
-        node.attribute("speed").as_float()
-    );
-}
 
 #endif
 ```
