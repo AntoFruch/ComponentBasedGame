@@ -14,7 +14,7 @@ class UIDocument : public Component {
 
 
 protected:
-    bool hidden;
+    bool hidden{false};
     std::vector<tgui::Widget::Ptr> elements;
     tgui::Font customFont{"resources/fonts/PixelifySans-VariableFont_wght.ttf"};
 public:

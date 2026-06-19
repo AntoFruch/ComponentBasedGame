@@ -28,6 +28,8 @@ public:
 
     static void setMainCamera(Camera*);
 
+    static const sf::RenderWindow* getWindow();
+
     static void handleResize(const sf::Vector2u& size);
 };
 

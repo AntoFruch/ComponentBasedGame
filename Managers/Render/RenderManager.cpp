@@ -39,7 +39,7 @@ void RenderManager::renderAll(sf::RenderWindow& window)
 
     // best sorting algo for almost sorted lists;
     std::ranges::stable_sort(mRenderers, std::less{}, [](const Renderer* r) {
-        return r->gameObject->transform.getWorldPosition().y - r->getSpriteSize().x;
+        return r->gameObject->transform.getWorldPosition().y - r->getSpriteSize().y;
     });
 
     if (mainCamera){
@@ -57,6 +57,11 @@ void RenderManager::setMainCamera(Camera* cam)
 {
     mainCamera = cam;
     handleResize(window->getSize());
+}
+
+const sf::RenderWindow* RenderManager::getWindow()
+{
+    return window;
 }
 
 void RenderManager::handleResize(const sf::Vector2u& size) {
