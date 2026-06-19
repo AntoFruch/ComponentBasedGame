@@ -4,8 +4,8 @@
 
 #include "Transform.h"
 
-#include <iostream>
-sf::Vector2f Transform::rotateVector(sf::Vector2f v, sf::Angle angle)
+#include <cmath>
+sf::Vector2f rotateVector(sf::Vector2f v, sf::Angle angle)
 {
     float a = angle.asRadians();
     float c = std::cos(a);
