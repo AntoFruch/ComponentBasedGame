@@ -23,7 +23,9 @@ public:
 
     const std::vector<Transform*>& getChildren() const;
     void addChild(Transform* child);
+    void removeChild(Transform* child);
     void setParent(Transform* parent);
+    [[nodiscard]] Transform* getParent() const;
 
     const sf::Vector2f& getLocalPosition() const;
     const sf::Angle& getLocalRotation() const;

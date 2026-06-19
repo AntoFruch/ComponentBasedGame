@@ -25,8 +25,7 @@ bool ComponentFactory::Register(const std::string& name, Creator creator)
         registry[name] = creator;
         return true;
     }
-
-    return false;
+    throw IllegalOperationException(std::format("Class {} is already register, two classes cannot have the same name", name));
 }
 
 std::unordered_map<std::string, ComponentFactory::Creator>& ComponentFactory::GetRegistry()

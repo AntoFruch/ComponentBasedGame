@@ -28,3 +28,22 @@ void UIDocument::addElement(const tgui::Widget::Ptr& widget, const std::string& 
     gui->add(widget, name);
 }
 
+void UIDocument::hide()
+{
+    hidden=true;
+    for (auto& el : elements)
+    {
+        el->setVisible(false);
+        el->setEnabled(false);
+    }
+}
+
+void UIDocument::show()
+{
+    hidden=false;
+    for (auto& el : elements)
+    {
+        el->setVisible(true);
+        el->setEnabled(true);
+    }
+}

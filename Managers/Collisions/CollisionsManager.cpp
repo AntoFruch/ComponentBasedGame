@@ -7,6 +7,8 @@
 #include "exceptions/IllegalOperationException.h"
 #include <memory>
 
+#include "GameObject.h"
+
 std::vector<Collider*> CollisionsManager::solidColliders{};
 std::vector<Collider*> CollisionsManager::triggersColliders{};
 
@@ -82,7 +84,7 @@ std::vector<Collider*> CollisionsManager::checkTrigger(Collider& collider)
     std::vector<Collider*> hitColliders;
     for (const auto& other : solidColliders)
     {
-        if (other->getBounds().findIntersection(collider.getBounds()))
+        if (other->getBounds().findIntersection(collider.getBounds()) && other->gameObject->isActive())
         {
             hitColliders.push_back(other);
         }

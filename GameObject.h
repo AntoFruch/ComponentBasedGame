@@ -9,50 +9,76 @@
 
 #include "Transform.h"
 #include "Components/Component.h"
+#include "exceptions/IllegalOperationException.h"
 
 
-class GameObject {
+class GameObject
+{
     std::string label;
     std::vector<std::unique_ptr<Component>> components;
     std::vector<std::unique_ptr<GameObject>> children;
 
     bool active;
     bool waitingDestruction{false};
+
 public:
     Transform transform;
 
-    explicit GameObject(std::string_view label, const sf::Vector2f& position, const sf::Angle& rotation, const sf::Vector2f& scale, bool active);
+    explicit GameObject(std::string_view label, const sf::Vector2f& position, const sf::Angle& rotation,
+                        const sf::Vector2f& scale, bool active);
 
     void start();
     void update(const sf::Time& elapsedTime);
+
     void addComponent(std::unique_ptr<Component> c);
-    template<typename T>
-    T* getComponent();
+    template <typename T>
+    [[nodiscard]] T* getComponent() const;
+    template <typename T>
+    [[nodiscard]] std::vector<T*> getComponents() const;
 
     void addChild(std::unique_ptr<GameObject> child);
-    std::vector<GameObject*> getChildren() const;
-    GameObject* getChild(std::string_view label) const;
+    [[nodiscard]] std::vector<GameObject*> getChildren() const;
+    [[nodiscard]] GameObject* getChild(std::string_view label) const;
 
-    std::string_view getLabel() const;
+    [[nodiscard]] std::string_view getLabel() const;
     void setLabel(const std::string&);
     void setActive(bool);
+    [[nodiscard]]bool isActive() const;
 
-    bool isWaitingDestruction() const;
+    [[nodiscard]] bool isWaitingDestruction() const;
     void destroySelf();
 };
 
 template <typename T>
-T* GameObject::getComponent()
+T* GameObject::getComponent() const
 {
-    static_assert(std::is_base_of<Component, T>::value, "T must derive from Component");
+    static_assert(std::is_base_of_v<Component, T>, "T must derive from Component");
 
-    for (const auto& component : components) {
-        T* target = dynamic_cast<T*>(component.get());
-        if (target != nullptr) {
+    for (const auto& component : components)
+    {
+        auto* target = dynamic_cast<T*>(component.get());
+        if (target != nullptr)
+        {
             return target;
         }
     }
-    return nullptr;
+    throw IllegalOperationException(std::format("No component of the requested type attached to {}", label));
+}
+
+template <typename T>
+std::vector<T*> GameObject::getComponents() const
+{
+    static_assert(std::is_base_of_v<Component, T>, "T must derive from Component");
+    std::vector<T*> list{};
+    for (const auto& component : components)
+    {
+        auto* target = dynamic_cast<T*>(component.get());
+        if (target != nullptr)
+        {
+            list.push_back(target);
+        }
+    }
+    return list;
 }
 
 

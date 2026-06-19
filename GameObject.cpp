@@ -81,6 +81,11 @@ void GameObject::setActive(bool active)
     this->active = active;
 }
 
+bool GameObject::isActive() const
+{
+    return active;
+}
+
 bool GameObject::isWaitingDestruction() const
 {
     return waitingDestruction;

@@ -149,8 +149,9 @@ void InputManager::loadActions()
     pugi::xml_document doc;
     if (auto result = doc.load_file(input_config_file_path.c_str()); !result)
     {
-        std::cerr << "could not open file " << input_config_file_path.string() << " because : " << result.description() << std::endl;
+        throw IllegalOperationException(std::format("could not open file {} because : {}\n", input_config_file_path.string(), result.description()));
     }
+
     for (const auto& node : doc.child("InputActions").children())
     {
         if (std::string name = node.name(); name != "Action") continue;
@@ -159,9 +160,13 @@ void InputManager::loadActions()
         std::string type{node.attribute("type").as_string()};
         if (type == "Vector2D") {
             actions.try_emplace(label, std::make_unique<InputAction>(label, create_directional_bindings(node)));
-        } else if (type == "Button") {
-            actions.try_emplace(label, std::make_unique<InputAction>(label, create_button_bindings(node)));
+            continue;
         }
+        if (type == "Button") {
+            actions.try_emplace(label, std::make_unique<InputAction>(label, create_button_bindings(node)));
+            continue;
+        }
+        throw IllegalOperationException("Other input types than Vector2D or Button are not supported");
     }
 }
 
@@ -173,6 +178,10 @@ void InputManager::init()
 
 InputAction* InputManager::findAction(const std::string& action_name)
 {
+    if (!actions.contains(action_name))
+    {
+        throw IllegalOperationException(std::format("{} is not a known action", action_name));
+    }
     return actions.at(action_name).get();
 }
 

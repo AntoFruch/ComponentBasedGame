@@ -5,6 +5,17 @@
 #include "Transform.h"
 
 #include <iostream>
+sf::Vector2f rotateVector(sf::Vector2f v, sf::Angle angle)
+{
+    float a = angle.asRadians();
+    float c = std::cos(a);
+    float s = std::sin(a);
+
+    return {
+        v.x * c - v.y * s,
+        v.x * s + v.y * c
+    };
+}
 
 Transform::Transform(const sf::Vector2f& position, const sf::Angle& rotation, const sf::Vector2f& scale, Transform* parent)
     : position(position), rotation(rotation), scale(scale), parent(parent)
@@ -21,9 +32,20 @@ void Transform::addChild(Transform* child)
     children.push_back(child);
 }
 
+void Transform::removeChild(Transform* child)
+{
+    std::erase(children, child);
+}
+
 void Transform::setParent(Transform* parent)
 {
+    if (this->parent) this->parent->removeChild(this);
     this->parent = parent;
+}
+
+Transform* Transform::getParent() const
+{
+    return parent;
 }
 
 const sf::Vector2f& Transform::getLocalPosition() const
@@ -45,8 +67,13 @@ sf::Vector2f Transform::getWorldPosition() const
 {
     if (!parent) return position;
     const sf::Vector2f parentScale = parent->getWorldScale();
-    const sf::Vector2f scaledLocal = { position.x * parentScale.x, position.y * parentScale.y };
-    return parent->getWorldPosition() + scaledLocal;
+    const sf::Vector2f scaledLocal = {
+        position.x * parentScale.x,
+        position.y * parentScale.y
+    };
+
+    sf::Vector2f rotatedLocal = rotateVector(scaledLocal, parent->getWorldRotation());
+    return parent->getWorldPosition() + rotatedLocal;
 }
 
 sf::Angle Transform::getWorldRotation() const
