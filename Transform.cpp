@@ -4,7 +4,7 @@
 
 #include "Transform.h"
 
-#include <iostream>
+#include <cmath>
 sf::Vector2f rotateVector(sf::Vector2f v, sf::Angle angle)
 {
     float a = angle.asRadians();
