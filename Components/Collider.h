@@ -7,6 +7,7 @@
 #include "Component.h"
 #include "Managers/Scene/ComponentFactory.h"
 #include "SFML/Graphics.hpp"
+#include <array>
 #include <functional>
 
 class
@@ -50,6 +51,8 @@ private:
     void syncWithTransform();
 
     sf::FloatRect getBounds() const;
+    std::array<sf::Vector2f, 4> getWorldCorners() const;
+    bool intersects(const Collider& other) const;
 
     void debugDraw(sf::RenderWindow& window);
 

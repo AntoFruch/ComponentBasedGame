@@ -41,8 +41,7 @@ sf::Vector2f CollisionsManager::move(Collider& collider, const sf::Vector2f& del
         {
             if (other->isTrigger() || other == &collider) continue;
 
-            if (auto intersection = collider.getBounds().findIntersection(other->getBounds());
-                intersection && intersection->size.x > 0.f && intersection->size.y > 0.f)
+            if (collider.intersects(*other))
             {
                 return true;
             }
@@ -84,7 +83,7 @@ std::vector<Collider*> CollisionsManager::checkTrigger(Collider& collider)
     std::vector<Collider*> hitColliders;
     for (const auto& other : solidColliders)
     {
-        if (other->getBounds().findIntersection(collider.getBounds()) && other->gameObject->isActive())
+        if (other->intersects(collider) && other->gameObject->isActive())
         {
             hitColliders.push_back(other);
         }
@@ -103,6 +102,5 @@ void CollisionsManager::debugDraw(sf::RenderWindow& window)
         col->debugDraw(window);
     }
 }
-
 
 
