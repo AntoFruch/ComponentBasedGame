@@ -62,7 +62,7 @@ T* GameObject::getComponent() const
             return target;
         }
     }
-    throw IllegalOperationException(std::format("No component of the requested type attached to {}", label));
+    return nullptr;
 }
 
 template <typename T>
