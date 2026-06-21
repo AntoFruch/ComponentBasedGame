@@ -47,3 +47,19 @@ void UIDocument::show()
         el->setEnabled(true);
     }
 }
+
+void UIDocument::moveToBack()
+{
+    for (auto& el:elements)
+    {
+        el->moveToBack();
+    }
+}
+
+void UIDocument::moveToFront()
+{
+    for (auto& el:elements)
+    {
+        el->moveToFront();
+    }
+}

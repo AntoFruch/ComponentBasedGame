@@ -27,6 +27,9 @@ public:
     void virtual hide();
     void virtual show();
 
+    void moveToBack();
+    void moveToFront();
+
 
 private:
     static inline bool s_registered = ComponentFactory::Register("UIDocument", [](const pugi::xml_node& node) -> std::unique_ptr<Component> {
