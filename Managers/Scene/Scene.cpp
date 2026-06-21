@@ -38,7 +38,7 @@ void Scene::Update(const sf::Time& elapsedTime)
     }
 
     if (SceneManager::loadingReq) SceneManager::applyRequest();
-    if (instantiateRequested) applyInstantiate();
+    if (!requestedGOs.empty()) applyInstantiate();
 }
 
 std::unique_ptr<GameObject> Scene::build_go(const pugi::xml_node& go)
@@ -176,9 +176,12 @@ void Scene::unload()
 
 void Scene::applyInstantiate()
 {
-    instantiateRequested = false;
-    requestGO->start();
-    mObjects.push_back(std::move(requestGO));
+    for (auto& requestedGO : requestedGOs)
+    {
+        requestedGO->start();
+        mObjects.push_back(std::move(requestedGO));
+    }
+    requestedGOs.clear();
 }
 
 GameObject* Scene::requestInstantiate(std::string_view prefabPath)
@@ -200,9 +203,7 @@ GameObject* Scene::requestInstantiate(std::string_view prefabPath)
 
     auto prefab = build_go(root_node);
     auto ret_ptr = prefab.get();
-    requestGO = std::move(prefab);
-
-    instantiateRequested = true;
+    requestedGOs.push_back(std::move(prefab));
 
     return ret_ptr;
 }

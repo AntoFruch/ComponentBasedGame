@@ -14,12 +14,10 @@ class Scene {
     tgui::Gui mGui;
     std::vector<std::unique_ptr<GameObject>> mObjects;
 
-    bool instantiateRequested{false};
-
     /**
-     * The new instantiated GameObject (requestIntantiate() method) that will be inserted in mTargets
+     * New instantiated GameObjects requested during Update.
      */
-    std::unique_ptr<GameObject> requestGO;
+    std::vector<std::unique_ptr<GameObject>> requestedGOs;
 
     bool frozen{false};
 
