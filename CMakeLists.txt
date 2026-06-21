@@ -41,6 +41,13 @@ add_library(lib_engine
         Components/UIDocument.cpp
         Components/UIDocument.h
 )
+
+option(COLLISION_DEBUG "Draw hitboxes debug shapes" OFF)
+
+if(COLLISION_DEBUG)
+    target_compile_definitions(lib_engine PUBLIC COLLISION_DEBUG)
+endif()
+
 target_include_directories(lib_engine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(lib_engine PUBLIC tgui pugixml sfml-graphics)
 
