@@ -39,6 +39,7 @@ add_library(lib_engine
         Managers/Scene/Scene.h
         Components/UIDocument.cpp
         Components/UIDocument.h
+        Components/Component.cpp
 )
 
 option(COLLISION_DEBUG "Draw hitboxes debug shapes" OFF)

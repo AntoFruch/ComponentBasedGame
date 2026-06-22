@@ -17,12 +17,12 @@ public:
     /**
      * @brief Called when the scene is fully created
      */
-    virtual void Start()=0;
+    virtual void Start();
     /**
      * @brief Called each frame
      * @param elapsedTime
      */
-    virtual void Update(const sf::Time& elapsedTime)=0;
+    virtual void Update(const sf::Time& elapsedTime);
 
     /**
      * @brief Changes the parent GameObject to go
