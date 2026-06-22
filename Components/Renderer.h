@@ -18,10 +18,18 @@ class Renderer : public Component {
 
     sf::Vector2u spriteSize;
     sf::IntRect cutRect;
+    int layer;
+    float sortOffsetY;
 
     void loadTexture(const std::string& path);
 public:
-    Renderer(const std::string& texture_path, const sf::Vector2f& anchor, const sf::Vector2u& spriteSize);
+    Renderer(
+        const std::string& texture_path,
+        const sf::Vector2f& anchor,
+        const sf::Vector2u& spriteSize,
+        int layer = 0,
+        float sortOffsetY = 0.f
+        );
     ~Renderer();
 
     void Start() override;
@@ -31,6 +39,8 @@ public:
     void setCutRectPos(unsigned int x, unsigned int y);
 
     const sf::Vector2u getSpriteSize() const;
+    int getLayer() const;
+    float getSortY() const;
 
 private:
     static inline bool s_registered = ComponentFactory::Register("Renderer", [](const pugi::xml_node& node) -> std::unique_ptr<Component> {
@@ -43,7 +53,9 @@ private:
             sf::Vector2u{
                 node.attribute("sprite_w").as_uint(),
                 node.attribute("sprite_h").as_uint()
-            });
+            },
+            node.attribute("layer").as_int(0),
+            node.attribute("sortOffsetY").as_float(0.f));
         RenderManager::registerRenderer(ptr.get());
         return ptr;
     });

@@ -59,8 +59,8 @@ void Game::update(const sf::Time elapsedTime) {
 
 void Game::render() {
   RenderManager::renderAll(mWindow);
-#if defined(COLLISION_DEBUG)
   CollisionsManager::debugDraw(mWindow);
+#if defined(COLLISION_DEBUG)
 #endif
   mWindow.display();
 }

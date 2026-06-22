@@ -11,7 +11,13 @@
 #include "pugixml.hpp"
 #include "Managers/Render/RenderManager.h"
 
-Renderer::Renderer(const std::string& texture_path, const sf::Vector2f& anchor,  const sf::Vector2u& spriteSize)
+Renderer::Renderer(
+    const std::string& texture_path,
+    const sf::Vector2f& anchor,
+    const sf::Vector2u& spriteSize,
+    int layer,
+    float sortOffsetY)
+    : layer(layer), sortOffsetY(sortOffsetY)
 {
     loadTexture(texture_path);
     const auto size = static_cast<sf::Vector2f>(spriteSize);
@@ -60,4 +66,14 @@ void Renderer::setCutRectPos(unsigned int x, unsigned int y)
 const sf::Vector2u Renderer::getSpriteSize() const
 {
     return spriteSize;
+}
+
+int Renderer::getLayer() const
+{
+    return layer;
+}
+
+float Renderer::getSortY() const
+{
+    return gameObject->transform.getWorldPosition().y + sortOffsetY;
 }
