@@ -1,7 +1,6 @@
 add_library(lib_engine
         GameObject.cpp
         GameObject.h
-        Components/Component.cpp
         Components/Component.h
         Transform.cpp
         Transform.h

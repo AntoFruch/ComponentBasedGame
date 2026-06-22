@@ -1033,49 +1033,48 @@ Exemple de structure pour `src/engine/CMakeLists.txt`:
 
 ```cmake
 add_library(lib_engine
-    GameObject.cpp
-    GameObject.h
-    Transform.cpp
-    Transform.h
-    Game.cpp
-    Game.h
-    Engine.h
+        GameObject.cpp
+        GameObject.h
+        Transform.cpp
+        Transform.h
+        Game.cpp
+        Game.h
+        Engine.h
 
-    Components/Component.cpp
-    Components/Component.h
-    Components/Renderer.cpp
-    Components/Renderer.h
-    Components/Animator.cpp
-    Components/Animator.h
-    Components/Collider.cpp
-    Components/Collider.h
-    Components/CharacterController.cpp
-    Components/CharacterController.h
-    Components/Camera.cpp
-    Components/Camera.h
-    Components/UIDocument.cpp
-    Components/UIDocument.h
+        Components/Component.h
+        Components/Renderer.cpp
+        Components/Renderer.h
+        Components/Animator.cpp
+        Components/Animator.h
+        Components/Collider.cpp
+        Components/Collider.h
+        Components/CharacterController.cpp
+        Components/CharacterController.h
+        Components/Camera.cpp
+        Components/Camera.h
+        Components/UIDocument.cpp
+        Components/UIDocument.h
 
-    Managers/Scene/Scene.cpp
-    Managers/Scene/Scene.h
-    Managers/Scene/SceneManager.cpp
-    Managers/Scene/SceneManager.h
-    Managers/Scene/ComponentFactory.cpp
-    Managers/Scene/ComponentFactory.h
+        Managers/Scene/Scene.cpp
+        Managers/Scene/Scene.h
+        Managers/Scene/SceneManager.cpp
+        Managers/Scene/SceneManager.h
+        Managers/Scene/ComponentFactory.cpp
+        Managers/Scene/ComponentFactory.h
 
-    Managers/Input/InputManager.cpp
-    Managers/Input/InputManager.h
-    Managers/Input/InputAction.cpp
-    Managers/Input/InputAction.h
+        Managers/Input/InputManager.cpp
+        Managers/Input/InputManager.h
+        Managers/Input/InputAction.cpp
+        Managers/Input/InputAction.h
 
-    Managers/Render/RenderManager.cpp
-    Managers/Render/RenderManager.h
-    Managers/Collisions/CollisionsManager.cpp
-    Managers/Collisions/CollisionsManager.h
-    Managers/Animation/AnimatorGraph.cpp
-    Managers/Animation/AnimatorGraph.h
-    Managers/Animation/AnimatorTreeLoader.cpp
-    Managers/Animation/AnimatorTreeLoader.h
+        Managers/Render/RenderManager.cpp
+        Managers/Render/RenderManager.h
+        Managers/Collisions/CollisionsManager.cpp
+        Managers/Collisions/CollisionsManager.h
+        Managers/Animation/AnimatorGraph.cpp
+        Managers/Animation/AnimatorGraph.h
+        Managers/Animation/AnimatorTreeLoader.cpp
+        Managers/Animation/AnimatorTreeLoader.h
 )
 
 target_include_directories(lib_engine PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})

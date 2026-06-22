@@ -10,19 +10,19 @@ class GameObject;
 
 class Component {
 public:
-    explicit Component();
+    explicit Component()=default;
     virtual ~Component()=default;
 
     GameObject* gameObject;
     /**
      * @brief Called when the scene is fully created
      */
-    virtual void Start();
+    virtual void Start()=0;
     /**
      * @brief Called each frame
      * @param elapsedTime
      */
-    virtual void Update(const sf::Time& elapsedTime);
+    virtual void Update(const sf::Time& elapsedTime)=0;
 
     /**
      * @brief Changes the parent GameObject to go
