@@ -52,9 +52,27 @@ void Animator::setParam(const std::string& label, const std::variant<bool, float
 }
 
 void Animator::registerAnimationEvent(const std::string &animationState,
-                                      unsigned int triggerFrame,
+                                      int triggerFrame,
                                       EventCallback cbFunc) {
-    m_animationEvents.try_emplace(animationState, animationState, triggerFrame, cbFunc);
+    if (!graph->states.contains(animationState))
+    {
+        throw IllegalOperationException(
+            std::format("Animation state {} does not exist for this animation graph", animationState)
+            );
+    }
+
+    if (triggerFrame < 0)
+    {
+        m_animationEvents.try_emplace(
+            animationState,
+            animationState,
+            graph->states.at(animationState).length - 1,
+            cbFunc
+            );
+    } else
+    {
+        m_animationEvents.try_emplace(animationState, animationState, triggerFrame, cbFunc);
+    }
 }
 void Animator::checkForAndApplyEvent() {
     // std::cout << "[Animator] State: " << m_currentState->name << " | Frame: " << currentFrame_x << "\n";

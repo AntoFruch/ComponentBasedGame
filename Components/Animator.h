@@ -36,7 +36,7 @@ public:
     void Start() override;
     void Update(const sf::Time& elapsedTime) override;
     void setParam(const std::string& label, const std::variant<bool, float>& value);
-    void registerAnimationEvent(const std::string& animationState, unsigned int triggerFrame, EventCallback cbFunc);
+    void registerAnimationEvent(const std::string& animationState, int triggerFrame, EventCallback cbFunc);
 
 
 private:
