@@ -14,12 +14,21 @@ public:
     virtual ~Component()=default;
 
     GameObject* gameObject;
-    
+    /**
+     * @brief Called when the scene is fully created
+     */
     virtual void Start();
+    /**
+     * @brief Called each frame
+     * @param elapsedTime
+     */
     virtual void Update(const sf::Time& elapsedTime);
-    void setParent(GameObject* go);
 
-protected:
+    /**
+     * @brief Changes the parent GameObject to go
+     * @param go
+     */
+    void setParent(GameObject* go);
 };
 
 

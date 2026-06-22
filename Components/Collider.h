@@ -10,8 +10,10 @@
 #include <array>
 #include <functional>
 
-class
-Collider : public Component {
+class Collider;
+using TriggerCallback =  std::function<void(const std::vector<Collider*>&, Collider*)>;
+
+class Collider : public Component {
     sf::RectangleShape hitbox;
     sf::Vector2f localPos;
 
@@ -27,7 +29,7 @@ Collider : public Component {
      * @param hits vector of pointers of hit targets
      * @param self pointer to the trigger
      */
-    std::function<void(const std::vector<Collider*>& hits, Collider* self)> callback;
+    TriggerCallback callback;
 
 public:
     Collider(const sf::Vector2f& pos, const sf::Vector2f& dimensions, bool trigger);
