@@ -40,7 +40,7 @@ void RenderManager::renderAll(sf::RenderWindow& window)
     window.clear();
 
     // best sorting algo for almost sorted lists;
-    std::ranges::stable_sort(mRenderers, std::less{}, [](const Renderer* r) {
+    std::ranges::sort(mRenderers, std::less{}, [](const Renderer* r) {
         return std::tuple{r->getLayer(), r->getSortY()};
     });
 
