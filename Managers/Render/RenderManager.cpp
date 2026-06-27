@@ -25,6 +25,11 @@ void RenderManager::init(sf::RenderWindow* win)
     tgui::Texture::setDefaultSmooth(false);
 }
 
+void RenderManager::closeWindow()
+{
+    if (window) window->close();
+}
+
 void RenderManager::registerRenderer(Renderer* renderer)
 {
     mRenderers.push_back(renderer);
@@ -59,6 +64,11 @@ void RenderManager::setMainCamera(Camera* cam)
 {
     mainCamera = cam;
     handleResize(window->getSize());
+}
+
+void RenderManager::unsetMainCamera(Camera* cam)
+{
+    if (mainCamera == cam) mainCamera = nullptr;
 }
 
 const sf::RenderWindow* RenderManager::getWindow()

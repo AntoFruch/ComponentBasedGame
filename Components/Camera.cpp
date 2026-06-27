@@ -7,6 +7,11 @@
 
 #include "Managers/Render/RenderManager.h"
 
+Camera::~Camera()
+{
+    RenderManager::unsetMainCamera(this);
+}
+
 void Camera::Start()
 {
     Component::Start();

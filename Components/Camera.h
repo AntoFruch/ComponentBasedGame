@@ -14,6 +14,7 @@ class Camera : public Component {
 
 public:
     Camera()=default;
+    ~Camera();
 
     void Start() override;
     void Update(const sf::Time& elapsedTime) override;

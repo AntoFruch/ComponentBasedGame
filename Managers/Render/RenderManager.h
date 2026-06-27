@@ -21,12 +21,14 @@ public:
     static const float referenceHeight;
 
     static void init(sf::RenderWindow* win);
+    static void closeWindow();
 
     static void registerRenderer(Renderer*);
     static void unregisterRenderer(const Renderer*);
     static void renderAll(sf::RenderWindow& window);
 
     static void setMainCamera(Camera*);
+    static void unsetMainCamera(Camera*);
 
     static const sf::RenderWindow* getWindow();
 
