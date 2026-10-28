@@ -58,6 +58,6 @@ void Game::update(const sf::Time elapsedTime) {
 }
 
 void Game::render() {
-  RenderManager::renderAll(mWindow);
+  RenderManager::renderAll();
   mWindow.display();
 }

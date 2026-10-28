@@ -40,9 +40,9 @@ void RenderManager::unregisterRenderer(const Renderer* renderer)
     std::erase_if(mRenderers,[&renderer](const Renderer* r){ return r==renderer;} );
 }
 
-void RenderManager::renderAll(sf::RenderWindow& window)
+void RenderManager::renderAll()
 {
-    window.clear();
+    window->clear();
 
     // best sorting algo for almost sorted lists;
     std::ranges::sort(mRenderers, std::less{}, [](const Renderer* r) {
@@ -50,11 +50,11 @@ void RenderManager::renderAll(sf::RenderWindow& window)
     });
 
     if (mainCamera){
-        mainCamera->applyView(window);
+        mainCamera->applyView(*window);
     }
     for (auto& renderer : mRenderers)
     {
-        renderer->render(window);
+        renderer->render(*window);
     }
 
     SceneManager::getGui()->draw();

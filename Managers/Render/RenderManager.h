@@ -25,7 +25,7 @@ public:
 
     static void registerRenderer(Renderer*);
     static void unregisterRenderer(const Renderer*);
-    static void renderAll(sf::RenderWindow& window);
+    static void renderAll();
 
     static void setMainCamera(Camera*);
     static void unsetMainCamera(Camera*);
