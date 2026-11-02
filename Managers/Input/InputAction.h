@@ -15,6 +15,8 @@
 
 #include "SFML/Window/Event.hpp"
 
+class InputManager;
+
 struct DirectionalBindings
 {
     sf::Keyboard::Key UP;
@@ -54,10 +56,6 @@ public:
     explicit InputAction(const std::string& label, const std::variant<std::vector<ButtonBinding>, std::vector<DirectionalBindings>>& bindings);
 
     /**
-     * @breaf resets pressedThisFrame, performed by InputManager::beginFrame() for each InputAction
-     */
-    void resetFrameState();
-    /**
      * @breaf looks at pressed inputs if the SFML Event and compares the bindings of this action to
      */
     void processEvent(std::optional<sf::Event>, const std::set<sf::Keyboard::Key>& pressed_keys);
@@ -66,6 +64,13 @@ public:
 
     template<typename T>
     T ReadValue() const;
+
+private:
+    friend class InputManager;
+    /**
+     * @breaf resets pressedThisFrame, performed by InputManager::beginFrame() for each InputAction
+     */
+    void resetFrameState();
 };
 
 #endif //COMPONENT_BASED_ARCH_INPUTACTION_H

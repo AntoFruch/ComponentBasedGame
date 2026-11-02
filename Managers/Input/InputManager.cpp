@@ -4,8 +4,6 @@
 
 #include "InputManager.h"
 
-#include <iostream>
-
 #include "pugixml.hpp"
 #include "Managers/Scene/SceneManager.h"
 
