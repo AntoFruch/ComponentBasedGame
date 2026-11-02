@@ -22,7 +22,6 @@ class Scene {
     bool frozen{false};
 
 public:
-    Scene();
     Scene(sf::RenderWindow& window);
     void Start();
     void Update(const sf::Time& elapsedTime);
@@ -41,8 +40,7 @@ public:
     std::string dump() const;
 
 private:
-    std::unique_ptr<GameObject> build_go(const pugi::xml_node& go);
-    std::unique_ptr<GameObject> build_prefab(const pugi::xml_node& obj);
+    pugi::xml_node open_prefab(const pugi::xml_node& obj);
 };
 
 

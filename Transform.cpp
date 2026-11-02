@@ -39,7 +39,8 @@ void Transform::removeChild(Transform* child)
 
 void Transform::setParent(Transform* parent)
 {
-    if (this->parent) this->parent->removeChild(this);
+    if (this->parent)
+        this->parent->removeChild(this);
     this->parent = parent;
 }
 
@@ -63,7 +64,7 @@ const sf::Vector2f& Transform::getLocalScale() const
     return scale;
 }
 
-sf::Vector2f Transform::getWorldPosition() const
+const sf::Vector2f Transform::getWorldPosition() const
 {
     if (!parent) return position;
     const sf::Vector2f parentScale = parent->getWorldScale();
@@ -76,13 +77,13 @@ sf::Vector2f Transform::getWorldPosition() const
     return parent->getWorldPosition() + rotatedLocal;
 }
 
-sf::Angle Transform::getWorldRotation() const
+[[nodiscard]] const sf::Angle Transform::getWorldRotation() const
 {
     if (!parent) return rotation;
     return parent->getWorldRotation() + rotation;
 }
 
-sf::Vector2f Transform::getWorldScale() const
+const sf::Vector2f Transform::getWorldScale() const
 {
     if (!parent) return scale;
     const sf::Vector2f parentScale = parent->getWorldScale();

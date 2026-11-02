@@ -23,18 +23,18 @@ public:
 
     static sf::Vector2f rotateVector(sf::Vector2f v, sf::Angle angle);
 
-    const std::vector<Transform*>& getChildren() const;
+    [[nodiscard]] const std::vector<Transform*>& getChildren() const;
     void addChild(Transform* child);
     void removeChild(Transform* child);
     void setParent(Transform* parent);
     [[nodiscard]] Transform* getParent() const;
 
-    const sf::Vector2f& getLocalPosition() const;
-    const sf::Angle& getLocalRotation() const;
-    const sf::Vector2f& getLocalScale() const;
-    sf::Vector2f getWorldPosition() const;
-    sf::Angle getWorldRotation() const;
-    sf::Vector2f getWorldScale() const;
+    [[nodiscard]] const sf::Vector2f& getLocalPosition() const;
+    [[nodiscard]] const sf::Angle& getLocalRotation() const;
+    [[nodiscard]] const sf::Vector2f& getLocalScale() const;
+    [[nodiscard]] const sf::Vector2f getWorldPosition() const;
+    [[nodiscard]] const sf::Angle getWorldRotation() const;
+    [[nodiscard]] const sf::Vector2f getWorldScale() const;
 
     void setLocalPosition(const sf::Vector2f& position);
     void setLocalRotation(const sf::Angle& rotation);

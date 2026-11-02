@@ -16,7 +16,6 @@ class GameObject
 {
     std::string label;
     std::vector<std::unique_ptr<Component>> components;
-    std::vector<std::unique_ptr<GameObject>> children;
 
     bool active;
     bool waitingDestruction{false};
@@ -36,12 +35,9 @@ public:
     template <typename T>
     [[nodiscard]] std::vector<T*> getComponents() const;
 
-    void addChild(std::unique_ptr<GameObject> child);
-    [[nodiscard]] std::vector<GameObject*> getChildren() const;
-    [[nodiscard]] GameObject* getChild(std::string_view label) const;
-
     [[nodiscard]] std::string_view getLabel() const;
     void setLabel(const std::string&);
+
     void setActive(bool);
     [[nodiscard]]bool isActive() const;
 

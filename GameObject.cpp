@@ -14,10 +14,6 @@ void GameObject::start()
     {
         c->Start();
     }
-    for (const auto& child : children)
-    {
-        child->start();
-    }
 }
 
 void GameObject::update(const sf::Time& elapsedTime) {
@@ -27,44 +23,12 @@ void GameObject::update(const sf::Time& elapsedTime) {
     {
         c->Update(elapsedTime);
     }
-    for (auto& child : children)
-    {
-        child->update(elapsedTime);
-    }
 }
 
 void GameObject::addComponent(std::unique_ptr<Component> c)
 {
     c->setParent(this);
     components.push_back(std::move(c));
-}
-
-void GameObject::addChild(std::unique_ptr<GameObject> child)
-{
-    transform.addChild(&child->transform);
-    children.push_back(std::move(child));
-}
-
-std::vector<GameObject*> GameObject::getChildren() const
-{
-    std::vector<GameObject*> vector;
-    for (const auto& child : children)
-    {
-        vector.push_back(child.get());
-    }
-    return vector;
-}
-
-GameObject* GameObject::getChild(std::string_view label) const
-{
-    for (const auto& child : children)
-    {
-        if (child->getLabel() == label)
-        {
-            return child.get();
-        }
-    }
-    return nullptr;
 }
 
 std::string_view GameObject::getLabel() const

@@ -8,9 +8,8 @@
 #include <iostream>
 
 #include "ComponentFactory.h"
+#include "GameObjectFactory.h"
 #include "exceptions/IllegalOperationException.h"
-
-Scene::Scene() = default;
 
 Scene::Scene(sf::RenderWindow& window) : mGui(window)
 {
@@ -41,62 +40,7 @@ void Scene::Update(const sf::Time& elapsedTime)
     if (!requestedGOs.empty()) applyInstantiate();
 }
 
-std::unique_ptr<GameObject> Scene::build_go(const pugi::xml_node& go)
-{
-    if (std::string nodeName = go.name(); nodeName != "GameObject")
-    {
-        throw IllegalOperationException("GameObject parser received a node that is not named \"GameObject\"");
-    }
-
-    auto ptr = std::make_unique<GameObject>(
-                go.attribute("label").as_string(),
-                sf::Vector2f{
-                    go.attribute("x").as_float(),
-                    go.attribute("y").as_float()
-                },
-                sf::degrees(go.attribute("angle").as_float()),
-                sf::Vector2f{
-                    go.attribute("sx") ? go.attribute("sx").as_float() : 1,
-                    go.attribute("sy") ? go.attribute("sy").as_float() : 1,
-                },
-                go.attribute("active") ? go.attribute("active").as_bool() : true
-                );
-
-    for (const auto& c : go.children())
-    {
-        std::string name = c.name();
-        if (name=="Components")
-        {
-            for (const auto& component : c.children())
-            {
-                if (std::string componentNodeName = component.name(); componentNodeName != "Component")
-                {
-                    throw IllegalOperationException("Components node children must be named \"Component\"");
-                }
-                const std::string componentName = component.attribute("name").as_string();
-                if (componentName.empty())
-                {
-                    throw IllegalOperationException("Component node must have a non-empty \"name\" attribute");
-                }
-                ptr->addComponent(ComponentFactory::Create(componentName, component));
-            }
-            continue;
-        }
-        if (name == "GameObject")
-        {
-            ptr->addChild(build_go(c));
-            continue;
-        }
-        if (name == "Prefab")
-        {
-            ptr->addChild(build_prefab(c));
-            continue;
-        }
-        throw IllegalOperationException("GameObject children must be Components, GameObject or Prefab");
-    }
-    return std::move(ptr);
-}
-std::unique_ptr<GameObject> Scene::build_prefab(const pugi::xml_node& obj)
+pugi::xml_node Scene::open_prefab(const pugi::xml_node& obj)
 {
     const std::string prefabPath = obj.attribute("src").as_string();
     if (prefabPath.empty())
@@ -113,29 +57,7 @@ std::unique_ptr<GameObject> Scene::build_prefab(const pugi::xml_node& obj)
     {
         throw IllegalOperationException("Prefab files must have a unique root node named \"GameObject\"");
     }
-
-    auto prefab = build_go(root_node);
-    if (obj.attribute("label"))
-    {
-        prefab->setLabel(obj.attribute("label").as_string());
-    }
-    if (obj.attribute("x") || obj.attribute("y"))
-    {
-        prefab->transform.move({obj.attribute("x").as_float(), obj.attribute("y").as_float()});
-    }
-    if (obj.attribute("angle"))
-    {
-        prefab->transform.rotate(sf::degrees(obj.attribute("angle").as_float()));
-    }
-    if (obj.attribute("sx") || obj.attribute("sy"))
-    {
-        prefab->transform.rescale({obj.attribute("sx").as_float(1.f), obj.attribute("sy").as_float(1.f)});
-    }
-    if (obj.attribute("active"))
-    {
-        prefab->setActive(obj.attribute("active").as_bool());
-    }
-    return prefab;
+    return root_node;
 }
 
 void Scene::load(std::string_view scenePath)
@@ -152,20 +74,55 @@ void Scene::load(std::string_view scenePath)
     {
         throw IllegalOperationException("Root node of scene must be named \"Scene\"");
     }
-    for (const auto& obj : sceneObj)
+    pugi::xml_node cur;
+    std::queue<pugi::xml_node> queue{{sceneObj}};
+    while (!queue.empty())
     {
-        std::string name = obj.name();
-        if ( name == "GameObject")
-        {
-            mObjects.push_back(build_go(obj));
+        cur = queue.front();
+        queue.pop();
+
+        if (cur.child("GameObject").empty() && cur.child("Prefab").empty())
             continue;
-        }
-        if ( name == "Prefab")
+
+        for (const auto& obj : cur)
         {
-            mObjects.push_back(build_prefab(obj));
-            continue;
+            std::string name = obj.name();
+            if ( name == "GameObject")
+            {
+                mObjects.push_back(GameObjectFactory::buildGameObject(obj));
+                queue.push(obj);
+                continue;
+            }
+            if ( name == "Prefab")
+            {
+                auto new_obj = open_prefab(obj);
+                auto prefab = GameObjectFactory::buildGameObject(new_obj);
+                if (obj.attribute("label"))
+                {
+                    prefab->setLabel(obj.attribute("label").as_string());
+                }
+                if (obj.attribute("x") || obj.attribute("y"))
+                {
+                    prefab->transform.move({obj.attribute("x").as_float(), obj.attribute("y").as_float()});
+                }
+                if (obj.attribute("angle"))
+                {
+                    prefab->transform.rotate(sf::degrees(obj.attribute("angle").as_float()));
+                }
+                if (obj.attribute("sx") || obj.attribute("sy"))
+                {
+                    prefab->transform.rescale({obj.attribute("sx").as_float(1.f), obj.attribute("sy").as_float(1.f)});
+                }
+                if (obj.attribute("active"))
+                {
+                    prefab->setActive(obj.attribute("active").as_bool());
+                }
+                mObjects.push_back(std::move(prefab));
+                queue.push(new_obj);
+                continue;
+            }
+            throw IllegalOperationException("Node Scene children must be GameObject, Prefab or UI");
         }
-        throw IllegalOperationException("Node Scene children must be GameObject, Prefab or UI");
     }
 }
 
@@ -201,7 +158,7 @@ GameObject* Scene::requestInstantiate(std::string_view prefabPath)
         throw IllegalOperationException("Prefab files must have a unique root node named \"GameObject\"");
     }
 
-    auto prefab = build_go(root_node);
+    auto prefab = GameObjectFactory::buildGameObject(root_node);
     auto ret_ptr = prefab.get();
     requestedGOs.push_back(std::move(prefab));
 
@@ -225,6 +182,7 @@ tgui::Gui* Scene::getGui()
 
 std::string Scene::dump() const
 {
+    /* FIXME: Dump not funtional anymore
     std::ostringstream oss;
     oss << "Scene :\n";
 
@@ -249,4 +207,6 @@ std::string Scene::dump() const
         dumpGameObject(dumpGameObject, go, "  ");
     }
     return oss.str();
+    */
+    return "dump not functional anymore";
 }
