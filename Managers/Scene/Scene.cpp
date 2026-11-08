@@ -7,7 +7,6 @@
 #include <format>
 #include <iostream>
 
-#include "ComponentFactory.h"
 #include "GameObjectFactory.h"
 #include "exceptions/IllegalOperationException.h"
 
@@ -48,15 +47,17 @@ pugi::xml_node Scene::open_prefab(const pugi::xml_node& obj)
         throw IllegalOperationException("Prefab node must have a non-empty \"src\" attribute");
     }
 
-    pugi::xml_document doc;
-    if (auto result = doc.load_file(prefabPath.c_str()); !result) {
+    auto doc = std::make_unique<pugi::xml_document>();
+    if (auto result = doc->load_file(prefabPath.c_str()); !result) {
         throw IllegalOperationException(std::format("Could not open prefab because {}", result.description()));
     }
-    auto root_node = doc.child("GameObject");
+    auto root_node = doc->child("GameObject");
     if (!root_node)
     {
         throw IllegalOperationException("Prefab files must have a unique root node named \"GameObject\"");
     }
+
+    mPrefabDocs.push_back(std::move(doc));
     return root_node;
 }
 
@@ -96,6 +97,7 @@ void Scene::load(std::string_view scenePath)
             if ( name == "Prefab")
             {
                 auto new_obj = open_prefab(obj);
+                std::cout << new_obj.name() << std::endl;
                 auto prefab = GameObjectFactory::buildGameObject(new_obj);
                 if (obj.attribute("label"))
                 {

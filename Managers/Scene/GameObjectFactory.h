@@ -10,7 +10,7 @@
 
 class GameObjectFactory {
 public:
-    static std::unique_ptr<GameObject> buildGameObject(pugi::xml_node);
+    static std::unique_ptr<GameObject> buildGameObject(const pugi::xml_node&);
 };
 
 

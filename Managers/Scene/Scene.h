@@ -14,6 +14,9 @@ class Scene {
     tgui::Gui mGui;
     std::vector<std::unique_ptr<GameObject>> mObjects;
 
+    // FIXME: ugly way to deal with documents going out of scope when loading a prefab.
+    std::vector<std::unique_ptr<pugi::xml_document>> mPrefabDocs;
+
     /**
      * New instantiated GameObjects requested during Update.
      */

@@ -6,7 +6,7 @@
 
 #include "ComponentFactory.h"
 
-std::unique_ptr<GameObject> GameObjectFactory::buildGameObject(pugi::xml_node go)
+std::unique_ptr<GameObject> GameObjectFactory::buildGameObject(const pugi::xml_node& go)
 {
     if (std::string nodeName = go.name(); nodeName != "GameObject")
     {

@@ -56,7 +56,6 @@ private:
             },
             node.attribute("layer").as_int(0),
             node.attribute("sortOffsetY").as_float(0.f));
-        RenderManager::registerRenderer(ptr.get());
         return ptr;
     });
 };

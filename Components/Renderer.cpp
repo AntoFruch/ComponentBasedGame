@@ -32,6 +32,7 @@ Renderer::~Renderer()
 }
 void Renderer::Start()
 {
+    RenderManager::registerRenderer(this);
     cutRect.size = static_cast<sf::Vector2i>(spriteSize);
     setCutRectPos(0, 0);
     mShape.setTextureRect(cutRect);
