@@ -7,12 +7,12 @@
 #include <memory>
 
 #include "Component.h"
-#include "Managers/Render/RenderManager.h"
 #include "Managers/Scene/ComponentFactory.h"
 #include "SFML/Graphics.hpp"
 
 
-class Renderer : public Component {
+class Renderer : public Component
+{
     sf::RectangleShape mShape;
     sf::Texture texture;
 
@@ -22,6 +22,7 @@ class Renderer : public Component {
     float sortOffsetY;
 
     void loadTexture(const std::string& path);
+
 public:
     Renderer(
         const std::string& texture_path,
@@ -29,9 +30,10 @@ public:
         const sf::Vector2u& spriteSize,
         int layer = 0,
         float sortOffsetY = 0.f
-        );
-    ~Renderer();
+    );
+    ~Renderer() override;
 
+    void OnEnable() override;
     void Start() override;
     void Update(const sf::Time& elapsedTime) override;
     void render(sf::RenderWindow& window) const;
@@ -43,23 +45,24 @@ public:
     float getSortY() const;
 
 private:
-    static inline bool s_registered = ComponentFactory::Register("Renderer", [](const pugi::xml_node& node) -> std::unique_ptr<Component> {
-        auto ptr = std::make_unique<Renderer>(
-            node.attribute("src").as_string(),
-            sf::Vector2f{
-                node.attribute("anchorX").as_float(),
-                node.attribute("anchorY").as_float()
-            },
-            sf::Vector2u{
-                node.attribute("sprite_w").as_uint(),
-                node.attribute("sprite_h").as_uint()
-            },
-            node.attribute("layer").as_int(0),
-            node.attribute("sortOffsetY").as_float(0.f));
-        return ptr;
-    });
+    static inline bool s_registered = ComponentFactory::Register(
+        "Renderer", [](const pugi::xml_node& node) -> std::unique_ptr<Component>
+        {
+            auto ptr = std::make_unique<Renderer>(
+                node.attribute("src").as_string(),
+                sf::Vector2f{
+                    node.attribute("anchorX").as_float(),
+                    node.attribute("anchorY").as_float()
+                },
+                sf::Vector2u{
+                    node.attribute("sprite_w").as_uint(),
+                    node.attribute("sprite_h").as_uint()
+                },
+                node.attribute("layer").as_int(0),
+                node.attribute("sortOffsetY").as_float(0.f));
+            return ptr;
+        });
 };
-
 
 
 #endif //COMPONENT_BASED_ARCH_RENDERER_H

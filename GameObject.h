@@ -26,6 +26,7 @@ public:
     explicit GameObject(std::string_view label, const sf::Vector2f& position, const sf::Angle& rotation,
                         const sf::Vector2f& scale, bool active);
 
+    void enable();
     void start();
     void update(const sf::Time& elapsedTime);
 

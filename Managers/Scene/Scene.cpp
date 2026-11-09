@@ -16,7 +16,12 @@ Scene::Scene(sf::RenderWindow& window) : mGui(window)
 
 void Scene::Start()
 {
-    for (auto& go : mObjects)
+    for (const auto& go : mObjects)
+    {
+        go->enable();
+    }
+
+    for (const auto& go : mObjects)
     {
         go->start();
     }
@@ -24,15 +29,16 @@ void Scene::Start()
 
 void Scene::Update(const sf::Time& elapsedTime)
 {
-    if (!frozen) {
-        for (auto& go : mObjects)
+    if (!frozen)
+    {
+        for (auto const& go : mObjects)
         {
             go->update(elapsedTime);
         }
-        std::erase_if(mObjects, [](const std::unique_ptr<GameObject>& go)
-        {
-            return go->isWaitingDestruction();
-        });
+
+        std::erase_if(mObjects, [](const std::unique_ptr<GameObject>& go){
+                return go->isWaitingDestruction();
+            });
     }
 
     if (SceneManager::loadingReq) SceneManager::applyRequest();
@@ -48,7 +54,8 @@ pugi::xml_node Scene::open_prefab(const pugi::xml_node& obj)
     }
 
     auto doc = std::make_unique<pugi::xml_document>();
-    if (auto result = doc->load_file(prefabPath.c_str()); !result) {
+    if (auto result = doc->load_file(prefabPath.c_str()); !result)
+    {
         throw IllegalOperationException(std::format("Could not open prefab because {}", result.description()));
     }
     auto root_node = doc->child("GameObject");
@@ -66,7 +73,8 @@ void Scene::load(std::string_view scenePath)
     std::filesystem::path path = scenePath;
     pugi::xml_document doc;
     std::cout << scenePath << std::endl;
-    if (auto result = doc.load_file(path.c_str()); !result) {
+    if (auto result = doc.load_file(path.c_str()); !result)
+    {
         throw IllegalOperationException(std::format("Could not open scene because {}", result.description()));
     }
 
@@ -88,13 +96,13 @@ void Scene::load(std::string_view scenePath)
         for (const auto& obj : cur)
         {
             std::string name = obj.name();
-            if ( name == "GameObject")
+            if (name == "GameObject")
             {
                 mObjects.push_back(GameObjectFactory::buildGameObject(obj));
                 queue.push(obj);
                 continue;
             }
-            if ( name == "Prefab")
+            if (name == "Prefab")
             {
                 auto new_obj = open_prefab(obj);
                 std::cout << new_obj.name() << std::endl;
@@ -151,7 +159,8 @@ GameObject* Scene::requestInstantiate(std::string_view prefabPath)
         throw IllegalOperationException("Prefab path must be non-empty");
     }
     pugi::xml_document doc;
-    if (auto result = doc.load_file(path.c_str()); !result) {
+    if (auto result = doc.load_file(path.c_str()); !result)
+    {
         throw IllegalOperationException(std::format("Could not open prefab because {}", result.description()));
     }
     auto root_node = doc.child("GameObject");
@@ -169,12 +178,12 @@ GameObject* Scene::requestInstantiate(std::string_view prefabPath)
 
 void Scene::freeze()
 {
-    frozen=true;
+    frozen = true;
 }
 
 void Scene::unfreeze()
 {
-    frozen=false;
+    frozen = false;
 }
 
 tgui::Gui* Scene::getGui()

@@ -17,7 +17,13 @@ public:
     /**
      * @brief Called when the scene is fully created
      */
+    virtual void OnEnable();
+
+    /**
+     * @brief Called after OnEnable() to start component behaviour
+     */
     virtual void Start();
+
     /**
      * @brief Called each frame
      * @param elapsedTime

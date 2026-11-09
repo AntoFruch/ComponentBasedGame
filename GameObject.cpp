@@ -4,10 +4,19 @@
 
 #include "GameObject.h"
 GameObject::GameObject(std::string_view label, const sf::Vector2f& position, const sf::Angle& rotation, const sf::Vector2f& scale, bool active)
-    : label(label), transform(position, rotation, scale, nullptr), active(active)
+    : label(label), active(active), transform(position, rotation, scale, nullptr)
 {
 
 }
+
+void GameObject::enable()
+{
+    for (const auto& c : components )
+    {
+        c->OnEnable();
+    }
+}
+
 void GameObject::start()
 {
     for (const auto& c : components )
@@ -19,7 +28,7 @@ void GameObject::start()
 void GameObject::update(const sf::Time& elapsedTime) {
 
     if (!active) return;
-    for (auto& c : components)
+    for (const auto& c : components)
     {
         c->Update(elapsedTime);
     }
